@@ -94,3 +94,7 @@ $db['default'] = array(
 	'failover' => array(),
 	'save_queries' => TRUE
 );
+
+// Tests
+//$db['default']['hostname'] = '192.168.1.5'; // Tuo ip
+//$db['default']['port'] = '3307'; // External port
