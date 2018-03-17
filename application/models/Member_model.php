@@ -38,18 +38,16 @@ class Member_model extends CI_Model {
     public function insert($data)
     {
         $this->db->set($data);
-        if($this->db->insert('members'))
-            return $this->get($this->db->insert_id());
-        return null;
+        $this->db->insert('members');
+        return $this->get($this->db->insert_id());
     }
 
     public function update($id, $data)
     {
         $this->db->set($data);
         $this->db->where('id', $id);
-        if($this->db->update('members'))
-            return $this->get($id);
-        return null;
+        $this->db->update('members');
+        return $this->get($id);
     }
 
     public function delete($id)

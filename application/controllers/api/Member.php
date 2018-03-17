@@ -12,31 +12,25 @@ class Member extends CI_Controller
     }
 
     public function index() {
-        if($this->input->method(TRUE) == 'GET') {
-            $this->find();
-            return;
-        }
         if($this->input->method(TRUE) == 'POST') {
             $this->insert();
             return;
         }
-        show_error("Method not defined", 505);
+        // else: GET
+        $this->find();
     }
 
     public function target($id) {
-        if($this->input->method(TRUE) == 'GET') {
-            $this->view($id);
-            return;
-        }
         if($this->input->method(TRUE) == 'PUT') {
             $this->update($id);
             return;
         }
-        if($this->input->method(TRUE) == 'DELETE') {
+        else if($this->input->method(TRUE) == 'DELETE') {
             $this->delete($id);
             return;
         }
-        show_error("Method not defined", 505);
+        // else: GET
+        $this->view($id);
     }
 
     private function find() {

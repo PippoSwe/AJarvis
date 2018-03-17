@@ -8,76 +8,30 @@
  * @link       https://github.com/kenjis/ci-phpunit-test
  */
 
-class Member_test extends TestCase
+class Member_model_test extends TestCase
 {
 
     private static $key;
-    private static $page = 'api/member/';
-
-    public static function setUpBeforeClass()
-    {
-        parent::setUpBeforeClass();
-        $CI =& get_instance();
-        $CI->load->database();
-    }
 
     public function setUp()
     {
-        $this->request->setCallable(
-            function ($CI) {
-                $CI->load->database();
-            }
-        );
+        $this->CI =& get_instance();
+        $this->CI->load->database();
+        $this->CI->load->model('member_model', 'members', TRUE);
+        $this->obj = $this->CI->members;
     }
 
-    public function test_post()
-    {
-        // https://github.com/kenjis/ci-phpunit-test
-        // https://github.com/kenjis/ci-phpunit-test/blob/master/docs/HowToWriteTests.md
-        $output = $this->request('POST', self::$page, [
-            'firstname' => 'Test','lastname' => 'Testoni']);
-        $data = (array) json_decode($output);
-        $this->assertResponseCode(200);
-        $this->assertArrayHasKey('firstname', $data);
-        $this->assertArrayHasKey('lastname', $data);
-        $this->assertArrayHasKey('id', $data);
-        self::$key = $data['id'];
-    }
 
-    public function test_index()
-    {
-        $output = $this->request('GET', self::$page,
-            ['limit' => 1]);
-        $data = (array) json_decode($output);
-        $this->assertResponseCode(200);
-        $this->assertCount(1, $data);
-    }
-
-	public function test_view()
+	public function test_find()
 	{
-		$output = $this->request('GET', self::$page.self::$key);
-        $data = (array) json_decode($output);
-        $this->assertResponseCode(200);
-        $this->assertArrayHasKey('firstname', $data);
-        $this->assertArrayHasKey('lastname', $data);
-        $this->assertArrayHasKey('id', $data);
+        $data = $this->obj->find($limit = 1);
+        $this->assertCount(1, $data);
 	}
 
-    public function test_put()
+    public function test_get_empty()
     {
-        $output = $this->request('PUT', self::$page.self::$key);
-        $data = (array) json_decode($output);
-        $this->assertResponseCode(200);
-        $this->assertArrayHasKey('firstname', $data);
-        $this->assertArrayHasKey('lastname', $data);
-        $this->assertArrayHasKey('id', $data);
+        $data = $this->obj->get(-1);
+        $this->assertEquals(null, $data);
     }
-
-    public function test_delete()
-    {
-        $output = $this->request('DELETE', self::$page.self::$key);
-        $this->assertResponseCode(200);
-    }	
-
 
 }

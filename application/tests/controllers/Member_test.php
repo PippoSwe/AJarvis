@@ -11,6 +11,8 @@
 class Member_test extends TestCase
 {
 
+    // https://github.com/kenjis/ci-phpunit-test
+    // https://github.com/kenjis/ci-phpunit-test/blob/master/docs/HowToWriteTests.md
     private static $key;
     private static $page = 'api/member/';
 
@@ -32,8 +34,6 @@ class Member_test extends TestCase
 
     public function test_post()
     {
-        // https://github.com/kenjis/ci-phpunit-test
-        // https://github.com/kenjis/ci-phpunit-test/blob/master/docs/HowToWriteTests.md
         $output = $this->request('POST', self::$page, [
             'firstname' => 'Test','lastname' => 'Testoni']);
         $data = (array) json_decode($output);
