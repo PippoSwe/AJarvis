@@ -25,7 +25,7 @@ class Member_model_test extends TestCase
 	public function test_find()
 	{
         $data = $this->obj->find($limit = 1);
-        $this->assertInternalType('array', $data);
+        $this->assertCount(1, $data);
 	}
 
     public function test_get_empty()

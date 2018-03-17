@@ -53,6 +53,10 @@ $route['default_controller'] = 'welcome';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
-# Rest
+# Member
 $route['api/member'] = 'api/Member/index';
 $route['api/member/(:num)'] = 'api/Member/target/$1';
+
+# Project
+$route['api/project'] = 'api/Project/index';
+$route['api/project/(:num)'] = 'api/Project/target/$1';
