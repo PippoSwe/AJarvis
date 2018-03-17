@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Migration_Add_members extends CI_Migration {
+class Migration_Add_projects extends CI_Migration {
 
     public function up()
     {
@@ -12,21 +12,17 @@ class Migration_Add_members extends CI_Migration {
                 'unsigned' => TRUE,
                 'auto_increment' => TRUE
             ),
-            'firstname' => array(
-                'type' => 'VARCHAR',
-                'constraint' => '100',
-            ),
-            'lastname' => array(
+            'name' => array(
                 'type' => 'VARCHAR',
                 'constraint' => '100',
             ),
         ));
         $this->dbforge->add_key('id', TRUE);
-        $this->dbforge->create_table('members');
+        $this->dbforge->create_table('projects');
     }
 
     public function down()
     {
-        $this->dbforge->drop_table('members');
+        $this->dbforge->drop_table('projects');
     }
 }

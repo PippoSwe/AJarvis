@@ -8,7 +8,7 @@
  * @link       https://github.com/kenjis/ci-phpunit-test
  */
 
-class Member_model_test extends TestCase
+class Project_model_test extends TestCase
 {
 
     private static $key;
@@ -17,15 +17,15 @@ class Member_model_test extends TestCase
     {
         $this->CI =& get_instance();
         $this->CI->load->database();
-        $this->CI->load->model('member_model', 'members', TRUE);
-        $this->obj = $this->CI->members;
+        $this->CI->load->model('project_model', 'projects', TRUE);
+        $this->obj = $this->CI->projects;
     }
 
 
 	public function test_find()
 	{
         $data = $this->obj->find($limit = 1);
-        $this->assertCount(1, $data);
+        $this->assertInternalType('array', $data);
 	}
 
     public function test_get_empty()

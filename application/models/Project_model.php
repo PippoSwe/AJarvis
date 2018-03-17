@@ -1,11 +1,10 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Member_model extends CI_Model {
+class Project_model extends CI_Model {
 
     public $id;
-    public $firstname;
-    public $lastname;
+    public $name;
 
     function __construct()
     {
@@ -16,7 +15,7 @@ class Member_model extends CI_Model {
     public function find($limit = null, $offset = 0)
     {
         //https://www.codeigniter.com/userguide3/database/query_builder.html#looking-for-similar-data
-        $collection = $this->db->from('members');
+        $collection = $this->db->from('projects');
         if (!is_null($limit))
             $collection = $collection->limit($limit, $offset);
         $result = $collection
@@ -27,7 +26,7 @@ class Member_model extends CI_Model {
 
     public function get($id)
     {
-        $records = $this->db->from('members')
+        $records = $this->db->from('projects')
             ->where('id', $id)->get()
             ->result();
         if(sizeof($records) > 0)
@@ -38,7 +37,7 @@ class Member_model extends CI_Model {
     public function insert($data)
     {
         $this->db->set($data);
-        $this->db->insert('members');
+        $this->db->insert('projects');
         return $this->get($this->db->insert_id());
     }
 
@@ -46,14 +45,14 @@ class Member_model extends CI_Model {
     {
         $this->db->set($data);
         $this->db->where('id', $id);
-        $this->db->update('members');
+        $this->db->update('projects');
         return $this->get($id);
     }
 
     public function delete($id)
     {
         $this->db->where('id', $id);
-        $this->db->delete('members');
+        $this->db->delete('projects');
         return TRUE;
     }
 

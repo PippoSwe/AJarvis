@@ -8,13 +8,13 @@
  * @link       https://github.com/kenjis/ci-phpunit-test
  */
 
-class Member_test extends TestCase
+class Project_test extends TestCase
 {
 
     // https://github.com/kenjis/ci-phpunit-test
     // https://github.com/kenjis/ci-phpunit-test/blob/master/docs/HowToWriteTests.md
     private static $key;
-    private static $page = 'api/member/';
+    private static $page = 'api/project/';
 
     public static function setUpBeforeClass()
     {
@@ -35,11 +35,10 @@ class Member_test extends TestCase
     public function test_post()
     {
         $output = $this->request('POST', self::$page, [
-            'firstname' => 'Test','lastname' => 'Testoni']);
+            'name' => 'Progettone della vita']);
         $data = (array) json_decode($output);
         $this->assertResponseCode(200);
-        $this->assertArrayHasKey('firstname', $data);
-        $this->assertArrayHasKey('lastname', $data);
+        $this->assertArrayHasKey('name', $data);
         $this->assertArrayHasKey('id', $data);
         self::$key = $data['id'];
     }
@@ -58,8 +57,7 @@ class Member_test extends TestCase
 		$output = $this->request('GET', self::$page.self::$key);
         $data = (array) json_decode($output);
         $this->assertResponseCode(200);
-        $this->assertArrayHasKey('firstname', $data);
-        $this->assertArrayHasKey('lastname', $data);
+        $this->assertArrayHasKey('name', $data);
         $this->assertArrayHasKey('id', $data);
 	}
 
@@ -68,8 +66,7 @@ class Member_test extends TestCase
         $output = $this->request('PUT', self::$page.self::$key);
         $data = (array) json_decode($output);
         $this->assertResponseCode(200);
-        $this->assertArrayHasKey('firstname', $data);
-        $this->assertArrayHasKey('lastname', $data);
+        $this->assertArrayHasKey('name', $data);
         $this->assertArrayHasKey('id', $data);
     }
 
