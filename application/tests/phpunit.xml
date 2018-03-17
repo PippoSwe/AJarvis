@@ -11,6 +11,9 @@
 	<filter>
 		<whitelist>
 			<directory suffix=".php">../controllers</directory>
+            <exclude>
+                <file>../controllers/Migrate.php</file>
+            </exclude>
 			<directory suffix=".php">../models</directory>
 			<directory suffix=".php">../views</directory>
 			<exclude>

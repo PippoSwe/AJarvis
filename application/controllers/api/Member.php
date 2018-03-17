@@ -40,7 +40,10 @@ class Member extends CI_Controller
     }
 
     private function find() {
-        $entry = $this->members->find();
+        $entry = $this->members->find(
+            $limit = $this->input->get('limit'),
+            $offset = $this->input->get('offset')
+        );
         $content = array (
             'json' => json_encode($entry)
         );
@@ -108,11 +111,8 @@ class Member extends CI_Controller
     }
 
     private function delete($id) {
-        if($this->input->method(TRUE) != 'DELETE')
-            show_error("PUT Request needed", 400);
-        if($this->members->delete($id))
-            show_error("Cannot update due to service malfunctioning", 500);
-        show_error("Method Not Allowed", 405);
+        if(!$this->members->delete($id))
+            show_error("Cannot delete due to service malfunctioning", 500);
     }
 
 }

@@ -13,12 +13,16 @@ class Member_model extends CI_Model {
         parent::__construct();
     }
 
-    public function find()
+    public function find($limit = null, $offset = 0)
     {
         //https://www.codeigniter.com/userguide3/database/query_builder.html#looking-for-similar-data
-        return $this->db->from('members')
+        $collection = $this->db->from('members');
+        if (!is_null($limit))
+            $collection = $collection->limit($limit, $offset);
+        $result = $collection
             ->get()
             ->result();
+        return $result;
     }
 
     public function get($id)
