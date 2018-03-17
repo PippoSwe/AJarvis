@@ -6,11 +6,40 @@ class Member extends CI_Controller
 
     function __construct()
     {
+        //http://www.restapitutorial.com/lessons/httpmethods.html
         parent::__construct();
         $this->load->model('member_model', 'members', TRUE);
     }
 
     public function index() {
+        if($this->input->method(TRUE) == 'GET') {
+            $this->find();
+            return;
+        }
+        if($this->input->method(TRUE) == 'POST') {
+            $this->insert();
+            return;
+        }
+        show_error("Method not defined", 505);
+    }
+
+    public function target($id) {
+        if($this->input->method(TRUE) == 'GET') {
+            $this->view($id);
+            return;
+        }
+        if($this->input->method(TRUE) == 'PUT') {
+            $this->update($id);
+            return;
+        }
+        if($this->input->method(TRUE) == 'DELETE') {
+            $this->delete($id);
+            return;
+        }
+        show_error("Method not defined", 505);
+    }
+
+    private function find() {
         $entry = $this->members->find();
         $content = array (
             'json' => json_encode($entry)
@@ -18,20 +47,7 @@ class Member extends CI_Controller
         $this->load->view('member/list',$content);
     }
 
-    public function view($id) {
-        $entry = $this->members->get($id);
-        if($entry == null)
-            show_404();
-        $content = array (
-            'json' => json_encode($entry)
-        );
-        $this->load->view('member/view',$content);
-    }
-
-    public function insert() {
-        if($this->input->method(TRUE) != 'POST')
-            show_error("POST Request needed", 400);
-
+    private function insert() {
         // Dichiariamo i valori di default
         $data = array(
             "firstname" => null,
@@ -56,10 +72,17 @@ class Member extends CI_Controller
         $this->load->view('member/insert',$content);
     }
 
-    public function update($id) {
-        if($this->input->method(TRUE) != 'PUT')
-            show_error("PUT Request needed", 400);
+    private function view($id) {
+        $entry = $this->members->get($id);
+        if($entry == null)
+            show_404();
+        $content = array (
+            'json' => json_encode($entry)
+        );
+        $this->load->view('member/view',$content);
+    }
 
+    private function update($id) {
         // Dichiariamo i valori di default
         $data = array(
             "firstname" => null,
@@ -82,6 +105,14 @@ class Member extends CI_Controller
         );
 
         $this->load->view('member/update',$content);
+    }
+
+    private function delete($id) {
+        if($this->input->method(TRUE) != 'DELETE')
+            show_error("PUT Request needed", 400);
+        if($this->members->delete($id))
+            show_error("Cannot update due to service malfunctioning", 500);
+        show_error("Method Not Allowed", 405);
     }
 
 }
