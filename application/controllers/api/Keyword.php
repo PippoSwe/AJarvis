@@ -1,14 +1,14 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Project extends CI_Controller
+class Keyword extends CI_Controller
 {
 
     function __construct()
     {
         //http://www.restapitutorial.com/lessons/httpmethods.html
         parent::__construct();
-        $this->load->model('project_model', 'projects', TRUE);
+        $this->load->model('Keyword_model', 'keywords', TRUE);
     }
 
     public function index() {
@@ -34,28 +34,28 @@ class Project extends CI_Controller
     }
 
     private function find() {
-        $entry = $this->projects->find(
+        $entry = $this->keywords->find(
             $limit = $this->input->get('limit'),
             $offset = $this->input->get('offset')
         );
         $content = array (
             'json' => json_encode($entry)
         );
-        $this->load->view('project/list',$content);
+        $this->load->view('keyword/list',$content);
     }
 
     private function insert() {
         // Dichiariamo i valori di default
         $data = array(
-            "name" => null
+            "keyword" => null
         );
 
         // Normalizzazione
-        if(!empty($this->input->post('name')))
-            $data["name"] = $this->input->post('name');
+        if(!empty($this->input->post('keyword')))
+            $data["keyword"] = $this->input->post('keyword');
 
         // Scrittura e gestion del risultato REST-Style
-        $entry = $this->projects->insert($data);
+        $entry = $this->keywords->insert($data);
         if($entry == null)
             show_error("Cannot insert due to service malfunctioning", 500);
 
@@ -63,31 +63,31 @@ class Project extends CI_Controller
             'json' => json_encode($entry)
         );
 
-        $this->load->view('project/insert',$content);
+        $this->load->view('keyword/insert',$content);
     }
 
     private function view($id) {
-        $entry = $this->projects->get($id);
+        $entry = $this->keywords->get($id);
         if($entry == null)
             show_404();
         $content = array (
             'json' => json_encode($entry)
         );
-        $this->load->view('project/view',$content);
+        $this->load->view('keyword/view',$content);
     }
 
     private function update($id) {
         // Dichiariamo i valori di default
         $data = array(
-            "name" => null
+            "keyword" => null
         );
 
         // Normalizzazione
-        if(!empty($this->input->input_stream('name')))
-            $data["name"] = $this->input->input_stream('name');
+        if(!empty($this->input->input_stream('keyword')))
+            $data["keyword"] = $this->input->input_stream('keyword');
 
         // Scrittura e gestion del risultato REST-Style
-        $entry = $this->projects->update($id, $data);
+        $entry = $this->keywords->update($id, $data);
         if($entry == null)
             show_error("Cannot update due to service malfunctioning", 500);
 
@@ -95,11 +95,11 @@ class Project extends CI_Controller
             'json' => json_encode($entry)
         );
 
-        $this->load->view('project/update',$content);
+        $this->load->view('keyword/update',$content);
     }
 
     private function delete($id) {
-        if(!$this->projects->delete($id))
+        if(!$this->keywords->delete($id))
             show_error("Cannot delete due to service malfunctioning", 500);
     }
 

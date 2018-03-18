@@ -8,13 +8,13 @@
  * @link       https://github.com/kenjis/ci-phpunit-test
  */
 
-class Project_test extends TestCase
+class Keyword_test extends TestCase
 {
 
     // https://github.com/kenjis/ci-phpunit-test
     // https://github.com/kenjis/ci-phpunit-test/blob/master/docs/HowToWriteTests.md
     private static $key;
-    private static $page = 'api/project/';
+    private static $page = 'api/keyword/';
 
     public static function setUpBeforeClass()
     {
@@ -35,10 +35,10 @@ class Project_test extends TestCase
     public function test_post()
     {
         $output = $this->request('POST', self::$page, [
-            'name' => 'Progettone della vita']);
+            'keyword' => 'pippo.swe']);
         $data = (array) json_decode($output);
         $this->assertResponseCode(200);
-        $this->assertArrayHasKey('name', $data);
+        $this->assertArrayHasKey('keyword', $data);
         $this->assertArrayHasKey('id', $data);
         self::$key = $data['id'];
     }
@@ -57,16 +57,17 @@ class Project_test extends TestCase
 		$output = $this->request('GET', self::$page.self::$key);
         $data = (array) json_decode($output);
         $this->assertResponseCode(200);
-        $this->assertArrayHasKey('name', $data);
+        $this->assertArrayHasKey('keyword', $data);
         $this->assertArrayHasKey('id', $data);
 	}
 
     public function test_put()
     {
-        $output = $this->request('PUT', self::$page.self::$key);
+        $output = $this->request('PUT', self::$page.self::$key, [
+            'keyword' => 'pippo.swe 2']);
         $data = (array) json_decode($output);
         $this->assertResponseCode(200);
-        $this->assertArrayHasKey('name', $data);
+        $this->assertArrayHasKey('keyword', $data);
         $this->assertArrayHasKey('id', $data);
     }
 

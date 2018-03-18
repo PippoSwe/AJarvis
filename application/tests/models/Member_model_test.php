@@ -17,7 +17,7 @@ class Member_model_test extends TestCase
     {
         $this->CI =& get_instance();
         $this->CI->load->database();
-        $this->CI->load->model('member_model', 'members', TRUE);
+        $this->CI->load->model('Member_model', 'members', TRUE);
         $this->obj = $this->CI->members;
     }
 

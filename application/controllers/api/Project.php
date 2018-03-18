@@ -8,7 +8,7 @@ class Project extends CI_Controller
     {
         //http://www.restapitutorial.com/lessons/httpmethods.html
         parent::__construct();
-        $this->load->model('project_model', 'projects', TRUE);
+        $this->load->model('Project_model', 'projects', TRUE);
     }
 
     public function index() {

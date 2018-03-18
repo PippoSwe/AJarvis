@@ -8,7 +8,7 @@ class Member extends CI_Controller
     {
         //http://www.restapitutorial.com/lessons/httpmethods.html
         parent::__construct();
-        $this->load->model('member_model', 'members', TRUE);
+        $this->load->model('Member_model', 'members', TRUE);
     }
 
     public function index() {

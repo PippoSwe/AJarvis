@@ -1,10 +1,10 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Project_model extends CI_Model {
+class Keyword_model extends CI_Model {
 
     public $id;
-    public $name;
+    public $keyword;
 
     function __construct()
     {
@@ -15,7 +15,7 @@ class Project_model extends CI_Model {
     public function find($limit = null, $offset = 0)
     {
         //https://www.codeigniter.com/userguide3/database/query_builder.html#looking-for-similar-data
-        $collection = $this->db->from('projects');
+        $collection = $this->db->from('keywords');
         if (!is_null($limit))
             $collection = $collection->limit($limit, $offset);
         $result = $collection
@@ -26,7 +26,7 @@ class Project_model extends CI_Model {
 
     public function get($id)
     {
-        $records = $this->db->from('projects')
+        $records = $this->db->from('keywords')
             ->where('id', $id)->get()
             ->result();
         if(sizeof($records) > 0)
@@ -37,7 +37,7 @@ class Project_model extends CI_Model {
     public function insert($data)
     {
         $this->db->set($data);
-        $this->db->insert('projects');
+        $this->db->insert('keywords');
         return $this->get($this->db->insert_id());
     }
 
@@ -45,14 +45,14 @@ class Project_model extends CI_Model {
     {
         $this->db->set($data);
         $this->db->where('id', $id);
-        $this->db->update('projects');
+        $this->db->update('keywords');
         return $this->get($id);
     }
 
     public function delete($id)
     {
         $this->db->where('id', $id);
-        $this->db->delete('projects');
+        $this->db->delete('keywords');
         return TRUE;
     }
 

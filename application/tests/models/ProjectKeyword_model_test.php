@@ -8,7 +8,7 @@
  * @link       https://github.com/kenjis/ci-phpunit-test
  */
 
-class Project_Keyword_model_test extends TestCase
+class ProjectKeyword_model_test extends TestCase
 {
 
     private static $key;
@@ -17,10 +17,9 @@ class Project_Keyword_model_test extends TestCase
     {
         $this->CI =& get_instance();
         $this->CI->load->database();
-        $this->CI->load->model('project_keyword_model', 'projects_keywords', TRUE);
+        $this->CI->load->model('ProjectKeyword_model', 'projects_keywords', TRUE);
         $this->obj = $this->CI->projects_keywords;
     }
-
 
 	public function test_find()
 	{

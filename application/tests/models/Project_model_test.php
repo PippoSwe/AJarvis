@@ -17,7 +17,7 @@ class Project_model_test extends TestCase
     {
         $this->CI =& get_instance();
         $this->CI->load->database();
-        $this->CI->load->model('project_model', 'projects', TRUE);
+        $this->CI->load->model('Project_model', 'projects', TRUE);
         $this->obj = $this->CI->projects;
     }
 

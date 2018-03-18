@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Project_Keyword_model extends CI_Model {
+class ProjectKeyword_model extends CI_Model {
 
     public $id;
     public $project_id;
@@ -18,9 +18,9 @@ class Project_Keyword_model extends CI_Model {
         //https://www.codeigniter.com/userguide3/database/query_builder.html#looking-for-similar-data
         $collection = $this->db->from('projects_keywords');
         if (!is_null($project_id))
-            $collection->where('project_id', $project_id);
+            $collection = $collection->where('project_id', $project_id);
         if (!is_null($keyword_id))
-            $collection->where('keyword_id', $keyword_id);
+            $collection = $collection->where('keyword_id', $keyword_id);
         if (!is_null($limit))
             $collection = $collection->limit($limit, $offset);
         $result = $collection
