@@ -65,6 +65,10 @@ $route['api/project/(:num)'] = 'api/Project/target/$1';
 $route['api/project/(:num)/keyword'] = 'api/ProjectKeyword/index/$1';
 $route['api/project/(:num)/keyword/(:num)'] = 'api/ProjectKeyword/target/$1/$2';
 
+# Project Members
+$route['api/project/(:num)/member'] = 'api/ProjectMember/index/$1';
+$route['api/project/(:num)/member/(:num)'] = 'api/ProjectMember/target/$1/$2';
+
 # Keywords
 $route['api/keyword/'] = 'api/Keyword/index';
 $route['api/keyword/(:num)'] = 'api/Keyword/target/$1';

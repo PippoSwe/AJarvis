@@ -17,8 +17,8 @@ class ProjectKeyword_model_test extends TestCase
     {
         $this->CI =& get_instance();
         $this->CI->load->database();
-        $this->CI->load->model('ProjectMember_model', 'projects_members', TRUE);
-        $this->obj = $this->CI->projects_members;
+        $this->CI->load->model('ProjectKeyword_model', 'projects_keywords', TRUE);
+        $this->obj = $this->CI->projects_keywords;
     }
 
 	public function test_find()
