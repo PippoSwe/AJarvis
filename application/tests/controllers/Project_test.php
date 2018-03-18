@@ -63,7 +63,8 @@ class Project_test extends TestCase
 
     public function test_put()
     {
-        $output = $this->request('PUT', self::$page.self::$key);
+        $output = $this->request('PUT', self::$page.self::$key, [
+            'name' => 'Dunno']);
         $data = (array) json_decode($output);
         $this->assertResponseCode(200);
         $this->assertArrayHasKey('name', $data);
