@@ -57,6 +57,10 @@ $route['translate_uri_dashes'] = FALSE;
 $route['api/member/'] = 'api/Member/index';
 $route['api/member/(:num)'] = 'api/Member/target/$1';
 
+# Keywords
+$route['api/keyword/'] = 'api/Keyword/index';
+$route['api/keyword/(:num)'] = 'api/Keyword/target/$1';
+
 # Project
 $route['api/project/'] = 'api/Project/index';
 $route['api/project/(:num)'] = 'api/Project/target/$1';
@@ -69,7 +73,8 @@ $route['api/project/(:num)/keyword/(:num)'] = 'api/ProjectKeyword/target/$1/$2';
 $route['api/project/(:num)/member'] = 'api/ProjectMember/index/$1';
 $route['api/project/(:num)/member/(:num)'] = 'api/ProjectMember/target/$1/$2';
 
-# Keywords
-$route['api/keyword/'] = 'api/Keyword/index';
-$route['api/keyword/(:num)'] = 'api/Keyword/target/$1';
+# Project Standups
+$route['api/project/(:num)/standup'] = 'api/ProjectStandup/index/$1';
+$route['api/project/(:num)/standup/(:num)'] = 'api/ProjectStandup/target/$1/$2';
+
 

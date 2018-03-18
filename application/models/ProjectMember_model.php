@@ -16,7 +16,10 @@ class ProjectMember_model extends CI_Model {
     public function find($project_id = null, $member_id = null, $limit = null, $offset = 0)
     {
         //https://www.codeigniter.com/userguide3/database/query_builder.html#looking-for-similar-data
-        $collection = $this->db->from('projects_members');
+        $collection = $this->db->select('projects_members.id, 
+            project_id, project, 
+            member_id, firstname, lastname')
+            ->from('projects_members');
         $collection = $collection->join('projects', 'projects.id = project_id', 'left');
         $collection = $collection->join('members', 'members.id = member_id', 'left');
         if (!is_null($project_id))
@@ -33,7 +36,10 @@ class ProjectMember_model extends CI_Model {
 
     public function get($id)
     {
-        $records = $this->db->from('projects_members')
+        $records = $this->db->select('projects_members.id, 
+            project_id, project, 
+            member_id, firstname, lastname')
+            ->from('projects_members')
             ->join('projects', 'projects.id = project_id', 'left')
             ->join('members', 'members.id = member_id', 'left')
             ->where('projects_members.id', $id)->get()

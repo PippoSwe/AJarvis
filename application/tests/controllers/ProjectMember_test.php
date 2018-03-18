@@ -87,7 +87,7 @@ class ProjectMember_test extends TestCase
 
     public function test_delete()
     {
-        $output = $this->request('DELETE', self::$fk1_page.self::$fk2_key.'/member/'.self::$fk2_key);
+        $output = $this->request('DELETE', self::$fk1_page.self::$fk1_key.'/member/'.self::$fk2_key);
         $this->assertResponseCode(200);
     }
 
