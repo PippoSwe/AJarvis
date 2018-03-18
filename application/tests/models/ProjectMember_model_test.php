@@ -8,7 +8,7 @@
  * @link       https://github.com/kenjis/ci-phpunit-test
  */
 
-class ProjectKeyword_model_test extends TestCase
+class ProjectMember_model_test extends TestCase
 {
 
     private static $key;

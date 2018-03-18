@@ -1,14 +1,14 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class ProjectKeyword extends CI_Controller
+class ProjectMember extends CI_Controller
 {
 
     function __construct()
     {
         //http://www.restapitutorial.com/lessons/httpmethods.html
         parent::__construct();
-        $this->load->model('ProjectKeyword_model', 'projects_keywords', TRUE);
+        $this->load->model('ProjectMember_model', 'projects_members', TRUE);
     }
 
     /* Keywords */
@@ -21,28 +21,28 @@ class ProjectKeyword extends CI_Controller
         $this->find($project_id);
     }
 
-    public function target($project_id, $keyword_id) {
+    public function target($project_id, $member_id) {
         if($this->input->method(TRUE) == 'DELETE') {
-            $this->delete($project_id, $keyword_id);
+            $this->delete($project_id, $member_id);
             return;
         }
         // else: GET
-        $this->view($project_id, $keyword_id);
+        $this->view($project_id, $member_id);
     }
 
     private function insert($project_id) {
         // Dichiariamo i valori di default
         $data = array(
             "project_id" => $project_id,
-            "keyword_id" => null
+            "member_id" => null
         );
 
         // Normalizzazione
-        if(!empty($this->input->post('keyword_id')))
-            $data["keyword_id"] = $this->input->post('keyword_id');
+        if(!empty($this->input->post('member_id')))
+            $data["member_id"] = $this->input->post('member_id');
 
         // Scrittura e gestion del risultato REST-Style
-        $entry = $this->projects_keywords->insert($data);
+        $entry = $this->projects_members->insert($data);
         if($entry == null)
             show_error("Cannot insert due to service malfunctioning", 500);
 
@@ -50,11 +50,11 @@ class ProjectKeyword extends CI_Controller
             'json' => json_encode($entry)
         );
 
-        $this->load->view('project_keyword/insert',$content);
+        $this->load->view('project_member/insert',$content);
     }
 
     private function find($project_id) {
-        $entry = $this->projects_keywords->find(
+        $entry = $this->projects_members->find(
             $project_id,
             null,
             $limit = $this->input->get('limit'),
@@ -63,13 +63,13 @@ class ProjectKeyword extends CI_Controller
         $content = array (
             'json' => json_encode($entry)
         );
-        $this->load->view('project_keyword/list',$content);
+        $this->load->view('project_member/list',$content);
     }
 
-    private function view($project_id, $keyword_id) {
-        $records = $this->projects_keywords->find(
+    private function view($project_id, $member_id) {
+        $records = $this->projects_members->find(
             $project_id,
-            $keyword_id,
+            $member_id,
             $limit = 1,
             $offset = 0
         );
@@ -81,12 +81,12 @@ class ProjectKeyword extends CI_Controller
         $content = array (
             'json' => json_encode($entry)
         );
-        $this->load->view('project_keyword/view',$content);
+        $this->load->view('project_member/view',$content);
     }
 
 
-    private function delete($project_id, $keyword_id) {
-        if(!$this->projects_keywords->delete($project_id, $keyword_id))
+    private function delete($project_id, $member_id) {
+        if(!$this->projects_members->delete($project_id, $member_id))
             show_error("Cannot delete due to service malfunctioning", 500);
     }
 
