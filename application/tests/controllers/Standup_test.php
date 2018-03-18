@@ -8,15 +8,14 @@
  * @link       https://github.com/kenjis/ci-phpunit-test
  */
 
-class ProjectKeyword_test extends TestCase
+class Standup_test extends TestCase
 {
 
     // https://github.com/kenjis/ci-phpunit-test
     // https://github.com/kenjis/ci-phpunit-test/blob/master/docs/HowToWriteTests.md
     private static $fk1_key;
-    private static $fk2_key;
+    private static $key;
     private static $fk1_page = 'api/project/';
-    private static $fk2_page = 'api/keyword/';
 
     public static function setUpBeforeClass()
     {
@@ -45,40 +44,34 @@ class ProjectKeyword_test extends TestCase
         self::$fk1_key = $data['id'];
     }
 
-    /* Keywords */
-    public function test_keyword_post()
-    {
-        $output = $this->request('POST', self::$fk2_page, [
-            'keyword' => 'K Link']);
-        $data = (array) json_decode($output);
-        $this->assertResponseCode(200);
-        self::$fk2_key = $data['id'];
-    }
 
     public function test_post()
     {
-        $output = $this->request('POST', self::$fk1_page.self::$fk1_key.'/keyword/', [
-            'keyword_id' => self::$fk2_key]);
+        $output = $this->request('POST', self::$fk1_page.self::$fk1_key.'/standup/', [
+            'standup' => 'Standup 1']);
         $data = (array) json_decode($output);
         $this->assertResponseCode(200);
         $this->assertArrayHasKey('project_id', $data);
-        $this->assertArrayHasKey('keyword_id', $data);
+        $this->assertArrayHasKey('standup', $data);
+        $this->assertArrayHasKey('end', $data);
         $this->assertArrayHasKey('id', $data);
+        self::$key = $data['id'];
     }
 
     public function test_view()
     {
-        $output = $this->request('GET', self::$fk1_page.self::$fk1_key.'/keyword/'.self::$fk2_key);
+        $output = $this->request('GET', self::$fk1_page.self::$fk1_key.'/standup/'.self::$key);
         $data = (array) json_decode($output);
         $this->assertResponseCode(200);
         $this->assertArrayHasKey('project_id', $data);
-        $this->assertArrayHasKey('keyword_id', $data);
+        $this->assertArrayHasKey('standup', $data);
+        $this->assertArrayHasKey('end', $data);
         $this->assertArrayHasKey('id', $data);
     }
 
     public function test_index()
     {
-        $output = $this->request('GET', self::$fk1_page.self::$fk1_key.'/keyword/',
+        $output = $this->request('GET', self::$fk1_page.self::$fk1_key.'/standup/',
             ['limit' => 1]);
         $data = (array) json_decode($output);
         $this->assertResponseCode(200);
@@ -87,13 +80,7 @@ class ProjectKeyword_test extends TestCase
 
     public function test_delete()
     {
-        $output = $this->request('DELETE', self::$fk1_page.self::$fk2_key.'/keyword/'.self::$fk2_key);
-        $this->assertResponseCode(200);
-    }
-
-    public function test_keyword_delete()
-    {
-        $output = $this->request('DELETE', self::$fk2_page.self::$fk2_key);
+        $output = $this->request('DELETE', self::$fk1_page.self::$fk1_key.'/standup/'.self::$key);
         $this->assertResponseCode(200);
     }
 
