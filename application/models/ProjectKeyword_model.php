@@ -17,6 +17,8 @@ class ProjectKeyword_model extends CI_Model {
     {
         //https://www.codeigniter.com/userguide3/database/query_builder.html#looking-for-similar-data
         $collection = $this->db->from('projects_keywords');
+        $collection = $collection->join('projects', 'projects.id = project_id', 'left');
+        $collection = $collection->join('keywords', 'keywords.id = keyword_id', 'left');
         if (!is_null($project_id))
             $collection = $collection->where('project_id', $project_id);
         if (!is_null($keyword_id))
@@ -32,7 +34,9 @@ class ProjectKeyword_model extends CI_Model {
     public function get($id)
     {
         $records = $this->db->from('projects_keywords')
-            ->where('id', $id)->get()
+            ->join('projects', 'projects.id = project_id', 'left')
+            ->join('keywords', 'keywords.id = keyword_id', 'left')
+            ->where('projects_keywords.id', $id)->get()
             ->result();
         if(sizeof($records) > 0)
             return $records[0];

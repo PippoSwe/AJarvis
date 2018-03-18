@@ -37,10 +37,10 @@ class ProjectKeyword_test extends TestCase
     public function test_project_post()
     {
         $output = $this->request('POST', self::$fk1_page, [
-            'name' => 'Progettone della vita']);
+            'project' => 'Progettone della vita']);
         $data = (array) json_decode($output);
         $this->assertResponseCode(200);
-        $this->assertArrayHasKey('name', $data);
+        $this->assertArrayHasKey('project', $data);
         $this->assertArrayHasKey('id', $data);
         self::$fk1_key = $data['id'];
     }

@@ -35,10 +35,10 @@ class Project_test extends TestCase
     public function test_post()
     {
         $output = $this->request('POST', self::$page, [
-            'name' => 'Progettone della vita']);
+            'project' => 'Progettone della vita']);
         $data = (array) json_decode($output);
         $this->assertResponseCode(200);
-        $this->assertArrayHasKey('name', $data);
+        $this->assertArrayHasKey('project', $data);
         $this->assertArrayHasKey('id', $data);
         self::$key = $data['id'];
     }
@@ -57,17 +57,17 @@ class Project_test extends TestCase
 		$output = $this->request('GET', self::$page.self::$key);
         $data = (array) json_decode($output);
         $this->assertResponseCode(200);
-        $this->assertArrayHasKey('name', $data);
+        $this->assertArrayHasKey('project', $data);
         $this->assertArrayHasKey('id', $data);
 	}
 
     public function test_put()
     {
         $output = $this->request('PUT', self::$page.self::$key, [
-            'name' => 'Dunno']);
+            'project' => 'Dunno']);
         $data = (array) json_decode($output);
         $this->assertResponseCode(200);
-        $this->assertArrayHasKey('name', $data);
+        $this->assertArrayHasKey('project', $data);
         $this->assertArrayHasKey('id', $data);
     }
 

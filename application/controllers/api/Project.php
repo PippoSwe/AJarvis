@@ -47,12 +47,12 @@ class Project extends CI_Controller
     private function insert() {
         // Dichiariamo i valori di default
         $data = array(
-            "name" => null
+            "project" => null
         );
 
         // Normalizzazione
-        if(!empty($this->input->post('name')))
-            $data["name"] = $this->input->post('name');
+        if(!empty($this->input->post('project')))
+            $data["project"] = $this->input->post('project');
 
         // Scrittura e gestion del risultato REST-Style
         $entry = $this->projects->insert($data);
@@ -79,12 +79,12 @@ class Project extends CI_Controller
     private function update($id) {
         // Dichiariamo i valori di default
         $data = array(
-            "name" => null
+            "project" => null
         );
 
         // Normalizzazione
-        if(!empty($this->input->input_stream('name')))
-            $data["name"] = $this->input->input_stream('name');
+        if(!empty($this->input->input_stream('project')))
+            $data["project"] = $this->input->input_stream('project');
 
         // Scrittura e gestion del risultato REST-Style
         $entry = $this->projects->update($id, $data);

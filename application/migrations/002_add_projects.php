@@ -12,7 +12,7 @@ class Migration_Add_projects extends CI_Migration {
                 'unsigned' => TRUE,
                 'auto_increment' => TRUE
             ),
-            'name' => array(
+            'project' => array(
                 'type' => 'VARCHAR',
                 'constraint' => '100',
             ),
