@@ -38,7 +38,7 @@ class ProjectStandup extends CI_Controller
         // Dichiariamo i valori di default
         $data = array(
             "project_id" => $project_id,
-            "standup" => null
+            "standup" => null,
         );
 
         // Normalizzazione
@@ -50,6 +50,14 @@ class ProjectStandup extends CI_Controller
         if($entry == null)
             show_error("Cannot insert due to service malfunctioning", 500);
 
+        // Converto i files
+        try {
+            $this->save_audio($entry->id);
+        } catch (Exception $e) {
+            show_error($e->getMessage(), 500);
+        }
+
+        // Response
         $content = array (
             'json' => json_encode($entry)
         );
@@ -68,7 +76,7 @@ class ProjectStandup extends CI_Controller
             $data["standup"] = $this->input->input_stream('standup');
 
         // Scrittura e gestion del risultato REST-Style
-        $entry = $this->projects->update($id, $data);
+        $entry = $this->standups->update($id, $data);
         if($entry == null)
             show_error("Cannot update due to service malfunctioning", 500);
 
@@ -105,6 +113,35 @@ class ProjectStandup extends CI_Controller
     private function delete($id) {
         if(!$this->standups->delete($id))
             show_error("Cannot delete due to service malfunctioning", 500);
+    }
+
+
+    private function save_audio($standup_id)
+    {
+        // Processo di upload gestito in modo non sicuro per consentire
+        // ai phpunit di funzionare e effettuare il Code Coverage
+        if(!file_exists($_FILES['file']['tmp_name']))
+            throw new Exception("File ".$_FILES['file']['tmp_name']." not uploaded");
+
+
+        if(!isset($_FILES['file']) || $_FILES['file']['error'])
+            throw new Exception("Errors in ".$_FILES['file']." upload process");
+
+        $fname     = "standup-$standup_id";
+        $path      = realpath("./application/audio_files");
+        $wav_file  = $path . '/' . $fname . ".wav";
+        $flac_file = $path . '/' . $fname . ".FLAC";
+
+        if( !rename ( $_FILES['file']['tmp_name'], $wav_file ) )
+            throw new Exception("Can't move ".$_FILES['file']['tmp_name']);
+
+        // convert wav to FLAC
+        $command = '/usr/bin/ffmpeg -i ' . $wav_file  . ' -ac 1 ' . $flac_file;
+        exec($command);
+
+        unlink( $wav_file );
+        unlink( $flac_file );
+        return TRUE;
     }
 
 

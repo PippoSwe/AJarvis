@@ -47,8 +47,20 @@ class Standup_test extends TestCase
 
     public function test_post()
     {
-        $output = $this->request('POST', self::$fk1_page.self::$fk1_key.'/standup/', [
-            'standup' => 'Standup 1']);
+        /* Necessari aggiunstamenti alla funzione save_audio()
+            per consentire il fake upload dei dati */
+        copy(realpath(dirname(__FILE__))."/fixtures/sample.wav",
+            "/var/www/html/uploads/test.wav");
+        $files = [
+            'file' => [
+                'name'     => "test.wav",
+                'type'     => 'audio/wav',
+                'tmp_name' => "/var/www/html/uploads/test.wav",
+            ],
+        ];
+        $this->request->setFiles($files);
+        $output = $this->request('POST', self::$fk1_page.self::$fk1_key.'/standup/',
+            ['standup' => 'Standup test']);
         $data = (array) json_decode($output);
         $this->assertResponseCode(200);
         $this->assertArrayHasKey('project_id', $data);
@@ -56,6 +68,36 @@ class Standup_test extends TestCase
         $this->assertArrayHasKey('end', $data);
         $this->assertArrayHasKey('id', $data);
         self::$key = $data['id'];
+    }
+
+    public function test_cant_post()
+    {
+        /* Necessari aggiunstamenti alla funzione save_audio()
+            per consentire il fake upload dei dati */
+        $files = [
+            'file' => [
+                'name'     => "test.wav",
+                'type'     => 'audio/wav',
+                'tmp_name' => "/var/www/html/uploads/test.wav",
+            ],
+        ];
+        $this->request->setFiles($files);
+        $output = $this->request('POST', self::$fk1_page.self::$fk1_key.'/standup/',
+            ['standup' => 'Standup test']);
+        $data = (array) json_decode($output);
+        $this->assertResponseCode(500);
+    }
+
+    public function test_put()
+    {
+        $output = $this->request('PUT', self::$fk1_page.self::$fk1_key.'/standup/'.self::$key,
+            ['standup' => 'Standup test update']);
+        $data = (array) json_decode($output);
+        $this->assertResponseCode(200);
+        $this->assertArrayHasKey('project_id', $data);
+        $this->assertArrayHasKey('standup', $data);
+        $this->assertArrayHasKey('end', $data);
+        $this->assertArrayHasKey('id', $data);
     }
 
     public function test_view()
