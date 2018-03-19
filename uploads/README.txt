@@ -1,0 +1,1 @@
+* Upload folder (necessaria per eseguire i tests)
