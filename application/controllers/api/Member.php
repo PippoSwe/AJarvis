@@ -121,7 +121,7 @@ class Member extends CI_Controller
 
     /**
      * @SWG\Get(
-     *     path="/api/member/{member_id}",
+     *     path="/api/member/{member_id}/",
      *     summary="View memeber",
      *     description="View all details for a member",
      *     produces={"application/json"},
@@ -151,7 +151,7 @@ class Member extends CI_Controller
 
     /**
      * @SWG\Put(
-     *     path="/api/member/{member_id}",
+     *     path="/api/member/{member_id}/",
      *     summary="Update member",
      *     description="Update member attributes",
      *     produces={"application/json"},
@@ -208,7 +208,7 @@ class Member extends CI_Controller
 
     /**
      * @SWG\Delete(
-     *     path="/api/member/{member_id}",
+     *     path="/api/member/{member_id}/",
      *     summary="Delete member",
      *     description="Delete member",
      *     produces={"application/json"},

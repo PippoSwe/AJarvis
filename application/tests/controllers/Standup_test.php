@@ -59,8 +59,7 @@ class Standup_test extends TestCase
             ],
         ];
         $this->request->setFiles($files);
-        $output = $this->request('POST', self::$fk1_page.self::$fk1_key.'/standup/',
-            ['standup' => 'Standup test']);
+        $output = $this->request('POST', self::$fk1_page.self::$fk1_key.'/standup/');
         $data = (array) json_decode($output);
         $this->assertResponseCode(200);
         $this->assertArrayHasKey('project_id', $data);

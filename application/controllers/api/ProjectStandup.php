@@ -34,16 +34,31 @@ class ProjectStandup extends CI_Controller
         $this->view($id);
     }
 
+    /**
+     * @SWG\Post(
+     *     path="/api/project/{project_id}/standup/",
+     *     summary="Register standup",
+     *     description="Register a standup in a project",
+     *     produces={"application/json"},
+     *     tags={"project standup"},
+     *     @SWG\Parameter(
+     *         name="project_id",
+     *         in="path",
+     *         description="Project id",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *     @SWG\Response(
+     *         response=200,
+     *         description="Success",
+     *     )
+     * )
+     */
     private function insert($project_id) {
         // Dichiariamo i valori di default
         $data = array(
             "project_id" => $project_id,
-            "standup" => null,
         );
-
-        // Normalizzazione
-        if(!empty($this->input->post('standup')))
-            $data["standup"] = $this->input->post('standup');
 
         // Scrittura e gestion del risultato REST-Style
         $entry = $this->standups->insert($data);
@@ -58,13 +73,45 @@ class ProjectStandup extends CI_Controller
         }
 
         // Response
-        $content = array (
-            'json' => json_encode($entry)
-        );
-
-        $this->load->view('standup/insert',$content);
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($entry));
     }
 
+    /**
+     * @SWG\Put(
+     *     path="/api/project/{project_id}/standup/{standup_id}/",
+     *     summary="Register standup",
+     *     description="Register a standup in a project",
+     *     produces={"application/json"},
+     *     tags={"project standup"},
+     *     @SWG\Parameter(
+     *         name="project_id",
+     *         in="path",
+     *         description="Project id",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="standup_id",
+     *         in="path",
+     *         description="Standup id",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="standup",
+     *         in="query",
+     *         description="Standup description",
+     *         required=true,
+     *         type="string",
+     *     ),
+     *     @SWG\Response(
+     *         response=200,
+     *         description="Success",
+     *     )
+     * )
+     */
     private function update($id) {
         // Dichiariamo i valori di default
         $data = array(
@@ -80,36 +127,119 @@ class ProjectStandup extends CI_Controller
         if($entry == null)
             show_error("Cannot update due to service malfunctioning", 500);
 
-        $content = array (
-            'json' => json_encode($entry)
-        );
-
-        $this->load->view('standup/update',$content);
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($entry));
     }
 
+    /**
+     * @SWG\Get(
+     *     path="/api/project/{project_id}/standup/",
+     *     summary="List standups for a project",
+     *     description="List all standups registered in this projects",
+     *     produces={"application/json"},
+     *     tags={"project standup"},
+     *     @SWG\Parameter(
+     *         name="project_id",
+     *         in="path",
+     *         description="Project id",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="limit",
+     *         in="query",
+     *         description="Retrieve {limit} elements",
+     *         type="integer",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="offset",
+     *         in="query",
+     *         description="Pagination index start",
+     *         type="string",
+     *     ),
+     *     @SWG\Response(
+     *         response=200,
+     *         description="Success",
+     *     )
+     * )
+     */
     private function find($project_id) {
         $entry = $this->standups->find(
             $project_id,
             $limit = $this->input->get('limit'),
             $offset = $this->input->get('offset')
         );
-        $content = array (
-            'json' => json_encode($entry)
-        );
-        $this->load->view('standup/list',$content);
+
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($entry));
     }
 
+    /**
+     * @SWG\Get(
+     *     path="/api/project/{project_id}/standup/{standup_id}/",
+     *     summary="View standup",
+     *     description="View standup attributes",
+     *     produces={"application/json"},
+     *     tags={"project standup"},
+     *     @SWG\Parameter(
+     *         name="project_id",
+     *         in="path",
+     *         description="Project id",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="standup_id",
+     *         in="path",
+     *         description="Keyword id",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *     @SWG\Response(
+     *         response=200,
+     *         description="Success",
+     *     )
+     * )
+     */
     private function view($id) {
         $entry = $this->standups->get($id);
         if($entry == null)
             show_404();
-        $content = array (
-            'json' => json_encode($entry)
-        );
-        $this->load->view('standup/view',$content);
+
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($entry));
     }
 
-
+    /**
+     * @SWG\Delete(
+     *     path="/api/project/{project_id}/standup/{standup_id}/",
+     *     summary="Delete standup",
+     *     description="Delete standup",
+     *     produces={"application/json"},
+     *     tags={"project standup"},
+     *     @SWG\Parameter(
+     *         name="project_id",
+     *         in="path",
+     *         description="Project id",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="standup_id",
+     *         in="path",
+     *         description="Keyword id",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *     @SWG\Response(
+     *         response=200,
+     *         description="Success",
+     *     )
+     * )
+     */
     private function delete($id) {
         if(!$this->standups->delete($id))
             show_error("Cannot delete due to service malfunctioning", 500);

@@ -30,6 +30,33 @@ class ProjectKeyword extends CI_Controller
         $this->view($project_id, $keyword_id);
     }
 
+    /**
+     * @SWG\Post(
+     *     path="/api/project/{project_id}/keyword/",
+     *     summary="Associate keyword to project",
+     *     description="Associate keyword to this project",
+     *     produces={"application/json"},
+     *     tags={"project keyword"},
+     *     @SWG\Parameter(
+     *         name="project_id",
+     *         in="path",
+     *         description="Project id",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="keyword_id",
+     *         in="query",
+     *         description="Keyword id",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *     @SWG\Response(
+     *         response=200,
+     *         description="Success",
+     *     )
+     * )
+     */
     private function insert($project_id) {
         // Dichiariamo i valori di default
         $data = array(
@@ -46,13 +73,43 @@ class ProjectKeyword extends CI_Controller
         if($entry == null)
             show_error("Cannot insert due to service malfunctioning", 500);
 
-        $content = array (
-            'json' => json_encode($entry)
-        );
-
-        $this->load->view('project_keyword/insert',$content);
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($entry));
     }
 
+    /**
+     * @SWG\Get(
+     *     path="/api/project/{project_id}/keyword/",
+     *     summary="List keywords for a project",
+     *     description="List all keywords associated to this projects",
+     *     produces={"application/json"},
+     *     tags={"project keyword"},
+     *     @SWG\Parameter(
+     *         name="project_id",
+     *         in="path",
+     *         description="Project id",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="limit",
+     *         in="query",
+     *         description="Retrieve {limit} elements",
+     *         type="integer",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="offset",
+     *         in="query",
+     *         description="Pagination index start",
+     *         type="string",
+     *     ),
+     *     @SWG\Response(
+     *         response=200,
+     *         description="Success",
+     *     )
+     * )
+     */
     private function find($project_id) {
         $entry = $this->projects_keywords->find(
             $project_id,
@@ -60,12 +117,39 @@ class ProjectKeyword extends CI_Controller
             $limit = $this->input->get('limit'),
             $offset = $this->input->get('offset')
         );
-        $content = array (
-            'json' => json_encode($entry)
-        );
-        $this->load->view('project_keyword/list',$content);
+
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($entry));
     }
 
+    /**
+     * @SWG\Get(
+     *     path="/api/project/{project_id}/keyword/{keyword_id}/",
+     *     summary="View project and keyword",
+     *     description="View project and keyword attributes",
+     *     produces={"application/json"},
+     *     tags={"project keyword"},
+     *     @SWG\Parameter(
+     *         name="project_id",
+     *         in="path",
+     *         description="Project id",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="keyword_id",
+     *         in="path",
+     *         description="Keyword id",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *     @SWG\Response(
+     *         response=200,
+     *         description="Success",
+     *     )
+     * )
+     */
     private function view($project_id, $keyword_id) {
         $records = $this->projects_keywords->find(
             $project_id,
@@ -78,13 +162,39 @@ class ProjectKeyword extends CI_Controller
             $entry = $records[0];
         if($entry == null)
             show_404();
-        $content = array (
-            'json' => json_encode($entry)
-        );
-        $this->load->view('project_keyword/view',$content);
+
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($entry));
     }
 
-
+    /**
+     * @SWG\Delete(
+     *     path="/api/project/{project_id}/keyword/{keyword_id}/",
+     *     summary="Delete project",
+     *     description="Delete project",
+     *     produces={"application/json"},
+     *     tags={"project keyword"},
+     *     @SWG\Parameter(
+     *         name="project_id",
+     *         in="path",
+     *         description="Project id",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="keyword_id",
+     *         in="path",
+     *         description="Keyword id",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *     @SWG\Response(
+     *         response=200,
+     *         description="Success",
+     *     )
+     * )
+     */
     private function delete($project_id, $keyword_id) {
         if(!$this->projects_keywords->delete($project_id, $keyword_id))
             show_error("Cannot delete due to service malfunctioning", 500);

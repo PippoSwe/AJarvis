@@ -110,7 +110,7 @@ class Keyword extends CI_Controller
 
     /**
      * @SWG\Get(
-     *     path="/api/keyword/{keyword_id}",
+     *     path="/api/keyword/{keyword_id}/",
      *     summary="View keyword",
      *     description="View all details for a keyword",
      *     produces={"application/json"},
@@ -139,7 +139,7 @@ class Keyword extends CI_Controller
 
     /**
      * @SWG\Put(
-     *     path="/api/keyword/{keyword_id}",
+     *     path="/api/keyword/{keyword_id}/",
      *     summary="Update keyword",
      *     description="Update keyword attributes",
      *     produces={"application/json"},
@@ -186,7 +186,7 @@ class Keyword extends CI_Controller
 
     /**
      * @SWG\Delete(
-     *     path="/api/keyword/{keyword_id}",
+     *     path="/api/keyword/{keyword_id}/",
      *     summary="Delete keyword",
      *     description="Delete keyword",
      *     produces={"application/json"},
