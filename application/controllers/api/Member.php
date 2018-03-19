@@ -33,17 +33,69 @@ class Member extends CI_Controller
         $this->view($id);
     }
 
+    /**
+     * @SWG\Get(
+     *     path="/api/member/",
+     *     summary="List members",
+     *     description="List all members",
+     *     produces={"application/json"},
+     *     tags={"member"},
+     *     @SWG\Parameter(
+     *         name="limit",
+     *         in="query",
+     *         description="Retrieve {limit} elements",
+     *         type="integer",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="offset",
+     *         in="query",
+     *         description="Pagination index start",
+     *         type="string",
+     *     ),
+     *     @SWG\Response(
+     *         response=200,
+     *         description="Success",
+     *     )
+     * )
+     */
     private function find() {
         $entry = $this->members->find(
             $limit = $this->input->get('limit'),
             $offset = $this->input->get('offset')
         );
-        $content = array (
-            'json' => json_encode($entry)
-        );
-        $this->load->view('member/list',$content);
+
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($entry));
     }
 
+    /**
+     * @SWG\Post(
+     *     path="/api/member/",
+     *     summary="Create member",
+     *     description="Create new member",
+     *     produces={"application/json"},
+     *     tags={"member"},
+     *     @SWG\Parameter(
+     *         name="firstname",
+     *         in="query",
+     *         description="Member firstname",
+     *         required=true,
+     *         type="string",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="lastname",
+     *         in="query",
+     *         description="Member lastname",
+     *         required=true,
+     *         type="string",
+     *     ),
+     *     @SWG\Response(
+     *         response=200,
+     *         description="Success",
+     *     )
+     * )
+     */
     private function insert() {
         // Dichiariamo i valori di default
         $data = array(
@@ -62,23 +114,75 @@ class Member extends CI_Controller
         if($entry == null)
             show_error("Cannot insert due to service malfunctioning", 500);
 
-        $content = array (
-            'json' => json_encode($entry)
-        );
-
-        $this->load->view('member/insert',$content);
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($entry));
     }
 
+    /**
+     * @SWG\Get(
+     *     path="/api/member/{member_id}",
+     *     summary="View memeber",
+     *     description="View all details for a member",
+     *     produces={"application/json"},
+     *     tags={"member"},
+     *     @SWG\Parameter(
+     *         name="member_id",
+     *         in="path",
+     *         description="Member id",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *     @SWG\Response(
+     *         response=200,
+     *         description="Success",
+     *     )
+     * )
+     */
     private function view($id) {
         $entry = $this->members->get($id);
         if($entry == null)
             show_404();
-        $content = array (
-            'json' => json_encode($entry)
-        );
-        $this->load->view('member/view',$content);
+
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($entry));
     }
 
+    /**
+     * @SWG\Put(
+     *     path="/api/member/{member_id}",
+     *     summary="Update member",
+     *     description="Update member attributes",
+     *     produces={"application/json"},
+     *     tags={"member"},
+     *     @SWG\Parameter(
+     *         name="member_id",
+     *         in="path",
+     *         description="Member id",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="firstname",
+     *         in="query",
+     *         description="Member firstname",
+     *         required=true,
+     *         type="string",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="lastname",
+     *         in="query",
+     *         description="Member lastname",
+     *         required=true,
+     *         type="string",
+     *     ),
+     *     @SWG\Response(
+     *         response=200,
+     *         description="Success",
+     *     )
+     * )
+     */
     private function update($id) {
         // Dichiariamo i valori di default
         $data = array(
@@ -97,13 +201,31 @@ class Member extends CI_Controller
         if($entry == null)
             show_error("Cannot update due to service malfunctioning", 500);
 
-        $content = array (
-            'json' => json_encode($entry)
-        );
-
-        $this->load->view('member/update',$content);
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($entry));
     }
 
+    /**
+     * @SWG\Delete(
+     *     path="/api/member/{member_id}",
+     *     summary="Delete member",
+     *     description="Delete member",
+     *     produces={"application/json"},
+     *     tags={"member"},
+     *     @SWG\Parameter(
+     *         name="member_id",
+     *         in="path",
+     *         description="Member id",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *     @SWG\Response(
+     *         response=200,
+     *         description="Success",
+     *     )
+     * )
+     */
     private function delete($id) {
         if(!$this->members->delete($id))
             show_error("Cannot delete due to service malfunctioning", 500);

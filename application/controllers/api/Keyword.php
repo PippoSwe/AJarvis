@@ -33,17 +33,61 @@ class Keyword extends CI_Controller
         $this->view($id);
     }
 
+    /**
+     * @SWG\Get(
+     *     path="/api/keyword/",
+     *     summary="List keywords",
+     *     description="List all keywords",
+     *     produces={"application/json"},
+     *     tags={"keyword"},
+     *     @SWG\Parameter(
+     *         name="limit",
+     *         in="query",
+     *         description="Retrieve {limit} elements",
+     *         type="integer",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="offset",
+     *         in="query",
+     *         description="Pagination index start",
+     *         type="string",
+     *     ),
+     *     @SWG\Response(
+     *         response=200,
+     *         description="Success",
+     *     )
+     * )
+     */
     private function find() {
         $entry = $this->keywords->find(
             $limit = $this->input->get('limit'),
             $offset = $this->input->get('offset')
         );
-        $content = array (
-            'json' => json_encode($entry)
-        );
-        $this->load->view('keyword/list',$content);
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($entry));
     }
 
+    /**
+     * @SWG\Post(
+     *     path="/api/keyword/",
+     *     summary="Create keyword",
+     *     description="Create new keyword",
+     *     produces={"application/json"},
+     *     tags={"keyword"},
+     *     @SWG\Parameter(
+     *         name="keyword",
+     *         in="query",
+     *         description="Keyword",
+     *         required=true,
+     *         type="string",
+     *     ),
+     *     @SWG\Response(
+     *         response=200,
+     *         description="Success",
+     *     )
+     * )
+     */
     private function insert() {
         // Dichiariamo i valori di default
         $data = array(
@@ -59,23 +103,67 @@ class Keyword extends CI_Controller
         if($entry == null)
             show_error("Cannot insert due to service malfunctioning", 500);
 
-        $content = array (
-            'json' => json_encode($entry)
-        );
-
-        $this->load->view('keyword/insert',$content);
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($entry));
     }
 
+    /**
+     * @SWG\Get(
+     *     path="/api/keyword/{keyword_id}",
+     *     summary="View keyword",
+     *     description="View all details for a keyword",
+     *     produces={"application/json"},
+     *     tags={"keyword"},
+     *     @SWG\Parameter(
+     *         name="keyword_id",
+     *         in="path",
+     *         description="Keyword id",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *     @SWG\Response(
+     *         response=200,
+     *         description="Success",
+     *     )
+     * )
+     */
     private function view($id) {
         $entry = $this->keywords->get($id);
         if($entry == null)
             show_404();
-        $content = array (
-            'json' => json_encode($entry)
-        );
-        $this->load->view('keyword/view',$content);
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($entry));
     }
 
+    /**
+     * @SWG\Put(
+     *     path="/api/keyword/{keyword_id}",
+     *     summary="Update keyword",
+     *     description="Update keyword attributes",
+     *     produces={"application/json"},
+     *     tags={"keyword"},
+     *     @SWG\Parameter(
+     *         name="keyword_id",
+     *         in="path",
+     *         description="Keyword id",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="keyword",
+     *         in="query",
+     *         description="Project name",
+     *         required=true,
+     *         type="string",
+     *     ),
+     *     @SWG\Response(
+     *         response=200,
+     *         description="Success",
+     *     )
+     * )
+     */
     private function update($id) {
         // Dichiariamo i valori di default
         $data = array(
@@ -91,13 +179,31 @@ class Keyword extends CI_Controller
         if($entry == null)
             show_error("Cannot update due to service malfunctioning", 500);
 
-        $content = array (
-            'json' => json_encode($entry)
-        );
-
-        $this->load->view('keyword/update',$content);
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($entry));
     }
 
+    /**
+     * @SWG\Delete(
+     *     path="/api/keyword/{keyword_id}",
+     *     summary="Delete keyword",
+     *     description="Delete keyword",
+     *     produces={"application/json"},
+     *     tags={"keyword"},
+     *     @SWG\Parameter(
+     *         name="keyword_id",
+     *         in="path",
+     *         description="Keyword id",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *     @SWG\Response(
+     *         response=200,
+     *         description="Success",
+     *     )
+     * )
+     */
     private function delete($id) {
         if(!$this->keywords->delete($id))
             show_error("Cannot delete due to service malfunctioning", 500);
