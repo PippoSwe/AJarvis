@@ -1,7 +1,7 @@
 <?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
 /**
- * Created by PhpStorm.
- * User: mfasolo
- * Date: 20/03/18
- * Time: 08:51
+ * Core Config File
  */
+$config['audio_bucket_name'] = "ajarvis-recorder";

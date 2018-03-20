@@ -36,20 +36,20 @@ class Keyword extends CI_Controller
     /**
      * @SWG\Get(
      *     path="keyword/",
-     *     summary="List keywords",
-     *     description="List all keywords",
+     *     summary="Elenco keyword",
+     *     description="Elenco delle keyword disponibili",
      *     produces={"application/json"},
      *     tags={"keyword"},
      *     @SWG\Parameter(
      *         name="limit",
      *         in="query",
-     *         description="Retrieve {limit} elements",
+     *         description="Recupera {limit} elementi",
      *         type="integer",
      *     ),
      *     @SWG\Parameter(
      *         name="offset",
      *         in="query",
-     *         description="Pagination index start",
+     *         description="Inizio paginazione",
      *         type="string",
      *     ),
      *     @SWG\Response(
@@ -75,8 +75,8 @@ class Keyword extends CI_Controller
     /**
      * @SWG\Post(
      *     path="keyword/",
-     *     summary="Create keyword",
-     *     description="Create new keyword",
+     *     summary="Aggiungi keyword",
+     *     description="Aggiungi una nuova keyword",
      *     produces={"application/json"},
      *     tags={"keyword"},
      *     @SWG\Parameter(
@@ -119,8 +119,8 @@ class Keyword extends CI_Controller
     /**
      * @SWG\Get(
      *     path="keyword/{keyword_id}/",
-     *     summary="View keyword",
-     *     description="View all details for a keyword",
+     *     summary="Visualizza keyword",
+     *     description="Visualizza tutti i dettagli di una keyword",
      *     produces={"application/json"},
      *     tags={"keyword"},
      *     @SWG\Parameter(
@@ -156,8 +156,8 @@ class Keyword extends CI_Controller
     /**
      * @SWG\Put(
      *     path="keyword/{keyword_id}/",
-     *     summary="Update keyword",
-     *     description="Update keyword attributes",
+     *     summary="Aggiorna keyword",
+     *     description="Aggiorna gli attributi della keyword",
      *     produces={"application/json"},
      *     tags={"keyword"},
      *     @SWG\Parameter(
@@ -170,7 +170,7 @@ class Keyword extends CI_Controller
      *     @SWG\Parameter(
      *         name="keyword",
      *         in="query",
-     *         description="Project name",
+     *         description="Nome progetto",
      *         required=true,
      *         type="string",
      *     ),
@@ -207,8 +207,8 @@ class Keyword extends CI_Controller
     /**
      * @SWG\Delete(
      *     path="keyword/{keyword_id}/",
-     *     summary="Delete keyword",
-     *     description="Delete keyword",
+     *     summary="Cancella keyword",
+     *     description="Cancella la keyword",
      *     produces={"application/json"},
      *     tags={"keyword"},
      *     @SWG\Parameter(

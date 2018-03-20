@@ -54,20 +54,20 @@ class Project extends CI_Controller
     /**
      * @SWG\Get(
      *     path="project/",
-     *     summary="List projects",
-     *     description="List all projects",
+     *     summary="Elenco dei progetti",
+     *     description="Elenca tutti i progetti dell'azienda",
      *     produces={"application/json"},
      *     tags={"project"},
      *     @SWG\Parameter(
      *         name="limit",
      *         in="query",
-     *         description="Retrieve {limit} elements",
+     *         description="Recupera {limit} elementi",
      *         type="integer",
      *     ),
      *     @SWG\Parameter(
      *         name="offset",
      *         in="query",
-     *         description="Pagination index start",
+     *         description="Inizio paginazione",
      *         type="string",
      *     ),
      *     @SWG\Response(
@@ -94,14 +94,14 @@ class Project extends CI_Controller
     /**
      * @SWG\Post(
      *     path="project/",
-     *     summary="Create project",
-     *     description="Create new project",
+     *     summary="Aggiungi progetto",
+     *     description="Aggiungi un nuovo progetto",
      *     produces={"application/json"},
      *     tags={"project"},
      *     @SWG\Parameter(
      *         name="project",
      *         in="query",
-     *         description="Project name",
+     *         description="Nome progetto",
      *         required=true,
      *         type="string",
      *     ),
@@ -138,8 +138,8 @@ class Project extends CI_Controller
     /**
      * @SWG\Get(
      *     path="project/{project_id}",
-     *     summary="View project",
-     *     description="View all details for a project",
+     *     summary="Visualizza progetto",
+     *     description="Visualizza tutti gli attributi di un progetto",
      *     produces={"application/json"},
      *     tags={"project"},
      *     @SWG\Parameter(
@@ -176,8 +176,8 @@ class Project extends CI_Controller
     /**
      * @SWG\Put(
      *     path="project/{project_id}",
-     *     summary="Update project",
-     *     description="Update project attributes",
+     *     summary="Aggiorna progetto",
+     *     description="Aggiorna tutti gli attributi di un progetto",
      *     produces={"application/json"},
      *     tags={"project"},
      *     @SWG\Parameter(
@@ -190,7 +190,7 @@ class Project extends CI_Controller
      *     @SWG\Parameter(
      *         name="project",
      *         in="query",
-     *         description="Project name",
+     *         description="Nome progetto",
      *         required=true,
      *         type="string",
      *     ),
@@ -227,8 +227,8 @@ class Project extends CI_Controller
     /**
      * @SWG\Delete(
      *     path="project/{project_id}",
-     *     summary="Delete project",
-     *     description="Delete project",
+     *     summary="Cancella progetto",
+     *     description="Cancella un progetto dell'azienda",
      *     produces={"application/json"},
      *     tags={"project"},
      *     @SWG\Parameter(

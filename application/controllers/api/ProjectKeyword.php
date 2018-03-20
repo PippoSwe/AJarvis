@@ -33,8 +33,8 @@ class ProjectKeyword extends CI_Controller
     /**
      * @SWG\Post(
      *     path="project/{project_id}/keyword/",
-     *     summary="Associate keyword to project",
-     *     description="Associate keyword to this project",
+     *     summary="Associa parola chiave e progetto",
+     *     description="Associa una parola chiave al progetto",
      *     produces={"application/json"},
      *     tags={"project keyword"},
      *     @SWG\Parameter(
@@ -85,8 +85,8 @@ class ProjectKeyword extends CI_Controller
     /**
      * @SWG\Get(
      *     path="project/{project_id}/keyword/",
-     *     summary="List keywords for a project",
-     *     description="List all keywords associated to this projects",
+     *     summary="Elenco parole chiave per progetto",
+     *     description="Elenca le parole chiave definite per un progetto",
      *     produces={"application/json"},
      *     tags={"project keyword"},
      *     @SWG\Parameter(
@@ -99,13 +99,13 @@ class ProjectKeyword extends CI_Controller
      *     @SWG\Parameter(
      *         name="limit",
      *         in="query",
-     *         description="Retrieve {limit} elements",
+     *         description="Recupera {limit} elementi",
      *         type="integer",
      *     ),
      *     @SWG\Parameter(
      *         name="offset",
      *         in="query",
-     *         description="Pagination index start",
+     *         description="Inizio paginazione",
      *         type="string",
      *     ),
      *     @SWG\Response(
@@ -134,8 +134,8 @@ class ProjectKeyword extends CI_Controller
     /**
      * @SWG\Get(
      *     path="project/{project_id}/keyword/{keyword_id}/",
-     *     summary="View project and keyword",
-     *     description="View project and keyword attributes",
+     *     summary="Visualizza progetti e parola chiave",
+     *     description="Visualizza tutti gli attributi di parola chiave e progetto",
      *     produces={"application/json"},
      *     tags={"project keyword"},
      *     @SWG\Parameter(
@@ -187,8 +187,8 @@ class ProjectKeyword extends CI_Controller
     /**
      * @SWG\Delete(
      *     path="project/{project_id}/keyword/{keyword_id}/",
-     *     summary="Delete project",
-     *     description="Delete project",
+     *     summary="Dissocia parola chiave dal progetto",
+     *     description="Dissocia parola chiave dal progetto",
      *     produces={"application/json"},
      *     tags={"project keyword"},
      *     @SWG\Parameter(

@@ -36,20 +36,20 @@ class Member extends CI_Controller
     /**
      * @SWG\Get(
      *     path="member/",
-     *     summary="List members",
-     *     description="List all members",
+     *     summary="Elenco dei membri",
+     *     description="Elenca tutti i membri dell'azienda",
      *     produces={"application/json"},
      *     tags={"member"},
      *     @SWG\Parameter(
      *         name="limit",
      *         in="query",
-     *         description="Retrieve {limit} elements",
+     *         description="Recupera {limit} elementi",
      *         type="integer",
      *     ),
      *     @SWG\Parameter(
      *         name="offset",
      *         in="query",
-     *         description="Pagination index start",
+     *         description="Inizio paginazione",
      *         type="string",
      *     ),
      *     @SWG\Response(
@@ -76,21 +76,21 @@ class Member extends CI_Controller
     /**
      * @SWG\Post(
      *     path="member/",
-     *     summary="Create member",
-     *     description="Create new member",
+     *     summary="Aggiungi membro",
+     *     description="Aggiungi un nuovo membro",
      *     produces={"application/json"},
      *     tags={"member"},
      *     @SWG\Parameter(
      *         name="firstname",
      *         in="query",
-     *         description="Member firstname",
+     *         description="Nome",
      *         required=true,
      *         type="string",
      *     ),
      *     @SWG\Parameter(
      *         name="lastname",
      *         in="query",
-     *         description="Member lastname",
+     *         description="Cognome",
      *         required=true,
      *         type="string",
      *     ),
@@ -130,8 +130,8 @@ class Member extends CI_Controller
     /**
      * @SWG\Get(
      *     path="member/{member_id}/",
-     *     summary="View memeber",
-     *     description="View all details for a member",
+     *     summary="Visualizza membro",
+     *     description="Visualizza tutti gli attributi di un membro",
      *     produces={"application/json"},
      *     tags={"member"},
      *     @SWG\Parameter(
@@ -168,8 +168,8 @@ class Member extends CI_Controller
     /**
      * @SWG\Put(
      *     path="member/{member_id}/",
-     *     summary="Update member",
-     *     description="Update member attributes",
+     *     summary="Aggiorna membro",
+     *     description="Aggiorna tutti gli attributi di un membro",
      *     produces={"application/json"},
      *     tags={"member"},
      *     @SWG\Parameter(
@@ -182,14 +182,14 @@ class Member extends CI_Controller
      *     @SWG\Parameter(
      *         name="firstname",
      *         in="query",
-     *         description="Member firstname",
+     *         description="Nome",
      *         required=true,
      *         type="string",
      *     ),
      *     @SWG\Parameter(
      *         name="lastname",
      *         in="query",
-     *         description="Member lastname",
+     *         description="Cognome",
      *         required=true,
      *         type="string",
      *     ),
@@ -229,8 +229,8 @@ class Member extends CI_Controller
     /**
      * @SWG\Delete(
      *     path="member/{member_id}/",
-     *     summary="Delete member",
-     *     description="Delete member",
+     *     summary="Cancella membro",
+     *     description="Cancella un membro dell'azienda",
      *     produces={"application/json"},
      *     tags={"member"},
      *     @SWG\Parameter(

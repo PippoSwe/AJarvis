@@ -33,8 +33,8 @@ class ProjectMember extends CI_Controller
     /**
      * @SWG\Post(
      *     path="project/{project_id}/member/",
-     *     summary="Associate member to project",
-     *     description="Associate member to this project",
+     *     summary="Associa membro al progetto",
+     *     description="Associa Un nuovo membro a questo progetto",
      *     produces={"application/json"},
      *     tags={"project member"},
      *     @SWG\Parameter(
@@ -85,8 +85,8 @@ class ProjectMember extends CI_Controller
     /**
      * @SWG\Get(
      *     path="project/{project_id}/member/",
-     *     summary="List members for a project",
-     *     description="List all members associated to this projects",
+     *     summary="Elenca i membri del progetto",
+     *     description="Elenca i membri di questo progetto",
      *     produces={"application/json"},
      *     tags={"project member"},
      *     @SWG\Parameter(
@@ -99,13 +99,13 @@ class ProjectMember extends CI_Controller
      *     @SWG\Parameter(
      *         name="limit",
      *         in="query",
-     *         description="Retrieve {limit} elements",
+     *         description="Recupera {limit} elementi",
      *         type="integer",
      *     ),
      *     @SWG\Parameter(
      *         name="offset",
      *         in="query",
-     *         description="Pagination index start",
+     *         description="Inizio paginazione",
      *         type="string",
      *     ),
      *     @SWG\Response(
@@ -134,8 +134,8 @@ class ProjectMember extends CI_Controller
     /**
      * @SWG\Get(
      *     path="project/{project_id}/member/{member_id}/",
-     *     summary="View project and member",
-     *     description="View project and member attributes",
+     *     summary="Visualizza progetto e membro",
+     *     description="Visualizza tutti gli attributi di membro e progetto",
      *     produces={"application/json"},
      *     tags={"project member"},
      *     @SWG\Parameter(
@@ -187,8 +187,8 @@ class ProjectMember extends CI_Controller
     /**
      * @SWG\Delete(
      *     path="project/{project_id}/member/{member_id}/",
-     *     summary="Delete member",
-     *     description="Delete member",
+     *     summary="Dissocia membro dal progetto",
+     *     description="Dissocia membro dal progetto",
      *     produces={"application/json"},
      *     tags={"project member"},
      *     @SWG\Parameter(

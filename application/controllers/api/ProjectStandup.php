@@ -38,8 +38,8 @@ class ProjectStandup extends CI_Controller
     /**
      * @SWG\Post(
      *     path="project/{project_id}/standup/",
-     *     summary="Register standup",
-     *     description="Register a standup in a project",
+     *     summary="Registra standup",
+     *     description="Registra gli attributi di uno standup ed archivia l'audio in Google Storage ",
      *     produces={"application/json"},
      *     tags={"project standup"},
      *     @SWG\Parameter(
@@ -90,8 +90,8 @@ class ProjectStandup extends CI_Controller
     /**
      * @SWG\Put(
      *     path="project/{project_id}/standup/{standup_id}/",
-     *     summary="Register standup",
-     *     description="Register a standup in a project",
+     *     summary="Aggiorna standup",
+     *     description="Aggiorna attributi standup",
      *     produces={"application/json"},
      *     tags={"project standup"},
      *     @SWG\Parameter(
@@ -111,7 +111,7 @@ class ProjectStandup extends CI_Controller
      *     @SWG\Parameter(
      *         name="standup",
      *         in="query",
-     *         description="Standup description",
+     *         description="Descrizione dello standup",
      *         required=true,
      *         type="string",
      *     ),
@@ -148,8 +148,8 @@ class ProjectStandup extends CI_Controller
     /**
      * @SWG\Get(
      *     path="project/{project_id}/standup/",
-     *     summary="List standups for a project",
-     *     description="List all standups registered in this projects",
+     *     summary="Elenca gli standup",
+     *     description="Elenca gli standup per un progetto",
      *     produces={"application/json"},
      *     tags={"project standup"},
      *     @SWG\Parameter(
@@ -162,13 +162,13 @@ class ProjectStandup extends CI_Controller
      *     @SWG\Parameter(
      *         name="limit",
      *         in="query",
-     *         description="Retrieve {limit} elements",
+     *         description="Recupera {limit} elementi",
      *         type="integer",
      *     ),
      *     @SWG\Parameter(
      *         name="offset",
      *         in="query",
-     *         description="Pagination index start",
+     *         description="Inizio paginazione",
      *         type="string",
      *     ),
      *     @SWG\Response(
@@ -200,8 +200,8 @@ class ProjectStandup extends CI_Controller
     /**
      * @SWG\Get(
      *     path="project/{project_id}/standup/{standup_id}/",
-     *     summary="View standup",
-     *     description="View standup attributes",
+     *     summary="Visualizza standup",
+     *     description="Visualizza tutti gli attributi dello standup",
      *     produces={"application/json"},
      *     tags={"project standup"},
      *     @SWG\Parameter(
@@ -241,8 +241,8 @@ class ProjectStandup extends CI_Controller
     /**
      * @SWG\Delete(
      *     path="project/{project_id}/standup/{standup_id}/",
-     *     summary="Delete standup",
-     *     description="Delete standup",
+     *     summary="Cancella standup",
+     *     description="Cancella standup",
      *     produces={"application/json"},
      *     tags={"project standup"},
      *     @SWG\Parameter(
