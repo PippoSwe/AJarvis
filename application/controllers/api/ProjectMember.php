@@ -32,7 +32,7 @@ class ProjectMember extends CI_Controller
 
     /**
      * @SWG\Post(
-     *     path="/api/project/{project_id}/member/",
+     *     path="project/{project_id}/member/",
      *     summary="Associate member to project",
      *     description="Associate member to this project",
      *     produces={"application/json"},
@@ -54,6 +54,10 @@ class ProjectMember extends CI_Controller
      *     @SWG\Response(
      *         response=200,
      *         description="Success",
+     *     ),
+     *     @SWG\Response(
+     *         response="500",
+     *         description="Internal Server Error"
      *     )
      * )
      */
@@ -80,7 +84,7 @@ class ProjectMember extends CI_Controller
 
     /**
      * @SWG\Get(
-     *     path="/api/project/{project_id}/member/",
+     *     path="project/{project_id}/member/",
      *     summary="List members for a project",
      *     description="List all members associated to this projects",
      *     produces={"application/json"},
@@ -107,6 +111,10 @@ class ProjectMember extends CI_Controller
      *     @SWG\Response(
      *         response=200,
      *         description="Success",
+     *     ),
+     *     @SWG\Response(
+     *         response="500",
+     *         description="Internal Server Error"
      *     )
      * )
      */
@@ -125,7 +133,7 @@ class ProjectMember extends CI_Controller
 
     /**
      * @SWG\Get(
-     *     path="/api/project/{project_id}/member/{member_id}/",
+     *     path="project/{project_id}/member/{member_id}/",
      *     summary="View project and member",
      *     description="View project and member attributes",
      *     produces={"application/json"},
@@ -147,6 +155,14 @@ class ProjectMember extends CI_Controller
      *     @SWG\Response(
      *         response=200,
      *         description="Success",
+     *     ),
+     *     @SWG\Response(
+     *         response="404",
+     *         description="Page Not Found"
+     *     ),
+     *     @SWG\Response(
+     *         response="500",
+     *         description="Internal Server Error"
      *     )
      * )
      */
@@ -170,7 +186,7 @@ class ProjectMember extends CI_Controller
 
     /**
      * @SWG\Delete(
-     *     path="/api/project/{project_id}/member/{member_id}/",
+     *     path="project/{project_id}/member/{member_id}/",
      *     summary="Delete member",
      *     description="Delete member",
      *     produces={"application/json"},
@@ -192,6 +208,10 @@ class ProjectMember extends CI_Controller
      *     @SWG\Response(
      *         response=200,
      *         description="Success",
+     *     ),
+     *     @SWG\Response(
+     *         response="500",
+     *         description="Internal Server Error"
      *     )
      * )
      */

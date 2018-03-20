@@ -12,7 +12,8 @@ class Swagger extends CI_Controller
     }
 
     public function index() {
-        $swagger = \Swagger\scan(realpath(dirname(__FILE__)));
+        $path = realpath(dirname(__FILE__));
+        $swagger = \Swagger\scan($path);
         $this->output
             ->set_header('Access-Control-Allow-Origin: *')
             ->set_header('Access-Control-Allow-Methods: GET, POST, DELETE, PUT')

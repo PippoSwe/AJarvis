@@ -35,7 +35,7 @@ class Member extends CI_Controller
 
     /**
      * @SWG\Get(
-     *     path="/api/member/",
+     *     path="member/",
      *     summary="List members",
      *     description="List all members",
      *     produces={"application/json"},
@@ -55,6 +55,10 @@ class Member extends CI_Controller
      *     @SWG\Response(
      *         response=200,
      *         description="Success",
+     *     ),
+     *     @SWG\Response(
+     *         response="500",
+     *         description="Internal Server Error"
      *     )
      * )
      */
@@ -71,7 +75,7 @@ class Member extends CI_Controller
 
     /**
      * @SWG\Post(
-     *     path="/api/member/",
+     *     path="member/",
      *     summary="Create member",
      *     description="Create new member",
      *     produces={"application/json"},
@@ -93,6 +97,10 @@ class Member extends CI_Controller
      *     @SWG\Response(
      *         response=200,
      *         description="Success",
+     *     ),
+     *     @SWG\Response(
+     *         response="500",
+     *         description="Internal Server Error"
      *     )
      * )
      */
@@ -121,7 +129,7 @@ class Member extends CI_Controller
 
     /**
      * @SWG\Get(
-     *     path="/api/member/{member_id}/",
+     *     path="member/{member_id}/",
      *     summary="View memeber",
      *     description="View all details for a member",
      *     produces={"application/json"},
@@ -136,6 +144,14 @@ class Member extends CI_Controller
      *     @SWG\Response(
      *         response=200,
      *         description="Success",
+     *     ),
+     *     @SWG\Response(
+     *         response="404",
+     *         description="Page Not Found"
+     *     ),
+     *     @SWG\Response(
+     *         response="500",
+     *         description="Internal Server Error"
      *     )
      * )
      */
@@ -151,7 +167,7 @@ class Member extends CI_Controller
 
     /**
      * @SWG\Put(
-     *     path="/api/member/{member_id}/",
+     *     path="member/{member_id}/",
      *     summary="Update member",
      *     description="Update member attributes",
      *     produces={"application/json"},
@@ -180,6 +196,10 @@ class Member extends CI_Controller
      *     @SWG\Response(
      *         response=200,
      *         description="Success",
+     *     ),
+     *     @SWG\Response(
+     *         response="500",
+     *         description="Internal Server Error"
      *     )
      * )
      */
@@ -208,7 +228,7 @@ class Member extends CI_Controller
 
     /**
      * @SWG\Delete(
-     *     path="/api/member/{member_id}/",
+     *     path="member/{member_id}/",
      *     summary="Delete member",
      *     description="Delete member",
      *     produces={"application/json"},
@@ -223,6 +243,10 @@ class Member extends CI_Controller
      *     @SWG\Response(
      *         response=200,
      *         description="Success",
+     *     ),
+     *     @SWG\Response(
+     *         response="500",
+     *         description="Internal Server Error"
      *     )
      * )
      */

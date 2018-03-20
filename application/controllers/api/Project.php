@@ -3,8 +3,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Project extends CI_Controller
 {
+
     /**
-     * @SWG\Info(title="AJarvis API", version="0.1")
+     * @SWG\Swagger(
+     *     basePath="/api/",
+     *     host="localhost:8443",
+     *     schemes={"http", "https"},
+     *     produces={"application/json"},
+     *     consumes={"application/json"},
+     *     @SWG\Info(
+     *         version="0.1",
+     *         title="AJarvis API",
+     *         description="Documentazione delle API HTTP/HTTPS esposte dal microservizio AJarvis",
+     *         termsOfService="http://swagger.io/terms/",
+     *         @SWG\Contact(name="Pippo.swe API Team"),
+     *         @SWG\License(name="GPL 3")
+     *     )
+     * )
      */
 
     function __construct()
@@ -38,7 +53,7 @@ class Project extends CI_Controller
 
     /**
      * @SWG\Get(
-     *     path="/api/project/",
+     *     path="project/",
      *     summary="List projects",
      *     description="List all projects",
      *     produces={"application/json"},
@@ -58,6 +73,10 @@ class Project extends CI_Controller
      *     @SWG\Response(
      *         response=200,
      *         description="Success",
+     *     ),
+     *     @SWG\Response(
+     *         response="500",
+     *         description="Internal Server Error"
      *     )
      * )
      */
@@ -74,7 +93,7 @@ class Project extends CI_Controller
 
     /**
      * @SWG\Post(
-     *     path="/api/project/",
+     *     path="project/",
      *     summary="Create project",
      *     description="Create new project",
      *     produces={"application/json"},
@@ -89,6 +108,10 @@ class Project extends CI_Controller
      *     @SWG\Response(
      *         response=200,
      *         description="Success",
+     *     ),
+     *     @SWG\Response(
+     *         response="500",
+     *         description="Internal Server Error"
      *     )
      * )
      */
@@ -114,7 +137,7 @@ class Project extends CI_Controller
 
     /**
      * @SWG\Get(
-     *     path="/api/project/{project_id}",
+     *     path="project/{project_id}",
      *     summary="View project",
      *     description="View all details for a project",
      *     produces={"application/json"},
@@ -129,6 +152,14 @@ class Project extends CI_Controller
      *     @SWG\Response(
      *         response=200,
      *         description="Success",
+     *     ),
+     *     @SWG\Response(
+     *         response="404",
+     *         description="Page Not Found"
+     *     ),
+     *     @SWG\Response(
+     *         response="500",
+     *         description="Internal Server Error"
      *     )
      * )
      */
@@ -144,7 +175,7 @@ class Project extends CI_Controller
 
     /**
      * @SWG\Put(
-     *     path="/api/project/{project_id}",
+     *     path="project/{project_id}",
      *     summary="Update project",
      *     description="Update project attributes",
      *     produces={"application/json"},
@@ -166,6 +197,10 @@ class Project extends CI_Controller
      *     @SWG\Response(
      *         response=200,
      *         description="Success",
+     *     ),
+     *     @SWG\Response(
+     *         response="500",
+     *         description="Internal Server Error"
      *     )
      * )
      */
@@ -191,7 +226,7 @@ class Project extends CI_Controller
 
     /**
      * @SWG\Delete(
-     *     path="/api/project/{project_id}",
+     *     path="project/{project_id}",
      *     summary="Delete project",
      *     description="Delete project",
      *     produces={"application/json"},
@@ -206,6 +241,10 @@ class Project extends CI_Controller
      *     @SWG\Response(
      *         response=200,
      *         description="Success",
+     *     ),
+     *     @SWG\Response(
+     *         response="500",
+     *         description="Internal Server Error"
      *     )
      * )
      */

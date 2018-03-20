@@ -35,7 +35,7 @@ class Keyword extends CI_Controller
 
     /**
      * @SWG\Get(
-     *     path="/api/keyword/",
+     *     path="keyword/",
      *     summary="List keywords",
      *     description="List all keywords",
      *     produces={"application/json"},
@@ -55,6 +55,10 @@ class Keyword extends CI_Controller
      *     @SWG\Response(
      *         response=200,
      *         description="Success",
+     *     ),
+     *     @SWG\Response(
+     *         response="500",
+     *         description="Internal Server Error"
      *     )
      * )
      */
@@ -70,7 +74,7 @@ class Keyword extends CI_Controller
 
     /**
      * @SWG\Post(
-     *     path="/api/keyword/",
+     *     path="keyword/",
      *     summary="Create keyword",
      *     description="Create new keyword",
      *     produces={"application/json"},
@@ -85,6 +89,10 @@ class Keyword extends CI_Controller
      *     @SWG\Response(
      *         response=200,
      *         description="Success",
+     *     ),
+     *     @SWG\Response(
+     *         response="500",
+     *         description="Internal Server Error"
      *     )
      * )
      */
@@ -110,7 +118,7 @@ class Keyword extends CI_Controller
 
     /**
      * @SWG\Get(
-     *     path="/api/keyword/{keyword_id}/",
+     *     path="keyword/{keyword_id}/",
      *     summary="View keyword",
      *     description="View all details for a keyword",
      *     produces={"application/json"},
@@ -125,6 +133,14 @@ class Keyword extends CI_Controller
      *     @SWG\Response(
      *         response=200,
      *         description="Success",
+     *     ),
+     *     @SWG\Response(
+     *         response="404",
+     *         description="Page Not Found"
+     *     ),
+     *     @SWG\Response(
+     *         response="500",
+     *         description="Internal Server Error"
      *     )
      * )
      */
@@ -139,7 +155,7 @@ class Keyword extends CI_Controller
 
     /**
      * @SWG\Put(
-     *     path="/api/keyword/{keyword_id}/",
+     *     path="keyword/{keyword_id}/",
      *     summary="Update keyword",
      *     description="Update keyword attributes",
      *     produces={"application/json"},
@@ -161,6 +177,10 @@ class Keyword extends CI_Controller
      *     @SWG\Response(
      *         response=200,
      *         description="Success",
+     *     ),
+     *     @SWG\Response(
+     *         response="500",
+     *         description="Internal Server Error"
      *     )
      * )
      */
@@ -186,7 +206,7 @@ class Keyword extends CI_Controller
 
     /**
      * @SWG\Delete(
-     *     path="/api/keyword/{keyword_id}/",
+     *     path="keyword/{keyword_id}/",
      *     summary="Delete keyword",
      *     description="Delete keyword",
      *     produces={"application/json"},
@@ -201,6 +221,10 @@ class Keyword extends CI_Controller
      *     @SWG\Response(
      *         response=200,
      *         description="Success",
+     *     ),
+     *     @SWG\Response(
+     *         response="500",
+     *         description="Internal Server Error"
      *     )
      * )
      */

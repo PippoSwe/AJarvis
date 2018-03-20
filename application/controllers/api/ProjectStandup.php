@@ -36,7 +36,7 @@ class ProjectStandup extends CI_Controller
 
     /**
      * @SWG\Post(
-     *     path="/api/project/{project_id}/standup/",
+     *     path="project/{project_id}/standup/",
      *     summary="Register standup",
      *     description="Register a standup in a project",
      *     produces={"application/json"},
@@ -51,6 +51,10 @@ class ProjectStandup extends CI_Controller
      *     @SWG\Response(
      *         response=200,
      *         description="Success",
+     *     ),
+     *     @SWG\Response(
+     *         response="500",
+     *         description="Internal Server Error"
      *     )
      * )
      */
@@ -66,8 +70,16 @@ class ProjectStandup extends CI_Controller
             show_error("Cannot insert due to service malfunctioning", 500);
 
         // Converto i files
+        if(!file_exists($_FILES['file']['tmp_name']))
+            show_error("File ".$_FILES['file']['tmp_name']." not uploaded", 500);
+
+        if(!isset($_FILES['file']) || $_FILES['file']['error'])
+            show_error("Errors in ".$_FILES['file']." upload process", 500);
+
+        // Conversione ffmpeg + invio a Google Storage
         try {
-            $this->save_audio($entry->id);
+            $fname = "standup-".$entry->id;
+            $this->save_audio($fname);
         } catch (Exception $e) {
             show_error($e->getMessage(), 500);
         }
@@ -80,7 +92,7 @@ class ProjectStandup extends CI_Controller
 
     /**
      * @SWG\Put(
-     *     path="/api/project/{project_id}/standup/{standup_id}/",
+     *     path="project/{project_id}/standup/{standup_id}/",
      *     summary="Register standup",
      *     description="Register a standup in a project",
      *     produces={"application/json"},
@@ -109,6 +121,10 @@ class ProjectStandup extends CI_Controller
      *     @SWG\Response(
      *         response=200,
      *         description="Success",
+     *     ),
+     *     @SWG\Response(
+     *         response="500",
+     *         description="Internal Server Error"
      *     )
      * )
      */
@@ -134,7 +150,7 @@ class ProjectStandup extends CI_Controller
 
     /**
      * @SWG\Get(
-     *     path="/api/project/{project_id}/standup/",
+     *     path="project/{project_id}/standup/",
      *     summary="List standups for a project",
      *     description="List all standups registered in this projects",
      *     produces={"application/json"},
@@ -161,6 +177,14 @@ class ProjectStandup extends CI_Controller
      *     @SWG\Response(
      *         response=200,
      *         description="Success",
+     *     ),
+     *     @SWG\Response(
+     *         response="404",
+     *         description="Page Not Found"
+     *     ),
+     *     @SWG\Response(
+     *         response="500",
+     *         description="Internal Server Error"
      *     )
      * )
      */
@@ -178,7 +202,7 @@ class ProjectStandup extends CI_Controller
 
     /**
      * @SWG\Get(
-     *     path="/api/project/{project_id}/standup/{standup_id}/",
+     *     path="project/{project_id}/standup/{standup_id}/",
      *     summary="View standup",
      *     description="View standup attributes",
      *     produces={"application/json"},
@@ -200,6 +224,10 @@ class ProjectStandup extends CI_Controller
      *     @SWG\Response(
      *         response=200,
      *         description="Success",
+     *     ),
+     *     @SWG\Response(
+     *         response="500",
+     *         description="Internal Server Error"
      *     )
      * )
      */
@@ -215,7 +243,7 @@ class ProjectStandup extends CI_Controller
 
     /**
      * @SWG\Delete(
-     *     path="/api/project/{project_id}/standup/{standup_id}/",
+     *     path="project/{project_id}/standup/{standup_id}/",
      *     summary="Delete standup",
      *     description="Delete standup",
      *     produces={"application/json"},
@@ -237,6 +265,10 @@ class ProjectStandup extends CI_Controller
      *     @SWG\Response(
      *         response=200,
      *         description="Success",
+     *     ),
+     *     @SWG\Response(
+     *         response="500",
+     *         description="Internal Server Error"
      *     )
      * )
      */
@@ -246,18 +278,8 @@ class ProjectStandup extends CI_Controller
     }
 
 
-    private function save_audio($standup_id)
+    private function save_audio($fname)
     {
-        // Processo di upload gestito in modo non sicuro per consentire
-        // ai phpunit di funzionare e effettuare il Code Coverage
-        if(!file_exists($_FILES['file']['tmp_name']))
-            throw new Exception("File ".$_FILES['file']['tmp_name']." not uploaded");
-
-
-        if(!isset($_FILES['file']) || $_FILES['file']['error'])
-            throw new Exception("Errors in ".$_FILES['file']." upload process");
-
-        $fname     = "standup-$standup_id";
         $path      = realpath("./application/audio_files");
         $wav_file  = $path . '/' . $fname . ".wav";
         $flac_file = $path . '/' . $fname . ".FLAC";
