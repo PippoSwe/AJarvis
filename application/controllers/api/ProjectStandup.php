@@ -39,7 +39,7 @@ class ProjectStandup extends CI_Controller
      * @SWG\Post(
      *     path="project/{project_id}/standup/",
      *     summary="Registra standup",
-     *     description="Registra gli attributi di uno standup ed archivia l'audio in Google Storage ",
+     *     description="Registra gli attributi e l'audio di uno standup ed archivia l'audio in Google Storage ",
      *     produces={"application/json"},
      *     tags={"project standup"},
      *     @SWG\Parameter(
@@ -48,6 +48,14 @@ class ProjectStandup extends CI_Controller
      *         description="Project id",
      *         required=true,
      *         type="integer",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="file",
+     *         in="query",
+     *         description="Audio in formato WAV",
+     *         required=true,
+     *         type="string",
+     *         format="binary",
      *     ),
      *     @SWG\Response(
      *         response=200,
