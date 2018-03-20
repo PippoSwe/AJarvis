@@ -13,6 +13,7 @@
 			<directory suffix=".php">../controllers</directory>
             <exclude>
                 <file>../controllers/Migrate.php</file>
+				<file>../controllers/api/Swagger.php</file>
             </exclude>
 			<directory suffix=".php">../models</directory>
 			<directory suffix=".php">../views</directory>
@@ -21,6 +22,9 @@
 			</exclude>
 			<directory suffix=".php">../libraries</directory>
 			<directory suffix=".php">../helpers</directory>
+			<exclude>
+				<directory suffix=".php">../helpers/google_storage_helper.php</directory>
+			</exclude>
 			<directory suffix=".php">../hooks</directory>
 		</whitelist>
 	</filter>

@@ -9,6 +9,7 @@ class ProjectStandup extends CI_Controller
         //http://www.restapitutorial.com/lessons/httpmethods.html
         parent::__construct();
         $this->load->model('Standup_model', 'standups', TRUE);
+        $this->load->helper(array('google_storage_helper'));
     }
 
     /* Keywords */
@@ -77,12 +78,8 @@ class ProjectStandup extends CI_Controller
             show_error("Errors in ".$_FILES['file']." upload process", 500);
 
         // Conversione ffmpeg + invio a Google Storage
-        try {
-            $fname = "standup-".$entry->id;
-            $this->save_audio($fname);
-        } catch (Exception $e) {
-            show_error($e->getMessage(), 500);
-        }
+        $fname = "standup-".$entry->id;
+        $this->save_audio($fname);
 
         // Response
         $this->output
@@ -284,14 +281,13 @@ class ProjectStandup extends CI_Controller
         $wav_file  = $path . '/' . $fname . ".wav";
         $flac_file = $path . '/' . $fname . ".FLAC";
 
-        if( !rename ( $_FILES['file']['tmp_name'], $wav_file ) )
-            throw new Exception("Can't move ".$_FILES['file']['tmp_name']);
-
+        rename ( $_FILES['file']['tmp_name'], $wav_file );
         // convert wav to FLAC
         $command = '/usr/bin/ffmpeg -i ' . $wav_file  . ' -ac 1 ' . $flac_file;
         exec($command);
 
         unlink( $wav_file );
+        upload_file( $flac_file, $fname . ".FLAC" );
         unlink( $flac_file );
         return TRUE;
     }
