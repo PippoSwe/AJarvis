@@ -1,0 +1,50 @@
+version: '2'
+
+services:
+  swagger:
+    image: swaggerapi/swagger-ui
+    restart: always
+    environment:
+      - VIRTUAL_HOST=ajarvis-swagger
+    container_name: ajarvis-swagger
+    environment:
+      - API_URL=https://localhost:8443/api/swagger/
+    ports:
+      - 9080:8080
+    depends_on:
+      - web
+    links:
+      - web
+  web:
+    #build: .
+    image: mryattle/ajarvis-rest
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./logs/apache2:/var/log/apache2
+      - ./html:/var/www/html
+    environment:
+      - VIRTUAL_HOST=ajarvis-rest
+    container_name: ajarvis-rest
+    ports:
+      - 8080:80
+      - 8443:443
+    depends_on:
+      - dbms
+    links:
+      - dbms
+    #network_mode: host
+  dbms:
+    image: mysql:5.5
+    restart: always
+    container_name: ajarvis-mysql
+    volumes:
+      - ./dbms/etc:/etc/mysql/conf.d
+      - ./dbms/data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=123pipposwe
+      - MYSQL_DATABASE=ajarvis
+      - MYSQL_USER=ajarvis
+      - MYSQL_PASSWORD=ajarvis
+    ports:
+      - 3307:3306

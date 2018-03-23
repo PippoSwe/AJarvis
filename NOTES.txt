@@ -1,0 +1,35 @@
+Info:
+PHP 5.6.33-0+deb8u1 (cli) (built: Jan  5 2018 15:46:26)
+
+Docker collegarsi alla shell dell'istanza:
+docker exec -i -t ajarvis-rest /bin/bash
+
+Docker collegarsi all'istanza per vedere i log:
+docker attach --no-stdin --sig-proxy=false ajarvis-rest
+
+Aggiornamento con composer:
+docker exec -i -t ajarvis-rest /bin/bash
+composer update
+
+Installazione test framework:
+docker exec -i -t ajarvis-rest /bin/bash
+composer require kenjis/ci-phpunit-test --dev
+php vendor/kenjis/ci-phpunit-test/install.php
+
+Lancio dei tests:
+cd application/tests/
+/var/www/html/vendor/bin/phpunit
+
+Docker push immagine:
+docker build --no-cache -t ajarvis-rest .
+docker tag ajarvis-rest:latest mryattle/ajarvis-rest
+docker push mryattle/ajarvis-rest:latest
+
+Linux:
+sudo docker-compose up
+
+OSX:
+Cambiare con SIP (Sierra, High-Sierra) Preferenze Docker in:
+{
+  "log-driver" : "json-file"
+}

@@ -1,0 +1,5 @@
+.idea
+dbms
+logs
+*.DS_Store
+*.lock
