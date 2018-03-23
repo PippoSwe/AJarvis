@@ -1,4 +1,0 @@
-.DS_Store
-*.lock
-vendor
-application/tests/build
