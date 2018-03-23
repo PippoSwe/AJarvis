@@ -42,7 +42,7 @@ Di seguito riportiamo il software necessario al processo di sviluppo del prodott
 Per sviluppare il prodotto è sufficiente ottenere i file che consentono l'installazione e la configurazione del sistema.
 
 ```bash
-$ git clone https://github.com/Giglium/Test_Docker.git ajarvis-dev
+$ git clone https://github.com/PippoSwe/AJarvis.git ajarvis-dev
 $ cd ajarvis-dev
 $ docker-compose up
 ```
