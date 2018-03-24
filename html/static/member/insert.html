@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Modifica progetto | AJarvis</title>
+        <title>Inserisci membro | AJarvis</title>
         <!-- Bootstap CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <!--  JS Popper jQuery -->
-        <script
-            src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
         <!--ICONS-->
@@ -46,7 +45,7 @@
         <div class="container mt-lg-5">
             <form id="insert">
                 <div class="form-group row">
-                    <label for="firsname" class="col-sm-2 col-form-label">Firstname</label>
+                    <label for="firstname" class="col-sm-2 col-form-label">Firstname</label>
                     <div class="col-xs-2">
                         <input type="text" class="form-control" name="firstname" id="firstname" placeholder="Firstname">
                     </div>
@@ -70,7 +69,7 @@
                 $("#save").click(function (event) {
                     event.preventDefault();
                     $.ajax({
-                        url: "../api/member/",
+                        url: "../../api/member/",
                         type: "POST",
                         data: $("#insert").serialize(),
                         success: function(data) {

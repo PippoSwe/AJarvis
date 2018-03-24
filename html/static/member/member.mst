@@ -1,0 +1,11 @@
+{{#items}}
+        <div id="{{id}}"  class="row mt-lg-5">
+            <div class="col">
+                {{firstname}} {{lastname}}
+            </div>
+            <div class="col">
+                <a class="btn btn-success" href="update.html?id={{id}}"><span class="ion-ios-compose-outline mr-2"></span>Modifica</a>
+                <a id="{{id}}" class="btn btn-danger"><span class="ion-ios-trash-outline mr-2"></span>Elimina</a>
+            </div>
+        </div>
+{{/items}}
