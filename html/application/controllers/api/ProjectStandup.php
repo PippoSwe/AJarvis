@@ -68,6 +68,9 @@ class ProjectStandup extends CI_Controller
      * )
      */
     private function insert($project_id) {
+        if(!array_key_exists('file', $_FILES))
+            show_error("File is missing", 412);
+
         // Dichiariamo i valori di default
         $data = array(
             "project_id" => $project_id,
