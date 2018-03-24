@@ -1,0 +1,54 @@
+language: php
+
+php:
+    - 5.6
+
+os:
+    - linux
+
+sudo: true
+
+dist: trusty
+
+cache:
+  timeout: 500
+  directories:
+  - vendor
+  - html/vendor
+  
+git:
+  depth: false
+  submodules: false
+
+services:
+  - docker
+
+env:
+  - DOCKER_COMPOSE_VERSION=1.19.0
+
+before_install:
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+
+install:
+  - docker-compose up -d
+  - docker exec -i ajarvis-rest composer update
+  - composer require codacy/coverage --dev
+
+script:
+  - docker exec -i ajarvis-rest curl -s "http://127.0.0.1/migrate/" > /dev/null
+  - docker exec -i ajarvis-rest /var/www/html/vendor/bin/phpunit  --configuration /var/www/html/application/tests/phpunit.xml --coverage-clover /var/www/html/codacy
+
+after_script:
+  - php vendor/bin/codacycoverage clover html/codacy
+
+branches:
+  only:
+    master
+
+notifications:
+    email:
+      on_success: always
+      on_failure: always

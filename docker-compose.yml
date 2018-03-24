@@ -17,7 +17,7 @@ services:
       - web
   web:
     #build: .
-    image: mryattle/ajarvis-rest
+    image: pipposwe/ajarvis-rest
     restart: always
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
