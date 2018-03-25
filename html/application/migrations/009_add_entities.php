@@ -27,9 +27,9 @@ class Migration_Add_entities extends CI_Migration {
             ),
             'salience' => array(
                 'type' => 'DECIMAL',
-                'constraint' => '100,2',
+                'constraint' => '10,2',
                 'unsigned' => TRUE,
-                'default' => '0,0',
+                'default' => '0.0',
             ),
         ));
         $this->dbforge->add_key('id', TRUE);
