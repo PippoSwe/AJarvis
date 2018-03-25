@@ -13,6 +13,56 @@ class Standup extends CI_Controller
         $this->load->model('Entity_model', 'entities', TRUE);
     }
 
+
+    public function pie($id) {
+        /*
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($standup_entity));
+        */
+    }
+
+
+    public function flow($id) {
+        /*
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($standup_entity));
+        */
+    }
+
+    public function entities($id) {
+        /*
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($standup_entity));
+        */
+    }
+
+    public function sentences($id) {
+        /*
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($standup_entity));
+        */
+    }
+
+    public function sentences_good($id) {
+        /*
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($standup_entity));
+        */
+    }
+
+    public function sentences_bad($id) {
+        /*
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($standup_entity));
+        */
+    }
+
     public function target($id) {
         $this->nlp($id);
     }

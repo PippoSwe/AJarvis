@@ -95,6 +95,26 @@ class Nlp_test extends TestCase
 
     }
 
+    public function test_pie()
+    {
+        /*
+        [{"label":"Belusconiani", "value":0.8},
+        {"label":"Grillini", "value":1.0}]
+        */
+        $output = $this->request('GET', self::$page.self::$key.'/pie/');
+        $data = (array) json_decode($output);
+        $this->assertResponseCode(200);
+        $this->assertArrayHasKey('label', $data[0]);
+    }
+
+    public function test_flow()
+    {
+        $output = $this->request('GET', self::$page.self::$key.'/pie/');
+        $data = (array) json_decode($output);
+        $this->assertResponseCode(200);
+        // ?
+    }
+
     public function test_delete()
     {
         $output = $this->request('DELETE', self::$fk1_page.self::$fk1_key.'/standup/'.self::$key);

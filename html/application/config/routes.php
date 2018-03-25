@@ -79,5 +79,11 @@ $route['api/project/(:num)/standup/(:num)'] = 'api/ProjectStandup/target/$1/$2';
 
 # Standup NLP
 $route['api/standup/(:num)/nlp'] = 'api/Standup/target/$1';
+$route['api/standup/(:num)/pie'] = 'api/Standup/pie/$1';
+$route['api/standup/(:num)/flow'] = 'api/Standup/flow/$1';
+$route['api/standup/(:num)/entities'] = 'api/Standup/entities/$1';
+$route['api/standup/(:num)/sentences'] = 'api/Standup/sentences/$1';
+$route['api/standup/(:num)/sentences/good'] = 'api/Standup/sentences_good/$1';
+$route['api/standup/(:num)/sentences/bad'] = 'api/Standup/sentences_bad/$1';
 
 
