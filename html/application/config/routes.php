@@ -78,6 +78,6 @@ $route['api/project/(:num)/standup'] = 'api/ProjectStandup/index/$1';
 $route['api/project/(:num)/standup/(:num)'] = 'api/ProjectStandup/target/$1/$2';
 
 # Standup NLP
-$route['api/standup/(:num)/nlp'] = 'api/ProjectStandup/nlp/$1';
+$route['api/standup/(:num)/nlp'] = 'api/Standup/target/$1';
 
 
