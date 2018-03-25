@@ -61,6 +61,11 @@ class ProjectStandup extends CI_Controller
      *         response=200,
      *         description="Success",
      *     ),
+    ,
+     *     @SWG\Response(
+     *         response="412",
+     *         description="Precondition Failed"
+     *     )
      *     @SWG\Response(
      *         response="500",
      *         description="Internal Server Error"
