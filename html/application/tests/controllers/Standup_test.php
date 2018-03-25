@@ -64,6 +64,8 @@ class Standup_test extends TestCase
         $this->assertResponseCode(200);
         $this->assertArrayHasKey('project_id', $data);
         $this->assertArrayHasKey('standup', $data);
+        $this->assertArrayHasKey('magnitude', $data);
+        $this->assertArrayHasKey('score', $data);
         $this->assertArrayHasKey('end', $data);
         $this->assertArrayHasKey('id', $data);
         self::$key = $data['id'];
@@ -95,6 +97,8 @@ class Standup_test extends TestCase
         $this->assertResponseCode(200);
         $this->assertArrayHasKey('project_id', $data);
         $this->assertArrayHasKey('standup', $data);
+        $this->assertArrayHasKey('magnitude', $data);
+        $this->assertArrayHasKey('score', $data);
         $this->assertArrayHasKey('end', $data);
         $this->assertArrayHasKey('id', $data);
     }
@@ -106,8 +110,33 @@ class Standup_test extends TestCase
         $this->assertResponseCode(200);
         $this->assertArrayHasKey('project_id', $data);
         $this->assertArrayHasKey('standup', $data);
+        $this->assertArrayHasKey('magnitude', $data);
+        $this->assertArrayHasKey('score', $data);
         $this->assertArrayHasKey('end', $data);
         $this->assertArrayHasKey('id', $data);
+    }
+
+    public function test_analysis() {
+
+        // invio per analisi nlp
+        $filename = realpath(dirname(__FILE__))."/fixtures/nlp.json";
+        $handle = fopen($filename, "rb");
+        $contents = fread($handle, filesize($filename));
+        fclose($handle);
+
+        $output = $this->request('POST', '/api/standup/'.self::$key.'/nlp/',
+            json_encode(json_decode($contents)));
+        $data = (array) json_decode($output);
+        $this->assertResponseCode(200);
+        $this->assertArrayHasKey('project_id', $data);
+        $this->assertArrayHasKey('standup', $data);
+        $this->assertArrayHasKey('magnitude', $data);
+        $this->assertArrayHasKey('score', $data);
+        $this->assertArrayHasKey('end', $data);
+        $this->assertArrayHasKey('id', $data);
+        $this->assertArrayHasKey('sentence_count', $data);
+        $this->assertArrayHasKey('entities_count', $data);
+
     }
 
     public function test_index()
@@ -129,6 +158,6 @@ class Standup_test extends TestCase
     {
         $output = $this->request('DELETE', self::$fk1_page.self::$fk1_key);
         $this->assertResponseCode(200);
-    }	
+    }
 
 }

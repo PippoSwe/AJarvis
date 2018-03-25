@@ -27,7 +27,7 @@ class Migration_Add_entities extends CI_Migration {
             ),
             'salience' => array(
                 'type' => 'DECIMAL',
-                'constraint' => '10,2',
+                'constraint' => '10,8',
                 'unsigned' => TRUE,
                 'default' => '0.0',
             ),

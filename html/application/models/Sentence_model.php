@@ -1,14 +1,13 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Standup_model extends CI_Model {
+class Sentence_model extends CI_Model {
 
     public $id;
-    public $project_id;
-    public $standup;
+    public $standup_id;
+    public $sentence;
     public $score;
     public $magnitude;
-    public $end;
 
     function __construct()
     {
@@ -16,14 +15,14 @@ class Standup_model extends CI_Model {
         parent::__construct();
     }
 
-    public function find($project_id = null, $limit = null, $offset = 0)
+    public function find($standup_id = null, $limit = null, $offset = 0)
     {
         //https://www.codeigniter.com/userguide3/database/query_builder.html#looking-for-similar-data
-        $collection = $this->db->select('standups.id, project_id, project, standup, score, magnitude, end')
-            ->from('standups');
-        $collection = $collection->join('projects', 'projects.id = project_id', 'left');
-        if (!is_null($project_id))
-            $collection = $collection->where('project_id', $project_id);
+        $collection = $this->db->select('sentences.id, standup_id, sentence, sentences.score, sentences.magnitude')
+            ->from('sentences');
+        $collection = $collection->join('standups', 'standups.id = standup_id', 'left');
+        if (!is_null($standup_id))
+            $collection = $collection->where('standup_id', $standup_id);
         if (!is_null($limit))
             $collection = $collection->limit($limit, $offset);
         $result = $collection
@@ -34,10 +33,10 @@ class Standup_model extends CI_Model {
 
     public function get($id)
     {
-        $records = $this->db->select('standups.id, project_id, project, standup, score, magnitude, end')
-            ->from('standups')
-            ->join('projects', 'projects.id = project_id', 'left')
-            ->where('standups.id', $id)->get()
+        $records = $this->db->select('sentences.id, standup_id, standups.standup, sentence, sentences.score, sentences.magnitude')
+            ->from('sentences')
+            ->join('standups', 'standups.id = standup_id', 'left')
+            ->where('sentences.id', $id)->get()
             ->result();
         if(sizeof($records) > 0)
             return $records[0];
@@ -47,23 +46,25 @@ class Standup_model extends CI_Model {
     public function insert($data)
     {
         $this->db->set($data);
-        $this->db->insert('standups');
+        $this->db->insert('sentences');
         return $this->get($this->db->insert_id());
     }
 
+    /*
     public function update($id, $data)
     {
         $this->db->set($data);
         $this->db->where('id', $id);
-        $this->db->update('standups');
+        $this->db->update('sentences');
         return $this->get($id);
     }
 
     public function delete($id)
     {
         $this->db->where('id', $id);
-        $this->db->delete('standups');
+        $this->db->delete('sentences');
         return TRUE;
     }
+    */
 
 }
