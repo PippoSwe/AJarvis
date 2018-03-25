@@ -30,7 +30,7 @@ class Migration_Add_sentences extends CI_Migration {
             ),
             'magnitude' => array(
                 'type' => 'DECIMAL',
-                'constraint' => '100,2',
+                'constraint' => '10,2',
                 'unsigned' => TRUE,
                 'null' => TRUE,
             ),
