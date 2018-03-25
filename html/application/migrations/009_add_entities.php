@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Migration_Add_standups extends CI_Migration {
+class Migration_Add_entities extends CI_Migration {
 
     public function up()
     {
@@ -12,37 +12,33 @@ class Migration_Add_standups extends CI_Migration {
                 'unsigned' => TRUE,
                 'auto_increment' => TRUE
             ),
-            'project_id' => array(
+            'standup_id' => array(
                 'type' => 'INT',
                 'constraint' => 5,
                 'unsigned' => TRUE,
             ),
-            'standup' => array(
+            'name' => array(
                 'type' => 'VARCHAR',
                 'constraint' => '100',
-                'null' => TRUE,
             ),
-            'score' => array(
-                'type' => 'DECIMAL',
-                'constraint' => '3,2',
-                'unsigned' => FALSE,
-                'null' => TRUE,
+            'type' => array(
+                'type' => 'VARCHAR',
+                'constraint' => '25',
             ),
-            'magnitude' => array(
+            'salience' => array(
                 'type' => 'DECIMAL',
-                'constraint' => '10,2',
+                'constraint' => '100,2',
                 'unsigned' => TRUE,
-                'null' => TRUE,
+                'default' => '0,0',
             ),
         ));
         $this->dbforge->add_key('id', TRUE);
-        $this->dbforge->add_field("`end` TIMESTAMP DEFAULT CURRENT_TIMESTAMP");
-        $this->dbforge->add_field('CONSTRAINT FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE');
-        $this->dbforge->create_table('standups');
+        $this->dbforge->add_field('CONSTRAINT FOREIGN KEY (standup_id) REFERENCES standups(id) ON DELETE CASCADE');
+        $this->dbforge->create_table('entities');
     }
 
     public function down()
     {
-        $this->dbforge->drop_table('standups');
+        $this->dbforge->drop_table('entities');
     }
 }
