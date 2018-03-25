@@ -1,0 +1,10 @@
+{{#items}}
+        <div id="{{id}}"  class="row mt-lg-5">
+            <div class="col">
+                {{keyword}}
+            </div>
+            <div class="col">
+                <a id="{{id}}" class="btn btn-danger"><span class="ion-ios-trash-outline mr-2"></span>Elimina</a>
+            </div>
+        </div>
+{{/items}}

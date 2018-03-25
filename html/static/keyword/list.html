@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="it">
+<html>
     <head>
-        <title>Inserisci progetto | AJarvis</title>
+        <title>Progetti | AJarvis</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
         <!-- Bootstap CSS -->
@@ -9,33 +9,33 @@
 
         <!--ICONS-->
         <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+
         <!--  JS Popper jQuery -->
         <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+        <script src="/assets/js/gui/mustache.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     </head>
-
     <body class="bg-light form-group">
         <!-- Nav With Logo -->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+            <span class="navbar-toggler-icon"></span>
             </button>
             <a class="navbar-brand" href="#">AJarvis</a>
             <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
                 <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.html">Registrazione <span class="sr-only">(current)</span></a>
-                    </li>
+                    <a class="nav-link" href="index.html">Registrazione</a>
                     <li class="nav-item">
                         <a class="nav-link" href="dashboard.html">Dashboard</a>
                     </li>
-                    <li class="nav-item dropdown active">
-                        <a class="nav-link dropdown-toggle" data-toggle="dropdown">Pannello di Controllo</a>
+                    <li class="nav-item dropdown">
+
+                        <a class="nav-link dropdown-toggle active" data-toggle="dropdown" href="#">Pannello di Controllo <span class="sr-only">(current)</a>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="list.html">Progetti</a>
+                            <a class="dropdown-item" href="../project/list.html">Progetti <span class="sr-only">(current)</a>
                             <a class="dropdown-item" href="../member/list.html">Membri</a>
-                            <a class="dropdown-item" href="../keyword/list.html">Keywords</a>
+                            <a class="dropdown-item" href="#">Keywords</a>
                         </div>
                     </li>
                     <li class="nav-item">
@@ -44,30 +44,43 @@
                 </ul>
             </div>
         </nav>
-
-        <!-- Form Create Project -->
+        <!-- Managing projects -->
+        <div class="container mt-lg-5" id="list"> &nbsp </div>
         <div class="container mt-lg-5">
-            <form id="insert">
-                <div class="form-group row">
-                    <div class="col-xs-2">
-                        <label for="project">Nome progetto</label>
-                        <input type="text" class="form-control" id="project" name="project" placeholder="Nome progetto">
-                    </div>
+            <div class="row">
+                <div class="col-6 mt-lg-5">
+                    <a class="btn btn-success" href="insert.html" role="button"><span class="ion-ios-plus-outline mr-2"></span>Nuova keyword</a>
                 </div>
-                <button id="save" type="submit" class="btn btn-success row"><span class="ion-ios-checkmark-outline mr-2"></span>Salva</button>
-            </form>
+            </div>
         </div>
-
         <script type="text/javascript">
             $(document).ready(function(){
-                $("#save").click(function (event) {
-                    event.preventDefault();
+                $.ajax({
+                    url: "../../../api/keyword/",
+                    type: "GET",
+                    success: function(data) {
+                        $.get('keyword.mst', function(template) {
+                            var rendered = Mustache.render(template, {items: data});
+                            $('#list').html(rendered);
+                        });
+                    },
+                    error: function(xhr, status, text) {
+                        alert(text);
+                    }
+                });
+
+                var x = "";
+
+                $("body").on('click', '.btn-danger', function (event) {
+                //$(".btn-danger").click(function () {
+                    x = this.id;
+                    $("div").remove("#"+x);
+
                     $.ajax({
-                        url: "../../api/project/",
-                        type: "POST",
-                        data: $("#insert").serialize(),
+                        url: "../../../api/keyword/"+x,
+                        type: "DELETE",
                         success: function(data) {
-                            alert(JSON.stringify(data));
+                            alert("Eliminato dal db");
                         },
                         error: function(xhr, status, text) {
                             alert(text);
@@ -75,7 +88,6 @@
                     });
 
                 })
-                return false;
             });
         </script>
 

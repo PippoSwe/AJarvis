@@ -3,3 +3,4 @@ dbms
 logs
 *.DS_Store
 *.lock
+docker-compose-win.yml

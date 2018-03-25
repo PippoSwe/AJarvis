@@ -2,18 +2,19 @@
 <html>
     <head>
         <title>Modifica progetto | AJarvis</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
         <!-- Bootstap CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
         <!--ICONS-->
         <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+
         <!--  JS Popper jQuery -->
         <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+        <script src="/assets/js/gui/common.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     </head>
     <body class="bg-light form-group">
     <!-- Nav With Logo -->
@@ -24,18 +25,18 @@
         <a class="navbar-brand" href="#">AJarvis</a>
         <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                <li class="nav-item active">
+                <li class="nav-item">
                     <a class="nav-link" href="index.html">Registrazione <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="dashboard.html">Dashboard</a>
                 </li>
-                <li class="nav-item dropdown">
+                <li class="nav-item dropdown active">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown">Pannello di Controllo</a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="amm_prog.html">Progetti</a>
-                        <a class="dropdown-item" href="membri_prog.html">Membri</a>
-                        <a class="dropdown-item" href="keyword.html">Keywords</a>
+                        <a class="dropdown-item" href="list.html">Progetti</a>
+                        <a class="dropdown-item" href="../member/list.html">Membri</a>
+                        <a class="dropdown-item" href="../keyword/list.html">Keywords</a>
                     </div>
                 </li>
                 <li class="nav-item">
@@ -50,8 +51,8 @@
         <form id="insert">
             <div class="form-group row">
                 <div class="col-xs-2">
-                    <label for="project-name">Nome progetto</label>
-                    <input type="text" class="form-control" id="project-name" name="project-name" placeholder="Nome Progetto">
+                    <label for="project">Nome progetto</label>
+                    <input type="text" class="form-control" id="project" name="project" placeholder="Nome Progetto">
                 </div>
             </div>
             <button id="save" type="submit" class="btn btn-success row"><span class="ion-ios-checkmark-outline mr-2"></span>Salva</button>
@@ -63,11 +64,10 @@
 
         $(document).ready(function(){
             $.ajax({
-                url: "../../../api/member/"+$.urlParam("id")+"/",
+                url: "../../../api/project/"+$.urlParam("id")+"/",
                 type: "GET",
                 success: function(data) {
-                    $("#firstname").val(data.firstname);
-                    $("#lastname").val(data.lastname);
+                    $("#project").val(data.project);
                 },
                 error: function(xhr, status, text) {
                     alert(text);
@@ -78,7 +78,7 @@
             $("#save").click(function (event) {
                 event.preventDefault();
                 $.ajax({
-                    url: "../../api/member/"+$.urlParam("id")+"/",
+                    url: "../../api/project/"+$.urlParam("id")+"/",
                     type: "PUT",
                     data: $("#insert").serialize(),
                     success: function(data) {
@@ -90,7 +90,7 @@
                 });
 
             })
-            return false;
+
         });
     </script>
 

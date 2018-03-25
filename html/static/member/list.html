@@ -31,9 +31,9 @@
 
                         <a class="nav-link dropdown-toggle active" data-toggle="dropdown" href="#">Pannello di Controllo <span class="sr-only">(current)</a>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="amm_prog.html">Progetti <span class="sr-only">(current)</a>
-                            <a class="dropdown-item" href="membri_prog.html">Membri</a>
-                            <a class="dropdown-item" href="keyword.html">Keywords</a>
+                            <a class="dropdown-item" href="../project/list.html">Progetti <span class="sr-only">(current)</a>
+                            <a class="dropdown-item" href="#">Membri</a>
+                            <a class="dropdown-item" href="../keyword/list.html">Keywords</a>
                         </div>
                     </li>
                     <li class="nav-item">
@@ -44,7 +44,13 @@
         </nav>
         <!-- Managing projects -->
         <div class="container mt-lg-5" id="list">&nbsp; </div>
-
+        <div class="container mt-lg-5">
+            <div class="row">
+                <div class="col-6 mt-lg-5">
+                    <a class="btn btn-success" href="insert.html" role="button"><span class="ion-ios-plus-outline mr-2"></span>Nuovo membro</a>
+                </div>
+            </div>
+        </div>
         <script type="text/javascript">
             $(document).ready(function(){
                 $.ajax({
