@@ -8,6 +8,8 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <!--  JS Popper jQuery -->
         <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+        <!--Mustache-->
+        <script src="/assets/js/gui/mustache.min.js"></script>
         <script src="/assets/js/gui/common.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
@@ -42,6 +44,7 @@
                 </ul>
             </div>
         </nav>
+        <div id="error"></div>
         <!-- Managing projects -->
         <div class="container mt-lg-5">
             <form id="insert">
@@ -77,29 +80,96 @@
                         $("#lastname").val(data.lastname);
                     },
                     error: function(xhr, status, text) {
-                        alert(text);
+                        var structure = {x:xhr, s:status, t:text, class:"danger", strong:"Errore!"};
+                        $.get('alert.mst', function(template) {
+                            var rendered = Mustache.render(template, {items: structure}); //richiede un'array associativo
+                            $('#error').html(rendered);
+                        });
                     }
                 });
 
 
                 $("#save").click(function (event) {
                     event.preventDefault();
-                    $.ajax({
-                        url: "../../api/member/"+$.urlParam("id")+"/",
-                        type: "PUT",
-                        data: $("#insert").serialize(),
-                        success: function(data) {
-                            alert(JSON.stringify(data));
-                        },
-                        error: function(xhr, status, text) {
-                            alert(text);
-                        }
-                    });
+                    if(!isEmpty()) {
+                        $.ajax({
+                            url: "../../api/member/"+$.urlParam("id")+"/",
+                            type: "PUT",
+                            data: $("#insert").serialize(),
+                            success: function(data) {
+                                var structure = {strong:"Modifica del membro avvenuta", class:"success", t:""}; //passo i messaggi per riusare il file mst
+                                $.get('alert.mst', function(template) {
+                                    var rendered = Mustache.render(template, {items: structure}); //richiede un'array associativo
+                                    $('#error').html(rendered);
+                                });
+                            },
+                            error: function(xhr, status, text) {
+                                var structure = {x:xhr, s:status, t:text, class:"danger", strong:"Errore!"};
+                                $.get('alert.mst', function(template) {
+                                    var rendered = Mustache.render(template, {items: structure}); //richiede un'array associativo
+                                    $('#error').html(rendered);
+                                });
+                            }
+                        });
+                    }
+                    else {
+                        var structure = {t:"Inserire i campi correttamente", class:"warning", strong:"Errore!"};
+                        $.get('alert.mst', function(template) {
+                            var rendered = Mustache.render(template, {items: structure}); //richiede un'array associativo
+                            $('#error').html(rendered);
+                        });
+                    }
 
+                });
+
+                function isEmpty() {
+                    var first_full = false;
+                    var last_full = false;
+                    if( $("#firstname").val().length == 0 || $("#lastname").val().length == 0 ){
+                        if ( $("#firstname").val().length == 0 ) {
+                            $("#firstname").addClass("danger");
+                            first_full = true;
+                        }
+                        else {
+                            $("#firstname").removeClass("danger");
+                        }
+                        if ( $("#lastname").val().length == 0 ) {
+                            $("#lastname").addClass("danger");
+                            last_full = true;
+                        }
+                        else {
+                            $("#lastname").removeClass("danger");
+                        }
+                        if($("#firstname").val().length == 0 && $("#lastname").val().length == 0) return (first_full && last_full);
+                        else return !(first_full && last_full);
+                    }
+                    else {
+                        $("#firstname").removeClass("danger");
+                        $("#lastname").removeClass("danger");
+                        return false;
+                    }
+                }
+
+                $("#firstname").blur(function (){
+                    isEmpty();
+                });
+
+                $("#lastname").blur(function (){
+                    isEmpty();
                 })
-                return false;
+                
             });
         </script>
-
+         <style type="text/css">
+        .danger {
+            border: 2px solid red;
+        }
+        .show {
+            display: all;
+        }
+        .hide {
+            display: none;
+        }
+    </style>
     </body>
 </html>

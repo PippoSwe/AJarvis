@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Progetti | AJarvis</title>
+        <title>Keywords | AJarvis</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
         <!-- Bootstap CSS -->
@@ -12,6 +12,7 @@
 
         <!--  JS Popper jQuery -->
         <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+        <!--Mustache-->
         <script src="/assets/js/gui/mustache.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
@@ -44,6 +45,8 @@
                 </ul>
             </div>
         </nav>
+        <div id="error"></div>
+
         <!-- Managing projects -->
         <div class="container mt-lg-5" id="list"> &nbsp </div>
         <div class="container mt-lg-5">
@@ -65,25 +68,35 @@
                         });
                     },
                     error: function(xhr, status, text) {
-                        alert(text);
+                        var structure = {x:xhr, s:status, t:text, class:"danger", strong:"Errore!"};
+                        $.get('alert.mst', function(template) {
+                            var rendered = Mustache.render(template, {items: structure}); //richiede un'array associativo
+                            $('#error').html(rendered);
+                        });
                     }
                 });
 
                 var x = "";
 
                 $("body").on('click', '.btn-danger', function (event) {
-                //$(".btn-danger").click(function () {
                     x = this.id;
-                    $("div").remove("#"+x);
-
                     $.ajax({
                         url: "../../../api/keyword/"+x,
                         type: "DELETE",
                         success: function(data) {
-                            alert("Eliminato dal db");
+                            $("div").remove("#"+x);
+                            var structure = {strong:"Eliminazione della keyword avvenuta con successo", class:"success", t:""}; //passo i messaggi per riusare il file mst
+                            $.get('alert.mst', function(template) {
+                                var rendered = Mustache.render(template, {items: structure}); //richiede un'array associativo
+                                $('#error').html(rendered);
+                            });
                         },
                         error: function(xhr, status, text) {
-                            alert(text);
+                            var structure = {x:xhr, s:status, t:text, class:"danger", strong:"Errore!"};
+                            $.get('alert.mst', function(template) {
+                                var rendered = Mustache.render(template, {items: structure}); //richiede un'array associativo
+                                $('#error').html(rendered);
+                            });
                         }
                     });
 

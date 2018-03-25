@@ -1,0 +1,5 @@
+{{#items}}
+	<div class="alert alert-{{class}}">
+		<strong>{{strong}}</strong> {{t}}
+	</div>
+{{/items}}
