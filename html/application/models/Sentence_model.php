@@ -46,7 +46,8 @@ class Sentence_model extends CI_Model {
             case 'negative':
                 $collection = $collection->where('sentences.score < -0.25');
                 break;
-            case 'neutral':
+ /*
+                case 'neutral':
                 $collection = $collection->where('sentences.score BETWEEN -0.25 AND 0.25');
                 $collection = $collection->where('sentences.magnitude','0');
                 break;
@@ -54,6 +55,7 @@ class Sentence_model extends CI_Model {
                 $collection = $collection->where('sentences.score BETWEEN -0.25 AND 0.25');
                 $collection = $collection->where('sentences.magnitude > 0');
                 break;
+ */
             default:
                 break;
         }

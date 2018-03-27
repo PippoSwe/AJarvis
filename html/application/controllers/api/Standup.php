@@ -179,9 +179,9 @@ class Standup extends CI_Controller
         );
 
         // Normalizzazione
-        if (!empty($nlp->documentSentiment->magnitude))
+        if (!is_null($nlp->documentSentiment->magnitude))
             $data["magnitude"] = (float)$nlp->documentSentiment->magnitude;
-        if (!empty($nlp->documentSentiment->score))
+        if (!is_null($nlp->documentSentiment->score))
             $data["score"] = (float)$nlp->documentSentiment->score;
 
         // Scrittura e gestion del risultato REST-Style
@@ -199,9 +199,9 @@ class Standup extends CI_Controller
             // Normalizzazione
             if (!empty($sentence->text->content))
                 $data["sentence"] = $sentence->text->content;
-            if (!empty($sentence->sentiment->score))
+            if (!is_null($sentence->sentiment->score))
                 $data["score"] = (float)$sentence->sentiment->score;
-            if (!empty($sentence->sentiment->magnitude))
+            if (!is_null($sentence->sentiment->magnitude))
                 $data["magnitude"] = (float)$sentence->sentiment->magnitude;
 
             // Insert alla sentences
@@ -223,7 +223,7 @@ class Standup extends CI_Controller
                 $data["name"] = $entities->name;
             if (!empty($entities->type))
                 $data["type"] = $entities->type;
-            if (!empty($entities->salience))
+            if (!is_null($entities->salience))
                 $data["salience"] = round((float)$entities->salience, 8);
 
             // Insert alla sentences
