@@ -7,7 +7,7 @@
         <!-- Bootstap CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <!--ICONS-->
-        <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
         <!--  JS Popper jQuery -->
         <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
         <!--Mustache-->
@@ -51,7 +51,7 @@
             <div class="form-group row">
                 <div class="col-xs-2">
                     <label for="keyword">Keyword</label>
-                    <input type="text" class="form-control" id="keyword" name="keyword" placeholder="Keyword" required>
+                    <input type="text" class="form-control" id="keyword" name="keyword" placeholder="Keyword" data-placement="right" required>
                 </div>
             </div>
             <button id="save" type="submit" class="btn btn-success row"><span class="ion-ios-checkmark-outline mr-2"></span>Salva</button>
@@ -96,9 +96,12 @@
             function isEmpty() {
                if ( $("#keyword").val().length == 0 ) {
                     $("#keyword").addClass("danger");
+                    $("#keyword").tooltip({'html':true, 'animation':true,'title':'<span class="ion-ios-help-outline mr-2"></span>Inserisci una Keyword'});
+                    $("#keyword").tooltip('enable');
                     return true;
                 } else {
                     $("#keyword").removeClass("danger");
+                    $("#keyword").tooltip('disable');
                     return false;
                 } 
             }

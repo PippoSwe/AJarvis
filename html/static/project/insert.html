@@ -9,7 +9,7 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
         <!--ICONS-->
-        <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
         <!--  JS Popper jQuery -->
         <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
         <!--Mustache-->
@@ -54,7 +54,7 @@
                 <div class="form-group row">
                     <div class="col-xs-2">
                         <label for="project">Nome progetto</label>
-                        <input type="text" class="form-control" id="project" name="project" placeholder="Nome progetto">
+                        <input type="text" class="form-control" id="project" name="project" placeholder="Nome progetto" data-placement="right" required>
                     </div>
                 </div>
                 <button id="save" type="submit" class="btn btn-success row"><span class="ion-ios-checkmark-outline mr-2"></span>Salva</button>
@@ -99,10 +99,13 @@
 
                 function isEmpty() {
                    if ( $("#project").val().length == 0 ) {
-                        //$("#project").addClass("danger");
+                        $("#project").addClass("danger");
+                        $("#project").tooltip({'html':true, 'animation':true,'title':'<span class="ion-ios-help-outline mr-2"></span>Inserisci il nome del progetto'});
+                        $("#keyword").tooltip('enable');
                         return true;
                     } else {
-                        //$("#project").removeClass("danger");
+                        $("#project").removeClass("danger");
+                        $("#project").tooltip('disable');
                         return false;
                     } 
                 }
@@ -113,6 +116,6 @@
                 
             });
         </script>
-
+    </style>
     </body>
 </html>

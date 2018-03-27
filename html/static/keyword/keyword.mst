@@ -4,7 +4,7 @@
                 {{keyword}}
             </div>
             <div class="col">
-                <a id="{{id}}" class="btn btn-danger"><span class="ion-ios-trash-outline mr-2"></span>Elimina</a>
+                <button id="{{id}}" class="btn btn-danger btn-delete" data-toggle="modal" data-target="#exampleModalCenter"><span class="ion-ios-trash-outline mr-2"></span>Elimina</button>
             </div>
         </div>
 {{/items}}
