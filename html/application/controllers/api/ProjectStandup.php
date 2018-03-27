@@ -9,6 +9,8 @@ class ProjectStandup extends CI_Controller
         //http://www.restapitutorial.com/lessons/httpmethods.html
         parent::__construct();
         $this->load->model('Standup_model', 'standups', TRUE);
+        $this->load->model('Sentence_model', 'sentences', TRUE);
+        $this->load->model('Entity_model', 'entities', TRUE);
         $this->load->helper(array('google_storage_helper'));
     }
 
@@ -62,12 +64,19 @@ class ProjectStandup extends CI_Controller
      *         description="Success",
      *     ),
      *     @SWG\Response(
+     *         response="412",
+     *         description="Precondition Failed"
+     *     ),
+     *     @SWG\Response(
      *         response="500",
      *         description="Internal Server Error"
      *     )
      * )
      */
     private function insert($project_id) {
+        if(!array_key_exists('file', $_FILES))
+            show_error("File is missing", 412);
+
         // Dichiariamo i valori di default
         $data = array(
             "project_id" => $project_id,
@@ -299,6 +308,5 @@ class ProjectStandup extends CI_Controller
         unlink( $flac_file );
         return TRUE;
     }
-
 
 }

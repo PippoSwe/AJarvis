@@ -8,7 +8,7 @@
  * @link       https://github.com/kenjis/ci-phpunit-test
  */
 
-class Standup_test extends TestCase
+class Queue_test extends TestCase
 {
 
     // https://github.com/kenjis/ci-phpunit-test
@@ -16,6 +16,8 @@ class Standup_test extends TestCase
     private static $fk1_key;
     private static $key;
     private static $fk1_page = 'api/project/';
+    private static $fk2_page = 'api/standup/';
+    private static $page = 'api/queue/';
 
     public static function setUpBeforeClass()
     {
@@ -39,8 +41,6 @@ class Standup_test extends TestCase
             'project' => 'Progettone della vita']);
         $data = (array) json_decode($output);
         $this->assertResponseCode(200);
-        $this->assertArrayHasKey('project', $data);
-        $this->assertArrayHasKey('id', $data);
         self::$fk1_key = $data['id'];
     }
 
@@ -62,70 +62,59 @@ class Standup_test extends TestCase
         $output = $this->request('POST', self::$fk1_page.self::$fk1_key.'/standup/');
         $data = (array) json_decode($output);
         $this->assertResponseCode(200);
-        $this->assertArrayHasKey('project_id', $data);
-        $this->assertArrayHasKey('standup', $data);
-        $this->assertArrayHasKey('magnitude', $data);
-        $this->assertArrayHasKey('score', $data);
-        $this->assertArrayHasKey('end', $data);
-        $this->assertArrayHasKey('id', $data);
         self::$key = $data['id'];
-    }
-
-    public function test_cant_post()
-    {
-        /* Necessari aggiunstamenti alla funzione save_audio()
-            per consentire il fake upload dei dati */
-        $files = [
-            'file' => [
-                'name'     => "test.wav",
-                'type'     => 'audio/wav',
-                'tmp_name' => "/var/www/html/uploads/test.wav",
-            ],
-        ];
-        $this->request->setFiles($files);
-        $output = $this->request('POST', self::$fk1_page.self::$fk1_key.'/standup/',
-            ['standup' => 'Standup test']);
-        $data = (array) json_decode($output);
-        $this->assertResponseCode(500);
-    }
-
-    public function test_put()
-    {
-        $output = $this->request('PUT', self::$fk1_page.self::$fk1_key.'/standup/'.self::$key,
-            ['standup' => 'Standup test update']);
-        $data = (array) json_decode($output);
-        $this->assertResponseCode(200);
-        $this->assertArrayHasKey('project_id', $data);
-        $this->assertArrayHasKey('standup', $data);
-        $this->assertArrayHasKey('magnitude', $data);
-        $this->assertArrayHasKey('score', $data);
-        $this->assertArrayHasKey('end', $data);
-        $this->assertArrayHasKey('id', $data);
     }
 
     public function test_view()
     {
-        $output = $this->request('GET', self::$fk1_page.self::$fk1_key.'/standup/'.self::$key);
+        $output = $this->request('GET', self::$page.self::$key);
         $data = (array) json_decode($output);
         $this->assertResponseCode(200);
+        $this->assertArrayHasKey('project', $data);
         $this->assertArrayHasKey('project_id', $data);
         $this->assertArrayHasKey('standup', $data);
-        $this->assertArrayHasKey('magnitude', $data);
-        $this->assertArrayHasKey('score', $data);
-        $this->assertArrayHasKey('end', $data);
+        $this->assertArrayHasKey('stt_status', $data);
+        $this->assertArrayHasKey('nlp_status', $data);
         $this->assertArrayHasKey('id', $data);
+        $this->assertArrayHasKey('end', $data);
+    }
+
+    public function test_stt() {
+        $output = $this->request('PUT', self::$page.self::$key.'/stt/',
+            ["status" => "Failed"]);
+        $data = (array) json_decode($output);
+        $this->assertResponseCode(200);
+        $this->assertArrayHasKey('project', $data);
+        $this->assertArrayHasKey('project_id', $data);
+        $this->assertArrayHasKey('standup', $data);
+        $this->assertArrayHasKey('stt_status', $data);
+        $this->assertArrayHasKey('nlp_status', $data);
+        $this->assertArrayHasKey('id', $data);
+        $this->assertArrayHasKey('end', $data);
+    }
+
+    public function test_nlp() {
+        $output = $this->request('PUT', self::$page.self::$key.'/nlp/',
+            ["status" => "Failed"]);
+        $data = (array) json_decode($output);
+        $this->assertResponseCode(200);
+        $this->assertArrayHasKey('project', $data);
+        $this->assertArrayHasKey('project_id', $data);
+        $this->assertArrayHasKey('standup', $data);
+        $this->assertArrayHasKey('stt_status', $data);
+        $this->assertArrayHasKey('nlp_status', $data);
+        $this->assertArrayHasKey('id', $data);
+        $this->assertArrayHasKey('end', $data);
     }
 
     public function test_index()
     {
-        $output = $this->request('GET', self::$fk1_page.self::$fk1_key.'/standup/',
+        $output = $this->request('GET', self::$page,
             ['limit' => 1]);
         $data = (array) json_decode($output);
         $this->assertResponseCode(200);
         $this->assertCount(1, $data);
     }
-
-
 
     public function test_delete()
     {

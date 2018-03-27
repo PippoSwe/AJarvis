@@ -8,7 +8,7 @@
  * @link       https://github.com/kenjis/ci-phpunit-test
  */
 
-class Standup_test extends TestCase
+class Nlp_test extends TestCase
 {
 
     // https://github.com/kenjis/ci-phpunit-test
@@ -16,6 +16,7 @@ class Standup_test extends TestCase
     private static $fk1_key;
     private static $key;
     private static $fk1_page = 'api/project/';
+    private static $page = 'api/standup/';
 
     public static function setUpBeforeClass()
     {
@@ -71,28 +72,16 @@ class Standup_test extends TestCase
         self::$key = $data['id'];
     }
 
-    public function test_cant_post()
-    {
-        /* Necessari aggiunstamenti alla funzione save_audio()
-            per consentire il fake upload dei dati */
-        $files = [
-            'file' => [
-                'name'     => "test.wav",
-                'type'     => 'audio/wav',
-                'tmp_name' => "/var/www/html/uploads/test.wav",
-            ],
-        ];
-        $this->request->setFiles($files);
-        $output = $this->request('POST', self::$fk1_page.self::$fk1_key.'/standup/',
-            ['standup' => 'Standup test']);
-        $data = (array) json_decode($output);
-        $this->assertResponseCode(500);
-    }
+    public function test_analysis() {
 
-    public function test_put()
-    {
-        $output = $this->request('PUT', self::$fk1_page.self::$fk1_key.'/standup/'.self::$key,
-            ['standup' => 'Standup test update']);
+        // invio per analisi nlp
+        $filename = realpath(dirname(__FILE__))."/fixtures/nlp.json";
+        $handle = fopen($filename, "rb");
+        $contents = fread($handle, filesize($filename));
+        fclose($handle);
+
+        $output = $this->request('POST', self::$page.self::$key.'/nlp/',
+            json_encode(json_decode($contents)));
         $data = (array) json_decode($output);
         $this->assertResponseCode(200);
         $this->assertArrayHasKey('project_id', $data);
@@ -101,31 +90,66 @@ class Standup_test extends TestCase
         $this->assertArrayHasKey('score', $data);
         $this->assertArrayHasKey('end', $data);
         $this->assertArrayHasKey('id', $data);
+        $this->assertArrayHasKey('sentence_count', $data);
+        $this->assertArrayHasKey('entities_count', $data);
+
     }
 
-    public function test_view()
+    public function test_pie()
     {
-        $output = $this->request('GET', self::$fk1_page.self::$fk1_key.'/standup/'.self::$key);
+        $output = $this->request('GET', self::$page.self::$key.'/pie/');
         $data = (array) json_decode($output);
         $this->assertResponseCode(200);
-        $this->assertArrayHasKey('project_id', $data);
-        $this->assertArrayHasKey('standup', $data);
-        $this->assertArrayHasKey('magnitude', $data);
-        $this->assertArrayHasKey('score', $data);
-        $this->assertArrayHasKey('end', $data);
-        $this->assertArrayHasKey('id', $data);
+        $this->assertArrayHasKey('labels', $data);
+        $this->assertArrayHasKey('series', $data);
     }
 
-    public function test_index()
+    public function test_flow()
     {
-        $output = $this->request('GET', self::$fk1_page.self::$fk1_key.'/standup/',
-            ['limit' => 1]);
+        $output = $this->request('GET', self::$page.self::$key.'/flow/');
         $data = (array) json_decode($output);
         $this->assertResponseCode(200);
-        $this->assertCount(1, $data);
+        $this->assertArrayHasKey('series', $data);
+
     }
 
+    public function test_sentences()
+    {
+        $output = $this->request('GET', self::$page.self::$key.'/sentences/');
+        $data = (array) json_decode($output);
+        $this->assertResponseCode(200);
+        foreach($data as $value){
+            $this->assertTrue( property_exists($value, 'sentence') );
+            $this->assertTrue( property_exists($value, 'score') );
+            $this->assertTrue( property_exists($value, 'magnitude') );
+        }
+    }
 
+    public function test_sentences_good()
+    {
+        $output = $this->request('GET', self::$page.self::$key.'/sentences/good/');
+        $data = (array) json_decode($output);
+        $this->assertResponseCode(200);
+
+        foreach($data as $value){
+            $this->assertTrue( property_exists($value, 'sentence') );
+            $this->assertTrue( property_exists($value, 'score') );
+            $this->assertTrue( property_exists($value, 'magnitude') );
+        }
+    }
+
+    public function test_sentences_bad()
+    {
+        $output = $this->request('GET', self::$page.self::$key.'/sentences/bad/');
+        $data = (array) json_decode($output);
+        $this->assertResponseCode(200);
+
+        foreach($data as $value){
+            $this->assertTrue( property_exists($value, 'sentence') );
+            $this->assertTrue( property_exists($value, 'score') );
+            $this->assertTrue( property_exists($value, 'magnitude') );
+        }
+    }
 
     public function test_delete()
     {

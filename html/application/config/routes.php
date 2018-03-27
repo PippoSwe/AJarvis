@@ -77,4 +77,19 @@ $route['api/project/(:num)/member/(:num)'] = 'api/ProjectMember/target/$1/$2';
 $route['api/project/(:num)/standup'] = 'api/ProjectStandup/index/$1';
 $route['api/project/(:num)/standup/(:num)'] = 'api/ProjectStandup/target/$1/$2';
 
+# Standup NLP
+$route['api/standup/(:num)/nlp'] = 'api/Standup/target/$1';
+$route['api/standup/(:num)/pie'] = 'api/Standup/pie/$1';
+$route['api/standup/(:num)/flow'] = 'api/Standup/flow/$1';
+$route['api/standup/(:num)/entities'] = 'api/Standup/entities/$1';
+$route['api/standup/(:num)/sentences'] = 'api/Standup/sentences/$1';
+$route['api/standup/(:num)/sentences/good'] = 'api/Standup/sentences_good/$1';
+$route['api/standup/(:num)/sentences/bad'] = 'api/Standup/sentences_bad/$1';
+
+# Queue
+$route['api/queue/'] = 'api/Queue/index';
+$route['api/queue/(:num)'] = 'api/Queue/target/$1';
+$route['api/queue/(:num)/stt'] = 'api/Queue/stt/$1';
+$route['api/queue/(:num)/nlp'] = 'api/Queue/nlp/$1';
+
 

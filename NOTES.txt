@@ -33,3 +33,65 @@ Cambiare con SIP (Sierra, High-Sierra) Preferenze Docker in:
 {
   "log-driver" : "json-file"
 }
+
+
+
+
+
+PROGETTI:
+
+1. Andamento generale progetto:
+
+SELECT standups.score
+FROM standups
+        JOIN projects ON standups.project_id = projects.id
+ORDER BY standups.end
+
+2. Tabelle problemi rilevanti
+
+SELECT  sentences.sentence
+FROM sentences
+        JOIN standups ON sentences.standup_id = standups.id
+        JOIN projects ON standups.project_id = projects.id
+WHERE sentences.score < -0.25 AND sentences.magnitude > 0.4
+
+STANDUP:
+
+1. Tutto il testo e possibili frasi evidenziate
+
+SELECT  sentences.sentence, sentences.score, sentences.magnitude
+FROM sentences
+        JOIN standups ON sentences.standup_id = standups.id
+ORDER BY standups.end
+
+2. Andamento dello standup
+
+SELECT  sentences.score
+FROM sentences
+        JOIN standups ON sentences.standup_id = standups.id
+ORDER BY standups.end
+
+3. Tabella frasi rilevanti e problemi
+
+SELECT  sentences.sentence
+FROM sentences
+        JOIN standups ON sentences.standup_id = standups.id
+        JOIN projects ON standups.project_id = projects.id
+WHERE sentences.score > 0.25 AND sentences.magnitude > 0.4
+
+SELEcT  sentences.sentence
+FROM sentences
+        JOIN standups ON sentences.standup_id = standups.id
+        JOIN projects ON standups.project_id = projects.id
+WHERE sentences.score > 0.25 AND sentences.magnitude > -0.4
+
+4. Grafic con frasi positive e negative
+
+3 query di count ?
+
+5. Entità più rilevanti
+
+SELEcT  entities.name, entities.type
+FROM entities
+        JOIN standups ON sentences.standup_id = standups.id
+ORDER BY entities.salience
