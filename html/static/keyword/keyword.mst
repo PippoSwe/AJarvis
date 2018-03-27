@@ -1,0 +1,10 @@
+{{#items}}
+        <div id="{{id}}"  class="row mt-lg-5">
+            <div class="col">
+                {{keyword}}
+            </div>
+            <div class="col">
+                <button id="{{id}}" class="btn btn-danger btn-delete" data-toggle="modal" data-target="#exampleModalCenter"><span class="ion-ios-trash-outline mr-2"></span>Elimina</button>
+            </div>
+        </div>
+{{/items}}

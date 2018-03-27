@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Keywords | AJarvis</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+        <!-- Bootstap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+        <!--ICONS-->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+
+        <!--  JS Popper jQuery -->
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+        <!--Mustache-->
+        <script src="/assets/js/gui/mustache.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    </head>
+    <body class="bg-light form-group">
+        <!-- Nav With Logo -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            <a class="navbar-brand" href="#">AJarvis</a>
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                    <a class="nav-link" href="index.html">Registrazione</a>
+                    <li class="nav-item">
+                        <a class="nav-link" href="dashboard.html">Dashboard</a>
+                    </li>
+                    <li class="nav-item dropdown">
+
+                        <a class="nav-link dropdown-toggle active" data-toggle="dropdown" href="#">Pannello di Controllo <span class="sr-only">(current)</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="../project/list.html">Progetti <span class="sr-only">(current)</a>
+                            <a class="dropdown-item" href="../member/list.html">Membri</a>
+                            <a class="dropdown-item" href="#">Keywords</a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Monitor</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Attenzione!</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Eliminare definitivamente la Keyword?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                        <button type="button" id="confirm-delete" class="btn btn-danger" data-dismiss="modal"><span class="ion-ios-trash-outline mr-2"></span>Elimina</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="error"></div>
+
+        <!-- Managing projects -->
+        <div class="container mt-lg-5" id="list"> &nbsp </div>
+        <div class="container mt-lg-5">
+            <div class="row">
+                <div class="col-6 mt-lg-5">
+                    <a class="btn btn-success" href="insert.html" role="button"><span class="ion-ios-plus-outline mr-2"></span>Nuova keyword</a>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $.ajax({
+                    url: "../../../api/keyword/",
+                    type: "GET",
+                    success: function(data) {
+                        $.get('keyword.mst', function(template) {
+                            var rendered = Mustache.render(template, {items: data});
+                            $('#list').html(rendered);
+                        });
+                    },
+                    error: function(xhr, status, text) {
+                        var structure = {x:xhr, s:status, t:text, class:"danger", strong:"Errore!"};
+                        $.get('alert.mst', function(template) {
+                            var rendered = Mustache.render(template, {items: structure}); //richiede un'array associativo
+                            $('#error').html(rendered);
+                        });
+                    }
+                });
+
+                var x = "";
+
+                $("body").on('click', '.btn-delete', function (event) {
+                    x = this.id;
+                    $("body").on('click', '#confirm-delete', function () {
+                        $.ajax({
+                            url: "../../../api/keyword/"+x,
+                            type: "DELETE",
+                            success: function(data) {
+                                $("div").remove("#"+x);
+                                var structure = {strong:"Eliminazione della keyword avvenuta con successo", class:"success", t:""}; //passo i messaggi per riusare il file mst
+                                $.get('alert.mst', function(template) {
+                                    var rendered = Mustache.render(template, {items: structure}); //richiede un'array associativo
+                                    $('#error').html(rendered);
+                                });
+                            },
+                            error: function(xhr, status, text) {
+                                var structure = {x:xhr, s:status, t:text, class:"danger", strong:"Errore!"};
+                                $.get('alert.mst', function(template) {
+                                    var rendered = Mustache.render(template, {items: structure}); //richiede un'array associativo
+                                    $('#error').html(rendered);
+                                });
+                            }
+                        });
+                    });
+
+                })
+            });
+        </script>
+
+    </body>
+</html>

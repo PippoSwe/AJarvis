@@ -3,3 +3,4 @@ dbms
 logs/apache2/
 *.DS_Store
 *.lock
+docker-compose-win.yml
