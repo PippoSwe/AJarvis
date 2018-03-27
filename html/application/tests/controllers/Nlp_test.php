@@ -97,22 +97,60 @@ class Nlp_test extends TestCase
 
     public function test_pie()
     {
-        /*
-        [{"label":"Belusconiani", "value":0.8},
-        {"label":"Grillini", "value":1.0}]
-        */
         $output = $this->request('GET', self::$page.self::$key.'/pie/');
         $data = (array) json_decode($output);
         $this->assertResponseCode(200);
-        $this->assertArrayHasKey('label', $data[0]);
+        $this->assertArrayHasKey('labels', $data);
+        $this->assertArrayHasKey('series', $data);
+        throw new Exception(print_r($data));
     }
 
     public function test_flow()
     {
-        $output = $this->request('GET', self::$page.self::$key.'/pie/');
+        $output = $this->request('GET', self::$page.self::$key.'/flow/');
         $data = (array) json_decode($output);
         $this->assertResponseCode(200);
-        // ?
+        throw new Exception(print_r($data));
+        $this->assertArrayHasKey('series', $data);
+
+    }
+
+    public function test_sentences()
+    {
+        $output = $this->request('GET', self::$page.self::$key.'/sentences/');
+        $data = (array) json_decode($output);
+        $this->assertResponseCode(200);
+        foreach($data as $value){
+            $this->assertTrue( property_exists($value, 'sentence') );
+            $this->assertTrue( property_exists($value, 'score') );
+            $this->assertTrue( property_exists($value, 'magnitude') );
+        }
+    }
+
+    public function test_sentences_good()
+    {
+        $output = $this->request('GET', self::$page.self::$key.'/sentences/good/');
+        $data = (array) json_decode($output);
+        $this->assertResponseCode(200);
+
+        foreach($data as $value){
+            $this->assertTrue( property_exists($value, 'sentence') );
+            $this->assertTrue( property_exists($value, 'score') );
+            $this->assertTrue( property_exists($value, 'magnitude') );
+        }
+    }
+
+    public function test_sentences_bad()
+    {
+        $output = $this->request('GET', self::$page.self::$key.'/sentences/bad/');
+        $data = (array) json_decode($output);
+        $this->assertResponseCode(200);
+
+        foreach($data as $value){
+            $this->assertTrue( property_exists($value, 'sentence') );
+            $this->assertTrue( property_exists($value, 'score') );
+            $this->assertTrue( property_exists($value, 'magnitude') );
+        }
     }
 
     public function test_delete()

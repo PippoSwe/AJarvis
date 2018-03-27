@@ -14,7 +14,55 @@ class Standup extends CI_Controller
     }
 
 
-    public function pie($id) {
+    public function pie($id)
+    {
+
+        $result= new stdClass();
+        $result->labels =  array('positive', 'negative', 'neutral', 'mixed');
+        $result->series = array();
+
+        foreach ($result->labels as $label) {
+            $entry = $this->sentences->countType(
+                $id,
+                $label,
+                $limit = $this->input->get('limit'),
+                $offset = $this->input->get('offset')
+            );
+
+            foreach ( $entry as $value ){
+                array_push( $result->series, $value->number  );
+            }
+        }
+
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($result));
+
+    }
+
+
+    public function flow($id)
+    {
+        $entry = $this->sentences->flow(
+            $id,
+            $limit = $this->input->get('limit'),
+            $offset = $this->input->get('offset')
+        );
+
+        $result= new stdClass();
+        $result->series = array();
+
+        foreach ($entry as $value) {
+            array_push($result->series, $value->score);
+        }
+
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($result));
+    }
+
+    public function entities($id)
+    {
         /*
         $this->output
             ->set_content_type('application/json')
@@ -22,48 +70,50 @@ class Standup extends CI_Controller
         */
     }
 
+    public function sentences($id)
+    {
+        $entry = $this->sentences->sentences(
+            $id,
+            $type = 'all',
+            $limit = $this->input->get('limit'),
+            $offset = $this->input->get('offset')
+        );
 
-    public function flow($id) {
-        /*
         $this->output
             ->set_content_type('application/json')
-            ->set_output(json_encode($standup_entity));
-        */
+            ->set_output(json_encode($entry));
     }
 
-    public function entities($id) {
-        /*
+    public function sentences_good($id)
+    {
+        $entry = $this->sentences->sentences(
+            $id,
+            $type = 'positive',
+            $limit = $this->input->get('limit'),
+            $offset = $this->input->get('offset')
+        );
+
         $this->output
             ->set_content_type('application/json')
-            ->set_output(json_encode($standup_entity));
-        */
+            ->set_output(json_encode($entry));
     }
 
-    public function sentences($id) {
-        /*
+    public function sentences_bad($id)
+    {
+        $entry = $this->sentences->sentences(
+            $id,
+            $type = 'negative',
+            $limit = $this->input->get('limit'),
+            $offset = $this->input->get('offset')
+        );
+
         $this->output
             ->set_content_type('application/json')
-            ->set_output(json_encode($standup_entity));
-        */
+            ->set_output(json_encode($entry));
     }
 
-    public function sentences_good($id) {
-        /*
-        $this->output
-            ->set_content_type('application/json')
-            ->set_output(json_encode($standup_entity));
-        */
-    }
-
-    public function sentences_bad($id) {
-        /*
-        $this->output
-            ->set_content_type('application/json')
-            ->set_output(json_encode($standup_entity));
-        */
-    }
-
-    public function target($id) {
+    public function target($id)
+    {
         $this->nlp($id);
     }
 
@@ -107,19 +157,19 @@ class Standup extends CI_Controller
         $nlp = json_decode($this->security->xss_clean($this->input->raw_input_stream));
 
         // PRE: dict needs score, magnitude, etc ...
-        if(!isset($nlp->documentSentiment))
+        if (!isset($nlp->documentSentiment))
             show_error("NLP prerequisites missing", 412);
 
-        if(!isset($nlp->documentSentiment->magnitude))
+        if (!isset($nlp->documentSentiment->magnitude))
             show_error("NLP prerequisites missing", 412);
 
-        if(!isset($nlp->documentSentiment->score))
+        if (!isset($nlp->documentSentiment->score))
             show_error("NLP prerequisites missing", 412);
 
-        if(!isset($nlp->sentences))
+        if (!isset($nlp->sentences))
             show_error("NLP prerequisites missing", 412);
 
-        if(!isset($nlp->entities))
+        if (!isset($nlp->entities))
             show_error("NLP prerequisites missing", 412);
 
         // Update standup
@@ -129,17 +179,17 @@ class Standup extends CI_Controller
         );
 
         // Normalizzazione
-        if(!empty( $nlp->documentSentiment->magnitude ))
-            $data["magnitude"] = (float) $nlp->documentSentiment->magnitude;
-        if(!empty( $nlp->documentSentiment->score ))
-            $data["score"] = (float) $nlp->documentSentiment->score;
+        if (!empty($nlp->documentSentiment->magnitude))
+            $data["magnitude"] = (float)$nlp->documentSentiment->magnitude;
+        if (!empty($nlp->documentSentiment->score))
+            $data["score"] = (float)$nlp->documentSentiment->score;
 
         // Scrittura e gestion del risultato REST-Style
         $entry = $this->standups->update($id, $data);
 
         // Insert sentences
         $sentence_counter = 0;
-        foreach($nlp->sentences as $sentence) {
+        foreach ($nlp->sentences as $sentence) {
             $data = array(
                 "standup_id" => $entry->id,
                 "sentence" => null,
@@ -147,12 +197,12 @@ class Standup extends CI_Controller
                 "score" => null
             );
             // Normalizzazione
-            if(!empty( $sentence->text->content ))
+            if (!empty($sentence->text->content))
                 $data["sentence"] = $sentence->text->content;
-            if(!empty( $sentence->sentiment->score ))
-                $data["score"] = (float) $sentence->sentiment->score;
-            if(!empty( $sentence->sentiment->magnitude ))
-                $data["magnitude"] = (float) $sentence->sentiment->magnitude;
+            if (!empty($sentence->sentiment->score))
+                $data["score"] = (float)$sentence->sentiment->score;
+            if (!empty($sentence->sentiment->magnitude))
+                $data["magnitude"] = (float)$sentence->sentiment->magnitude;
 
             // Insert alla sentences
             $this->sentences->insert($data);
@@ -161,7 +211,7 @@ class Standup extends CI_Controller
 
         // Insert entities
         $entities_counter = 0;
-        foreach($nlp->entities as $entities) {
+        foreach ($nlp->entities as $entities) {
             $data = array(
                 "standup_id" => $entry->id,
                 "name" => null,
@@ -169,12 +219,12 @@ class Standup extends CI_Controller
                 "salience" => null
             );
             // Normalizzazione
-            if(!empty( $entities->name ))
+            if (!empty($entities->name))
                 $data["name"] = $entities->name;
-            if(!empty( $entities->type ))
+            if (!empty($entities->type))
                 $data["type"] = $entities->type;
-            if(!empty( $entities->salience ))
-                $data["salience"] = round((float) $entities->salience, 8);
+            if (!empty($entities->salience))
+                $data["salience"] = round((float)$entities->salience, 8);
 
             // Insert alla sentences
             $this->entities->insert($data);
