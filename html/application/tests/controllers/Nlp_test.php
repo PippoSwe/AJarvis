@@ -102,7 +102,6 @@ class Nlp_test extends TestCase
         $this->assertResponseCode(200);
         $this->assertArrayHasKey('labels', $data);
         $this->assertArrayHasKey('series', $data);
-        throw new Exception(print_r($data));
     }
 
     public function test_flow()
@@ -110,7 +109,6 @@ class Nlp_test extends TestCase
         $output = $this->request('GET', self::$page.self::$key.'/flow/');
         $data = (array) json_decode($output);
         $this->assertResponseCode(200);
-        throw new Exception(print_r($data));
         $this->assertArrayHasKey('series', $data);
 
     }

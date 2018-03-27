@@ -48,7 +48,7 @@ class Sentence_model extends CI_Model {
                 break;
             case 'neutral':
                 $collection = $collection->where('sentences.score BETWEEN -0.25 AND 0.25');
-                $collection = $collection->where('sentences.magnitude','0.00');
+                $collection = $collection->where('sentences.magnitude','0');
                 break;
             case 'mixed':
                 $collection = $collection->where('sentences.score BETWEEN -0.25 AND 0.25');
@@ -85,7 +85,7 @@ class Sentence_model extends CI_Model {
                 break;
             case 'neutral':
                 $collection = $collection->where('sentences.score BETWEEN -0.25 AND 0.25');
-                $collection = $collection->where('sentences.magnitude','NULL');
+                $collection = $collection->where('sentences.magnitude','0');
                 break;
             case 'mixed':
                 $collection = $collection->where('sentences.score BETWEEN -0.25 AND 0.25');
