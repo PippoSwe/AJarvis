@@ -25,6 +25,10 @@ docker build --no-cache -t ajarvis-rest .
 docker tag ajarvis-rest:latest mryattle/ajarvis-rest
 docker push mryattle/ajarvis-rest:latest
 
+Docker aggiornare immagini post-travis build:
+docker-compose pull web
+
+
 Linux:
 sudo docker-compose up
 
