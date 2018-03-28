@@ -1,4 +1,7 @@
 .idea
+Dockerfile
+certs
+docker
 dbms
 logs/apache2/
 *.DS_Store
