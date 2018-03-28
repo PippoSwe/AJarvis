@@ -110,7 +110,6 @@ class Nlp_test extends TestCase
         $data = (array) json_decode($output);
         $this->assertResponseCode(200);
         $this->assertArrayHasKey('series', $data);
-
     }
 
     public function test_sentences()
@@ -141,6 +140,55 @@ class Nlp_test extends TestCase
     public function test_sentences_bad()
     {
         $output = $this->request('GET', self::$page.self::$key.'/sentences/bad/');
+        $data = (array) json_decode($output);
+        $this->assertResponseCode(200);
+
+        foreach($data as $value){
+            $this->assertTrue( property_exists($value, 'sentence') );
+            $this->assertTrue( property_exists($value, 'score') );
+            $this->assertTrue( property_exists($value, 'magnitude') );
+        }
+    }
+
+    public function test_entities()
+    {
+        $output = $this->request('GET', self::$page.self::$key.'/entities/');
+        $data = (array) json_decode($output);
+        $this->assertResponseCode(200);
+       // throw new Exception( print_r($data));
+
+        foreach($data as $value){
+            $this->assertTrue( property_exists($value, 'name') );
+            $this->assertTrue( property_exists($value, 'type') );
+            $this->assertTrue( property_exists($value, 'salience') );
+        }
+
+    }
+
+    public function test_project_flow()
+    {
+        $output = $this->request('GET', self::$fk1_page.self::$fk1_key.'/flow/');
+        $data = (array) json_decode($output);
+        $this->assertResponseCode(200);
+        $this->assertArrayHasKey('series', $data);
+    }
+
+    public function test_project_sentences_good()
+    {
+        $output = $this->request('GET', self::$fk1_page.self::$fk1_key.'/sentences/good/');
+        $data = (array) json_decode($output);
+        $this->assertResponseCode(200);
+
+        foreach($data as $value){
+            $this->assertTrue( property_exists($value, 'sentence') );
+            $this->assertTrue( property_exists($value, 'score') );
+            $this->assertTrue( property_exists($value, 'magnitude') );
+        }
+    }
+
+    public function test_project_sentences_bad()
+    {
+        $output = $this->request('GET', self::$fk1_page.self::$fk1_key.'/sentences/bad/');
         $data = (array) json_decode($output);
         $this->assertResponseCode(200);
 

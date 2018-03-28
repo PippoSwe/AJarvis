@@ -64,6 +64,9 @@ $route['api/keyword/(:num)'] = 'api/Keyword/target/$1';
 # Project
 $route['api/project/'] = 'api/Project/index';
 $route['api/project/(:num)'] = 'api/Project/target/$1';
+$route['api/project/(:num)/flow'] = 'api/Project/flow/$1';
+$route['api/project/(:num)/sentences/good'] = 'api/Project/sentences_good/$1';
+$route['api/project/(:num)/sentences/bad'] = 'api/Project/sentences_bad/$1';
 
 # Project Keywords
 $route['api/project/(:num)/keyword'] = 'api/ProjectKeyword/index/$1';

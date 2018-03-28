@@ -51,6 +51,54 @@ class Project extends CI_Controller
         $this->view($id);
     }
 
+    public function flow($id)
+    {
+        $entry = $this->projects->flow(
+            $id,
+            $limit = $this->input->get('limit'),
+            $offset = $this->input->get('offset')
+        );
+
+        $result= new stdClass();
+        $result->series = array();
+
+        foreach ($entry as $value) {
+            array_push($result->series, $value->score);
+        }
+
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($result));
+    }
+
+    public function sentences_good($id)
+    {
+        $entry = $this->projects->sentences(
+            $id,
+            $type = 'positive',
+            $limit = $this->input->get('limit'),
+            $offset = $this->input->get('offset')
+        );
+
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($entry));
+    }
+
+    public function sentences_bad($id)
+    {
+        $entry = $this->projects->sentences(
+            $id,
+            $type = 'negative',
+            $limit = $this->input->get('limit'),
+            $offset = $this->input->get('offset')
+        );
+
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($entry));
+    }
+
     /**
      * @SWG\Get(
      *     path="project/",

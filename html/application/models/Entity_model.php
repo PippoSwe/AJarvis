@@ -15,6 +15,7 @@ class Entity_model extends CI_Model {
         parent::__construct();
     }
 
+
     public function find($standup_id = null, $limit = null, $offset = 0)
     {
         //https://www.codeigniter.com/userguide3/database/query_builder.html#looking-for-similar-data
@@ -23,6 +24,24 @@ class Entity_model extends CI_Model {
         $collection = $collection->join('standups', 'standups.id = standup_id', 'left');
         if (!is_null($standup_id))
             $collection = $collection->where('standup_id', $standup_id);
+        if (!is_null($limit))
+            $collection = $collection->limit($limit, $offset);
+        $result = $collection
+            ->get()
+            ->result();
+        return $result;
+    }
+
+    public function getMoreImportant($standup_id = null, $limit = null, $offset = 0)
+    {
+        //https://www.codeigniter.com/userguide3/database/query_builder.html#looking-for-similar-data
+        $collection = $this->db->select('name, type, salience')
+            ->from('entities');
+        $collection = $collection->join('standups', 'standups.id = standup_id', 'left');
+        if (!is_null($standup_id))
+            $collection = $collection->where('standup_id', $standup_id);
+        $collection = $collection->not_like('type','OTHER');
+        $collection = $collection->order_by('salience', 'DESC');
         if (!is_null($limit))
             $collection = $collection->limit($limit, $offset);
         $result = $collection

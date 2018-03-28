@@ -42,26 +42,16 @@ class Sentence_model extends CI_Model {
         switch ($type) {
             case 'positive':
                 $collection = $collection->where('sentences.score > 0.25');
+                $collection = $collection->order_by('sentences.score', 'DESC');
                 break;
             case 'negative':
                 $collection = $collection->where('sentences.score < -0.25');
+                $collection = $collection->order_by('sentences.score', 'ASC');
                 break;
- /*
-                case 'neutral':
-                $collection = $collection->where('sentences.score BETWEEN -0.25 AND 0.25');
-                $collection = $collection->where('sentences.magnitude','0');
-                break;
-            case 'mixed':
-                $collection = $collection->where('sentences.score BETWEEN -0.25 AND 0.25');
-                $collection = $collection->where('sentences.magnitude > 0');
-                break;
- */
             default:
                 break;
         }
 
-        if( $type != 'all' )
-            $collection = $collection->order_by('sentences.score', 'ASC');
         if (!is_null($limit))
             $collection = $collection->limit($limit, $offset);
         $result = $collection

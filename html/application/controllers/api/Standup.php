@@ -63,11 +63,15 @@ class Standup extends CI_Controller
 
     public function entities($id)
     {
-        /*
+        $entry = $this->entities->getMoreImportant(
+            $id,
+            $limit = $this->input->get('limit'),
+            $offset = $this->input->get('offset')
+        );
+
         $this->output
             ->set_content_type('application/json')
-            ->set_output(json_encode($standup_entity));
-        */
+            ->set_output(json_encode($entry));
     }
 
     public function sentences($id)
