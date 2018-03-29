@@ -59,8 +59,6 @@ class Project_model extends CI_Model {
                 $collection = $collection->where('sentences.score < -0.25');
                 $collection = $collection->order_by('sentences.score', 'ASC');
                 break;
-            default:
-                break;
         }
 
         if (!is_null($limit))
