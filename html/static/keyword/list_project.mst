@@ -1,3 +1,0 @@
-{{#items}}
-        <a href="../recorder/recorder.html?id={{id}}" data-id={{id}} class="sidebar-nav-link">{{project}}</a>
-{{/items}}

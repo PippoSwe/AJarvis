@@ -3,92 +3,151 @@
 <head>
     <title>Keywords | AJarvis</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <!--#include virtual="/static/tpl/meta.html"-->  
+    <!--#include virtual="/assets/tpl/meta.html"-->  
+    <script type="text/javascript">
+            function Controller(page) {
+                this.page = page;
+                this.onClickDelete = function(selector) {
+                    var ref = this;
+                    $(selector).click(function() {
+                        var data_id = $(this).attr("data-id");
+                        var div_id = "#list-item-"+data_id;
+                        $("body").on('click', '#confirm-delete', function () {
+                            $.ajax({
+                                url: ref.page+data_id,
+                                type: "DELETE",
+                                success: function(data) {
+                                    $("div").remove(div_id);
+                                    var structure = {strong:"Eliminazione della keyword avvenuta con successo", class:"success", t:"", dismiss:"alert-dismissible fade show"}; //passo i messaggi per riusare il file mst
+                                    $.get('alert.mst', function(template) {
+                                        var rendered = Mustache.render(template, {items: structure}); //richiede un'array associativo
+                                        $('#error').html(rendered);
+                                    });
+                                },
+                                error: function(xhr, status, text) {
+                                    var structure = {x:xhr, s:status, t:text, class:"danger", strong:"Errore!", dismiss:"alert-dismissible fade show"};
+                                    $.get('alert.mst', function(template) {
+                                        var rendered = Mustache.render(template, {items: structure}); //richiede un'array associativo
+                                        $('#error').html(rendered);
+                                    });
+                                }
+                            });
+                        });
+                    });
+                };
+                this.onClickEdit = function(selector) {
+                    var ref = this;
+                    $(selector).click(function() {
+                        var data_id = $(this).attr("data-id");
+                        $.ajax({
+                            url: ref.page+data_id,
+                            type: "GET",
+                            success: function(data) {
+                                ref.inizializeUpdateForm(data);
+                                $("#save-modal").modal("show");
+                            },
+                            error: function(xhr, status, text) {
+                                var structure = {x:xhr, s:status, t:text, class:"danger", strong:"Errore!", dismiss:"alert-dismissible fade show"};
+                                $.get('alert.mst', function(template) {
+                                    var rendered = Mustache.render(template, {items: structure}); //richiede un'array associativo
+                                    $('#error').html(rendered);
+                                });
+                            }
+                        });
+                    });
+                };
+                this.onClickSave = function() {
+                    var ref = this;
+                    $("#btn-insert").click(function() {
+                        ref.inizializeInsertForm();
+                        $("#save-modal").modal("show");
+                    });
+                    ref.checkSaveButton();
+                    $("#confirm-save").click(function(event) {
+                        $.ajax({
+                            url: $("#save").attr("action"),
+                            type: $("#save").attr("method"),
+                            data: $("#save").serialize(),
+                            success: function(data) {
+                                $("#save-modal").modal("hide");
+                                var structure = {strong:"Salvataggio avvenuto avvenuto", class:"success", t:""}; //passo i messaggi per riusare il file mst
+                                $.get('alert.mst', function(template) {
+                                    var rendered = Mustache.render(template, {items: structure}); //richiede un'array associativo
+                                    $('#error').html(rendered);
+                                });
+                                ref.loadList();
+                            },
+                            error: function(xhr, status, text) {
+                                var structure = {x:xhr, s:status, t:text, class:"danger", strong:"Errore!"};
+                                $.get('alert.mst', function(template) {
+                                    var rendered = Mustache.render(template, {items: structure}); //richiede un'array associativo
+                                    $('#error').html(rendered);
+                                });
+                            }
+                        });
+                    });
+                };
+                this.saveEnabled = function() {
+                    if ($("#keyword").val().length == 0) {
+                        $("#confirm-save").attr("disabled",true);
+                        return;
+                    }
+                    $("#confirm-save").attr("disabled",false);
+                };
+                this.inizializeInsertForm = function() {
+                    $("#save-title").html("Inserisci una nuova keyword");
+                    $("#confirm-save").attr("disabled",true);
+                    $("#save").attr("method","POST");
+                    $("#save").attr("action",this.page);
+                    $("#keyword").val("");
+                };
+                this.inizializeUpdateForm = function(data) {
+                    $("#save-title").html("Modifica keyword: "+data.keyword);
+                    $("#confirm-save").attr("disabled",false);
+                    $("#save").attr("method","PUT");
+                    $("#save").attr("action",this.page+data.id);
+                    $("#keyword").val(data.keyword);
+                };
+                this.checkSaveButton = function() {
+                    var ref = this;
+                    $("#keyword").keyup(function() {
+                        ref.saveEnabled();
+                    });
+                };
+                this.loadList = function() {
+                    var ref = this;
+                    $.ajax({
+                        url: this.page,
+                        type: "GET",
+                        success: function(data) {
+                            $.get('keyword.mst', function(template) {
+                                var rendered = Mustache.render(template, {items: data});
+                                $('#list').html(rendered);
+                                ref.onClickDelete(".delete");
+                                ref.onClickEdit(".edit");
+                            });
+                        },
+                        error: function(xhr, status, text) {
+                            alert(xhr.responseText);
+                        }
+                    });
+                };
+            };
+
+            $(document).ready(function(){
+                var c = new Controller("/api/keyword/");
+                c.loadList();
+                c.onClickSave();
+            });
+</script>
 </head>
 <body>
         <div class="app">
             <div class="app-body">
-                <!-- sidebar -->
-                <div class="app-sidebar sidebar-dark sidebar-slide-left">
-                    <div class="text-right">
-                        <button type="button" class="btn btn-sidebar" data-dismiss="sidebar">
-                        <span class="x"></span>
-                        </button>
-                    </div>
-                    <div class="sidebar-header">
-                        <h1>AJarvis</h1>
-                    </div>
-                    <div id="sidebar-nav" class="sidebar-nav" data-children=".sidebar-nav-group">
-                        <div class="sidebar-nav-group">
-                            <a href="#components" class="sidebar-nav-link collapsed record-collapsed" data-toggle="collapse" data-parent="#sidebar-nav">
-                                <i class="fa fa-microphone"></i> Registrazione
-                            </a>
-                            <div id="components" class="sidebar-nav-group collapse record-collapse">    </div>
-                        </div>
-                        <div class="sidebar-nav-group">
-                            <a href="#components" class="sidebar-nav-link collapsed dashboard-collapsed" data-toggle="collapse" data-parent="#sidebar-nav">
-                                <i class="icon-chart"></i> Dashboard
-                            </a>
-                            <div id="components" class="sidebar-nav-group collapse dashboard-collapse">
-                                
-                            </div>
-                        </div>
-                        <div class="sidebar-nav-group">
-                            <a href="#content" class="sidebar-nav-link collapsed" data-toggle="collapse" data-parent="#sidebar-nav">
-                                <i class="icon-list"></i> Pannello di controllo
-                            </a>
-                            <div id="content" class="sidebar-nav-group collapse">
-                                <a href="../project/index.html" class="sidebar-nav-link">Progetti</a>
-                                <a href="../member/index.html" class="sidebar-nav-link">Membri</a>
-                                <a href="#" class="sidebar-nav-link">Keywords</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="sidebar-footer">
-                        <a href="https://github.com/link a sorgente" data-toggle="tooltip" title="GitHub">
-                            <i class="fa fa-github"></i>
-                        </a>
-                    </div>
-                </div>
+                <!--#include virtual="/assets/tpl/sidebar.html"-->
                 
                 <div class="app-content">
-                    <!-- navbar -->
-                    <nav class="navbar navbar-expand navbar-light bg-white">
-                        <button type="button" class="btn btn-sidebar" data-toggle="sidebar">
-                            <i class="fa fa-bars"></i>
-                        </button>
-                        <div class="navbar-brand">
-                            AJarvis
-                        </div>
-                        <ul class="navbar-nav ml-auto">
-                            <li class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span class="badge badge-pill badge-primary">3</span>
-                                    <i class="fa fa-bell-o"></i>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a href="#" class="dropdown-item">
-                                        <small class="text-secondary">Lorem ipsum (today)</small><br>
-                                        <div>Lorem ipsum dolor sit amet...</div>
-                                    </a>
-                                    <div class="dropdown-divider"></div>
-                                    <a href="#" class="dropdown-item">
-                                        <small class="text-secondary">Lorem ipsum (yesterday)</small><br>
-                                        <div>Lorem ipsum dolor sit amet...</div>
-                                    </a>
-                                    <div class="dropdown-divider"></div>
-                                    <a href="#" class="dropdown-item">
-                                        <small class="text-secondary">Lorem ipsum (12/25/2017)</small><br>
-                                        <div>Lorem ipsum dolor sit amet...</div>
-                                    </a>
-                                    <div class="dropdown-divider"></div>
-                                    <a href="#" class="dropdown-item text-primary">
-                                        See all notifications
-                                    </a>
-                                </div>
-                            </li>
-                        </ul>
-                    </nav>
+                    <!--#include virtual="/assets/tpl/navbar.html"-->
                     <!-- breadcrumb -->
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
@@ -102,7 +161,7 @@
                         <div class="container mt-lg-1">
                             <div class="row">
                                 <div class="col-6 mt-lg-5">
-                                    <a class="btn btn-success" href="insert.html" role="button"><span class="ion-ios-plus-outline mr-2"></span>Nuova keyword</a>
+                                    <a id="btn-insert" class="btn btn-success" href="#" role="button"><span class="ion-ios-plus-outline mr-2"></span>Nuova keyword</a>
                                 </div>
                             </div>
                         </div>
@@ -133,153 +192,32 @@
                 </div>
             </div>
         </div>
-
-    <!--<script type="text/javascript">
-            $(document).ready(function(){
-
-                //$(".record-collapsed").on('click', '.record-collapsed', function (event){
-                    $(".record-collapsed").click(function(){
-                    $.ajax({
-                        url: "../../../api/project/",
-                        type: "GET",
-                        success: function(data) {
-                            $.get('list_project.mst', function(template) {
-                                var rendered = Mustache.render(template, {items: data});
-                                $('.record-collapse').html(rendered);
-                            });
-                        },
-                        error: function(xhr, status, text) {
-                            var structure = {x:xhr, s:status, t:text, class:"danger", strong:"Errore!"};
-                            $.get('alert.mst', function(template) {
-                                var rendered = Mustache.render(template, {items: structure}); //richiede un'array associativo
-                                $('#error').html(rendered);
-                            });
-                        }
-                    });
-                });
-
-                //$(".dashboard-collapsed").on('click', '.dashboard-collapsed', function (){
-                    $(".dashboard-collapsed").click(function(){
-                    $.ajax({
-                        url: "../../../api/project/",
-                        type: "GET",
-                        success: function(data) {
-                            $.get('list_project.mst', function(template) {
-                                var rendered = Mustache.render(template, {items: data});
-                                $('.dashboard-collapse').html(rendered);
-                            });
-                        },
-                        error: function(xhr, status, text) {
-                            var structure = {x:xhr, s:status, t:text, class:"danger", strong:"Errore!"};
-                            $.get('alert.mst', function(template) {
-                                var rendered = Mustache.render(template, {items: structure}); //richiede un'array associativo
-                                $('#error').html(rendered);
-                            });
-                        }
-                    });
-                });
-
-            $.ajax({
-                url: "../../../api/keyword/",
-                type: "GET",
-                success: function(data) {
-                    $.get('keyword.mst', function(template) {
-                        var rendered = Mustache.render(template, {items: data});
-                        $('#list').html(rendered);
-                    });
-                },
-                error: function(xhr, status, text) {
-                    var structure = {x:xhr, s:status, t:text, class:"danger", strong:"Errore!"};
-                    $.get('alert.mst', function(template) {
-                        var rendered = Mustache.render(template, {items: structure}); //richiede un'array associativo
-                        $('#error').html(rendered);
-                    });
-                }
-            });
-            var x = "";
-            $(".container").on('click', '.btn-delete', function (event) {
-                x = this.id;
-                $("body").on('click', '#confirm-delete', function () {
-                    $.ajax({
-                        url: "../../../api/keyword/"+x,
-                        type: "DELETE",
-                        success: function(data) {
-                            $("div").remove("#"+x);
-                            var structure = {strong:"Eliminazione della keyword avvenuta con successo", class:"success", t:""}; //passo i messaggi per riusare il file mst
-                            $.get('alert.mst', function(template) {
-                                var rendered = Mustache.render(template, {items: structure}); //richiede un'array associativo
-                                $('#error').html(rendered);
-                            });
-                        },
-                        error: function(xhr, status, text) {
-                            var structure = {x:xhr, s:status, t:text, class:"danger", strong:"Errore!"};
-                            $.get('alert.mst', function(template) {
-                                var rendered = Mustache.render(template, {items: structure}); //richiede un'array associativo
-                                $('#error').html(rendered);
-                            });
-                        }
-                    });
-                });
-            })
-        });
-        </script> -->
+        <!-- insert modal -->
+        <div class="modal fade hide" id="save-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="save-title"></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="save" method="" action="">
+                            <div class="form-group">
+                                <label for="keyword" class="col-form-label">Keyword:</label>
+                                <input type="text" class="form-control" id="keyword" name="keyword" placeholder="Keyword" data-placement="right" required>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                        <button type="button" id="confirm-save" class="btn btn-success" disabled="disabled"><span class="ion-ios-checkmark-outline mr-2"></span>Salva</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     
-        <script type="text/javascript">
-            function Controller(page) {
-                this.page = page;
-                this.onClickDelete = function(selector) {
-                    $(selector).click(function() {
-                        var div_id = "#"+$(this).parent().parent().attr("id");
-                        $.ajax({
-                            url: "../../../api/keyword/"+$(this).attr("data-id"),
-                            type: "DELETE",
-                            success: function(data) {
-                                $("div").remove(div_id);
-                                var structure = {strong:"Eliminazione della keyword avvenuta con successo", class:"success", t:""}; //passo i messaggi per riusare il file mst
-                                $.get('alert.mst', function(template) {
-                                    var rendered = Mustache.render(template, {items: structure}); //richiede un'array associativo
-                                    $('#error').html(rendered);
-                                });
-                            },
-                            error: function(xhr, status, text) {
-                                var structure = {x:xhr, s:status, t:text, class:"danger", strong:"Errore!"};
-                                $.get('alert.mst', function(template) {
-                                    var rendered = Mustache.render(template, {items: structure}); //richiede un'array associativo
-                                    $('#error').html(rendered);
-                                });
-                            }
-                        });
-                    });
-                };
-                this.onClickEdit = function(selector) {
-                    $(selector).click(function() {
-                        alert($(this).attr("data-id"));
-                    });
-                };
-                this.loadList = function() {
-                    var ref = this;
-                    $.ajax({
-                        url: this.page,
-                        type: "GET",
-                        success: function(data) {
-                            $.get('keyword.mst', function(template) {
-                                var rendered = Mustache.render(template, {items: data});
-                                $('#list').html(rendered);
-                                ref.onClickDelete(".delete");
-                                ref.onClickEdit(".edit");
-                            });
-                        },
-                        error: function(xhr, status, text) {
-                            alert(xhr.responseText);
-                        }
-                    });
-                };
-            };
-
-            $(document).ready(function(){
-                var c = new Controller("../../../api/keyword/");
-                c.loadList();
-            });
-</script>
+        
 </body>
 </html>
