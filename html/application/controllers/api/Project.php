@@ -51,6 +51,42 @@ class Project extends CI_Controller
         $this->view($id);
     }
 
+    /**
+     * @SWG\Get(
+     *     path="member/{id}/",
+     *     summary="Andamento del discorso",
+     *     description="Ritorna una serie di Double che rappresentano l'andamento del progetto",
+     *     produces={"application/json"},
+     *     tags={"Project"},
+     *     @SWG\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="Project id",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *      @SWG\Parameter(
+     *         name="limit",
+     *         in="query",
+     *         description="Recupera {limit} elementi",
+     *         type="integer",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="offset",
+     *         in="query",
+     *         description="Inizio paginazione",
+     *         type="string",
+     *     ),
+     *     @SWG\Response(
+     *         response=200,
+     *         description="Success",
+     *     ),
+     *     @SWG\Response(
+     *         response="500",
+     *         description="Internal Server Error"
+     *     )
+     * )
+     */
     public function flow($id)
     {
         $entry = $this->projects->flow(
@@ -71,6 +107,42 @@ class Project extends CI_Controller
             ->set_output(json_encode($result));
     }
 
+    /**
+     * @SWG\Get(
+     *     path="member/{id}/",
+     *     summary="Frasi Rilevanti",
+     *     description="Ritorna le frasi rilevanti nel discorso con relativi score e magnitude",
+     *     produces={"application/json"},
+     *     tags={"Project"},
+     *     @SWG\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="Project id",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *      @SWG\Parameter(
+     *         name="limit",
+     *         in="query",
+     *         description="Recupera {limit} elementi",
+     *         type="integer",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="offset",
+     *         in="query",
+     *         description="Inizio paginazione",
+     *         type="string",
+     *     ),
+     *     @SWG\Response(
+     *         response=200,
+     *         description="Success",
+     *     ),
+     *     @SWG\Response(
+     *         response="500",
+     *         description="Internal Server Error"
+     *     )
+     * )
+     */
     public function sentences_good($id)
     {
         $entry = $this->projects->sentences(
@@ -85,6 +157,42 @@ class Project extends CI_Controller
             ->set_output(json_encode($entry));
     }
 
+    /**
+     * @SWG\Get(
+     *     path="member/{id}/",
+     *     summary="Frasi Problematiche",
+     *     description="Ritorna le frasi problematiche nel discorso con relativi score e magnitude",
+     *     produces={"application/json"},
+     *     tags={"Project"},
+     *     @SWG\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="Project id",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *      @SWG\Parameter(
+     *         name="limit",
+     *         in="query",
+     *         description="Recupera {limit} elementi",
+     *         type="integer",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="offset",
+     *         in="query",
+     *         description="Inizio paginazione",
+     *         type="string",
+     *     ),
+     *     @SWG\Response(
+     *         response=200,
+     *         description="Success",
+     *     ),
+     *     @SWG\Response(
+     *         response="500",
+     *         description="Internal Server Error"
+     *     )
+     * )
+     */
     public function sentences_bad($id)
     {
         $entry = $this->projects->sentences(

@@ -49,6 +49,7 @@ class Sentence_model extends CI_Model {
                 $collection = $collection->order_by('sentences.score', 'ASC');
                 break;
             default:
+                $collection = $collection->order_by('sentences.id', 'ASC');
                 break;
         }
 
