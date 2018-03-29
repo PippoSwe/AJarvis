@@ -42,7 +42,7 @@ class Project_model extends CI_Model {
 
     public function sentences($project_id = null, $type ='all' , $limit = null, $offset = 0)
     {
-        $collection = $this->db->select('sentence, sentences.score, sentences.magnitude')
+        $collection = $this->db->select('sentence, sentences.score, sentences.magnitude, standups.id AS standup_id')
             ->from('sentences');
         $collection = $collection->join('standups', 'standups.id = standup_id', 'left');
         $collection = $collection->join('projects', 'projects.id = project_id', 'left');

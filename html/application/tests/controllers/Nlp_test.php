@@ -183,6 +183,7 @@ class Nlp_test extends TestCase
             $this->assertTrue( property_exists($value, 'sentence') );
             $this->assertTrue( property_exists($value, 'score') );
             $this->assertTrue( property_exists($value, 'magnitude') );
+            $this->assertTrue( property_exists($value, 'standup_id') );
         }
     }
 
@@ -196,6 +197,7 @@ class Nlp_test extends TestCase
             $this->assertTrue( property_exists($value, 'sentence') );
             $this->assertTrue( property_exists($value, 'score') );
             $this->assertTrue( property_exists($value, 'magnitude') );
+            $this->assertTrue( property_exists($value, 'standup_id') );
         }
     }
 
