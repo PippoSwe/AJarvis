@@ -50,6 +50,30 @@ function Controller(entity, page) {
             });
         });
     };
+    this.sendSaveRequest = function() {
+        var ref = this;
+        $.ajax({
+            url: $("#save").attr("action"),
+            type: $("#save").attr("method"),
+            data: $("#save").serialize(),
+            success: function(data) {
+                $("#save-modal").modal("hide");
+                var structure = {strong:"Salvataggio avvenuto con successo", class:"success", t:""}; //passo i messaggi per riusare il file mst
+                $.get('alert.mst', function(template) {
+                    var rendered = Mustache.render(template, {items: structure}); //richiede un'array associativo
+                    $('#message').html(rendered);
+                });
+                ref.loadList();
+            },
+            error: function(xhr, status, text) {
+                var structure = {x:xhr, s:status, t:text, class:"danger", strong:"Errore!"};
+                $.get('alert.mst', function(template) {
+                    var rendered = Mustache.render(template, {items: structure}); //richiede un'array associativo
+                    $('#message').html(rendered);
+                });
+            }
+        });
+    };
     this.onClickSave = function() {
         var ref = this;
         $("#btn-insert").click(function() {
@@ -57,28 +81,9 @@ function Controller(entity, page) {
             $("#save-modal").modal("show");
         });
         ref.checkSaveButton();
-        $("#confirm-save").click(function(event) {
-            $.ajax({
-                url: $("#save").attr("action"),
-                type: $("#save").attr("method"),
-                data: $("#save").serialize(),
-                success: function(data) {
-                    $("#save-modal").modal("hide");
-                    var structure = {strong:"Salvataggio avvenuto con successo", class:"success", t:""}; //passo i messaggi per riusare il file mst
-                    $.get('alert.mst', function(template) {
-                        var rendered = Mustache.render(template, {items: structure}); //richiede un'array associativo
-                        $('#message').html(rendered);
-                    });
-                    ref.loadList();
-                },
-                error: function(xhr, status, text) {
-                    var structure = {x:xhr, s:status, t:text, class:"danger", strong:"Errore!"};
-                    $.get('alert.mst', function(template) {
-                        var rendered = Mustache.render(template, {items: structure}); //richiede un'array associativo
-                        $('#message').html(rendered);
-                    });
-                }
-            });
+        $("#save").submit(function(event) {
+            event.preventDefault();
+            ref.sendSaveRequest();
         });
     };
 
