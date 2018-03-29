@@ -2,51 +2,115 @@
 <html>
     <head>
         <title>Membri | AJarvis</title>
-        <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-
-        <!-- Bootstap CSS -->
-        <link rel="stylesheet" href="/assets/css/bootstrap.min.css" >
-
-        <!--ICONS-->
-        <link rel="stylesheet" href="/assets/css/ionicons.min.css" >
-
-        <!--  JS Popper jQuery -->
-        <script src="/assets/js/jquery-3.3.1.min.js"></script>
-        <!--Mustache-->
-        <script src="/assets/js/gui/mustache.min.js"></script>
-        <script src="/assets/js/gui/popper.min.js" ></script>
-        <script src="/assets/js/gui/bootstrap.min.js"></script>
+        <!--#include virtual="/static/tpl/meta.html"-->  
     </head>
-    <body class="bg-light form-group">
-        <!-- Nav With Logo -->
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-            </button>
-            <a class="navbar-brand" href="#">AJarvis</a>
-            <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
-                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                    <a class="nav-link" href="index.html">Registrazione</a>
-                    <li class="nav-item">
-                        <a class="nav-link" href="dashboard.html">Dashboard</a>
-                    </li>
-                    <li class="nav-item dropdown">
-
-                        <a class="nav-link dropdown-toggle active" data-toggle="dropdown" href="#">Pannello di Controllo <span class="sr-only">(current)</a>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="../project/index.html">Progetti <span class="sr-only">(current)</a>
-                            <a class="dropdown-item" href="#">Membri</a>
-                            <a class="dropdown-item" href="../keyword/index.html">Keywords</a>
+    <body>
+        <div class="app">
+            <div class="app-body">
+                <!-- sidebar -->
+                <div class="app-sidebar sidebar-dark sidebar-slide-left">
+                    <div class="text-right">
+                        <button type="button" class="btn btn-sidebar" data-dismiss="sidebar">
+                        <span class="x"></span>
+                        </button>
+                    </div>
+                    <div class="sidebar-header">
+                        <h1>AJarvis</h1>
+                    </div>
+                    <div id="sidebar-nav" class="sidebar-nav" data-children=".sidebar-nav-group">
+                        <div class="sidebar-nav-group">
+                            <a href="#components" class="sidebar-nav-link collapsed record-collapsed" data-toggle="collapse" data-parent="#sidebar-nav">
+                                <i class="fa fa-microphone"></i> Registrazione
+                            </a>
+                            <div id="components" class="sidebar-nav-group collapse record-collapse">    </div>
                         </div>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Monitor</a>
-                    </li>
-                </ul>
+                        <div class="sidebar-nav-group">
+                            <a href="#components" class="sidebar-nav-link collapsed dashboard-collapsed" data-toggle="collapse" data-parent="#sidebar-nav">
+                                <i class="icon-chart"></i> Dashboard
+                            </a>
+                            <div id="components" class="sidebar-nav-group collapse dashboard-collapse">
+                                
+                            </div>
+                        </div>
+                        <div class="sidebar-nav-group">
+                            <a href="#content" class="sidebar-nav-link collapsed" data-toggle="collapse" data-parent="#sidebar-nav">
+                                <i class="icon-list"></i> Pannello di controllo
+                            </a>
+                            <div id="content" class="sidebar-nav-group collapse">
+                                <a href="../project/index.html" class="sidebar-nav-link">Progetti</a>
+                                <a href="#" class="sidebar-nav-link">Membri</a>
+                                <a href="../keyword/index.html" class="sidebar-nav-link">Keywords</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sidebar-footer">
+                        <a href="https://github.com/link a sorgente" data-toggle="tooltip" title="GitHub">
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="app-content">
+                    <!-- navbar -->
+                    <nav class="navbar navbar-expand navbar-light bg-white">
+                        <button type="button" class="btn btn-sidebar" data-toggle="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <div class="navbar-brand">
+                            AJarvis
+                        </div>
+                        <ul class="navbar-nav ml-auto">
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="badge badge-pill badge-primary">3</span>
+                                    <i class="fa fa-bell-o"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a href="#" class="dropdown-item">
+                                        <small class="text-secondary">Lorem ipsum (today)</small><br>
+                                        <div>Lorem ipsum dolor sit amet...</div>
+                                    </a>
+                                    <div class="dropdown-divider"></div>
+                                    <a href="#" class="dropdown-item">
+                                        <small class="text-secondary">Lorem ipsum (yesterday)</small><br>
+                                        <div>Lorem ipsum dolor sit amet...</div>
+                                    </a>
+                                    <div class="dropdown-divider"></div>
+                                    <a href="#" class="dropdown-item">
+                                        <small class="text-secondary">Lorem ipsum (12/25/2017)</small><br>
+                                        <div>Lorem ipsum dolor sit amet...</div>
+                                    </a>
+                                    <div class="dropdown-divider"></div>
+                                    <a href="#" class="dropdown-item text-primary">
+                                        See all notifications
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                    </nav>
+                    <!-- breadcrumb -->
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">Home</li>
+                            <li class="breadcrumb-item active" aria-current="page">Membri</li>
+                        </ol>
+                    </nav>
+                    <!-- content -->
+                    <div class="container-fluid">
+                        <div id="error"></div>
+                        <div class="container mt-lg-5" id="list">&nbsp; </div>
+                        <div class="container mt-lg-5">
+                            <div class="row">
+                                <div class="col-6 mt-lg-5">
+                                    <a class="btn btn-success" href="insert.html" role="button"><span class="ion-ios-plus-outline mr-2"></span>Nuovo membro</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </nav>
-        <!-- Managing projects -->
+        </div>
 
         <!-- Modal -->
         <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -65,16 +129,6 @@
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
                         <button type="button" id="confirm-delete" class="btn btn-danger" data-dismiss="modal"><span class="ion-ios-trash-outline mr-2"></span>Elimina</button>
                     </div>
-                </div>
-            </div>
-        </div>
-
-        <div id="error"></div>
-        <div class="container mt-lg-5" id="list">&nbsp; </div>
-        <div class="container mt-lg-5">
-            <div class="row">
-                <div class="col-6 mt-lg-5">
-                    <a class="btn btn-success" href="insert.html" role="button"><span class="ion-ios-plus-outline mr-2"></span>Nuovo membro</a>
                 </div>
             </div>
         </div>
