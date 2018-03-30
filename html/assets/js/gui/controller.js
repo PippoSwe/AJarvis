@@ -1,6 +1,12 @@
 function Controller(entity, page) {
     this.entity =entity;
     this.page = page;
+    this.alert = function(structure) {
+        $.get('/assets/tpl/alert.mst', function(template) {
+            var rendered = Mustache.render(template, {items: structure}); //richiede un'array associativo
+            $('#message').html(rendered);
+        });
+    };
     this.onClickDelete = function(selector) {
         var ref = this;
         $(selector).click(function() {
@@ -13,17 +19,11 @@ function Controller(entity, page) {
                     success: function(data) {
                         $("div").remove(div_id);
                         var structure = {strong:"Eliminazione avvenuta con successo", class:"success", t:"", dismiss:"alert-dismissible fade show"}; //passo i messaggi per riusare il file mst
-                        $.get('alert.mst', function(template) {
-                            var rendered = Mustache.render(template, {items: structure}); //richiede un'array associativo
-                            $('#message').html(rendered);
-                        });
+                        ref.alert(structure);
                     },
                     error: function(xhr, status, text) {
                         var structure = {x:xhr, s:status, t:text, class:"danger", strong:"Errore!", dismiss:"alert-dismissible fade show"};
-                        $.get('alert.mst', function(template) {
-                            var rendered = Mustache.render(template, {items: structure}); //richiede un'array associativo
-                            $('#message').html(rendered);
-                        });
+                        ref.alert(structure);
                     }
                 });
             });
@@ -42,10 +42,7 @@ function Controller(entity, page) {
                 },
                 error: function(xhr, status, text) {
                     var structure = {x:xhr, s:status, t:text, class:"danger", strong:"Errore!", dismiss:"alert-dismissible fade show"};
-                    $.get('alert.mst', function(template) {
-                        var rendered = Mustache.render(template, {items: structure}); //richiede un'array associativo
-                        $('#message').html(rendered);
-                    });
+                    ref.alert(structure);
                 }
             });
         });
@@ -59,18 +56,12 @@ function Controller(entity, page) {
             success: function(data) {
                 $("#save-modal").modal("hide");
                 var structure = {strong:"Salvataggio avvenuto con successo", class:"success", t:""}; //passo i messaggi per riusare il file mst
-                $.get('alert.mst', function(template) {
-                    var rendered = Mustache.render(template, {items: structure}); //richiede un'array associativo
-                    $('#message').html(rendered);
-                });
+                ref.alert(structure);
                 ref.loadList();
             },
             error: function(xhr, status, text) {
                 var structure = {x:xhr, s:status, t:text, class:"danger", strong:"Errore!"};
-                $.get('alert.mst', function(template) {
-                    var rendered = Mustache.render(template, {items: structure}); //richiede un'array associativo
-                    $('#message').html(rendered);
-                });
+                ref.alert(structure);
             }
         });
     };
@@ -93,15 +84,17 @@ function Controller(entity, page) {
             url: this.page,
             type: "GET",
             success: function(data) {
-                $.get('item.mst', function(template) {
-                    var rendered = Mustache.render(template, {items: data});
-                    $('#list').html(rendered);
-                    ref.onClickDelete(".delete");
-                    ref.onClickEdit(".edit");
-                });
+                if(data.length > 0)
+                    $.get('item.mst', function(template) {
+                        var rendered = Mustache.render(template, {items: data});
+                        $('#list').html(rendered);
+                        ref.onClickDelete(".delete");
+                        ref.onClickEdit(".edit");
+                    });
             },
             error: function(xhr, status, text) {
-                alert(xhr.responseText);
+                var structure = {x:xhr, s:status, t:xhr.responseText, class:"danger", strong:"Errore!", dismiss:"alert-dismissible fade show"};
+                ref.alert(structure);
             }
         });
     };

@@ -13,9 +13,6 @@ function populateSideBar() {
                 $('#components').html(rendered);
                 $('#component').html(rendered);
             });
-        },
-        error: function(xhr, status, text) {
-            alert(xhr.responseText);
         }
     });
 }
