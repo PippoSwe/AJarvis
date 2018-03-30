@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard | AJarvis</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <!--#include virtual="/assets/tpl/meta.html"--> 
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <!--<link rel="stylesheet" href="/resources/demos/style.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>-->
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> 
+    <script type="text/javascript">
+        $( function() {
+            var availableKeyword = [];
+            $(document).ready(function() {
+                $( "#project-keyword" ).autocomplete({
+                    source: function( request, response ) {
+                        $.ajax({
+                            url: "/api/keyword/",
+                            data: {
+                                q: request.term
+                            },
+                            success: function( data ) {
+                                response($.map(data, function (item) {
+                                    return {
+                                        label: item.keyword,
+                                        value: item.id
+                                    };
+                                }));
+                            }
+                        });
+                    },
+                    change: function( event, ui ) {
+                        if( $("#project-keyword").val.length != 0) {
+                            $("#save").removeClass("d-none");
+                        }else {
+                            $("#save").addClass("d-none");
+                        }
+                    }
+                });
+            });
+
+            function saveEnable() {
+                if ($("#project-keyword").val().length == 0) {
+                    $("#save").attr("disabled",true);
+                    return;
+                }
+                $("#save").attr("disabled",false);
+            };
+
+            $("#project-keyword").keyup(function() {
+                saveEnable();
+            });
+
+            $("#save-keyword").click(function(event) {
+                event.preventDefault();
+                $.ajax({
+                    url: "/api/keyword/",
+                    type: "GET",
+                    success: function(data) {
+                        if(data.length > 0)
+                            $.get('keyword.mst', function(template) {
+                                var rendered = Mustache.render(template, {items: data});
+                                $('#list-keyword').html(rendered);
+                            });
+                    },
+                    error: function(xhr, status, text) {
+                        aler("Non va");
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+        <div class="app">
+            <div class="app-body">
+                <!--#include virtual="/assets/tpl/sidebar.html"-->
+                
+                <div class="app-content">
+                    <!--#include virtual="/assets/tpl/navbar.html"-->
+                    <!-- breadcrumb -->
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">Home</li>
+                            <li class="breadcrumb-item active" aria-current="page">Dashboard progetto</li>
+                        </ol>
+                    </nav>
+                    <!-- content -->
+                    <div class="container">
+                        <div id="message"></div>
+                        <div class="container mt-lg-5">
+                            <div class="row border border-info p-3">
+                                <div class="col border border-secondary bg-secondary">
+                                    <h5 class="card-title border-bottom border-light">Associa Keywords</h5>
+                                    <form class="form-inline mt-2">
+                                        <div class="form-group mb-2">
+                                            <label for="project-keyword">Keyword:</label>
+                                            <input type="text" name="project-keyword" id="project-keyword" class="form-control ml-2">
+                                        </div>
+                                        <button type="submit" name="save-keyword" id="save" class="btn btn-primary mb-2 ml-2" disabled="disabled"><span class="ion-ios-checkmark-outline mr-2"></span>Salva</button>
+                                    </form>
+                                    <div id="list-keyword"> <!-- div lista keyword associate a progetto -->
+                                        
+                                    </div>
+                                </div>
+                                <div class="col border border-secondary ml-5 bg-secondary">
+                                    <h5 class="card-title border-bottom border-light">Associa Membro</h5>
+                                    <form class="form-inline mt-2">
+                                        <div class="form-group mb-2">
+                                            <label for="project-member">Membro:</label>
+                                            <input type="text" name="project-member" id="project-member" class="form-control ml-2">
+                                        </div>
+                                        <button type="submit" name="save-member" id="save" class="btn btn-primary mb-2 ml-2" disabled="disabled"><span class="ion-ios-checkmark-outline mr-2"></span>Salva</button>
+                                    </form>
+                                    <div id="list-member"> <!-- div lista keyword associate a progetto -->
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Managing projects -->
+                        <div class="container mt-5 mt-lg-5" id="list"> &nbsp </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Attenzione!</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Eliminare definitivamente la keyword?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                        <button type="button" id="confirm-delete" class="btn btn-danger" data-dismiss="modal"><span class="ion-ios-trash-outline mr-2"></span>Elimina</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- insert modal -->
+        <div class="modal fade hide" id="save-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="save-title"></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form id="save" method="" action="">
+                        <div class="modal-body">
+                                <div class="form-group">
+                                    <label for="keyword" class="col-form-label">Keyword:</label>
+                                    <input type="text" class="form-control" id="keyword" name="keyword" placeholder="Keyword" data-placement="right" required>
+                                </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                            <button type="submit" id="confirm-save" class="btn btn-success" disabled="disabled"><span class="ion-ios-checkmark-outline mr-2"></span>Salva</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    
+        
+</body>
+</html>
