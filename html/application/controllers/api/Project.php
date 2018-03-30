@@ -53,13 +53,13 @@ class Project extends CI_Controller
 
     /**
      * @SWG\Get(
-     *     path="member/{id}/",
+     *     path="project/{project_id}/flow",
      *     summary="Andamento del discorso",
      *     description="Ritorna una serie di Double che rappresentano l'andamento del progetto",
      *     produces={"application/json"},
      *     tags={"Project"},
      *     @SWG\Parameter(
-     *         name="id",
+     *         name="project_id",
      *         in="path",
      *         description="Project id",
      *         required=true,
@@ -109,13 +109,13 @@ class Project extends CI_Controller
 
     /**
      * @SWG\Get(
-     *     path="member/{id}/",
+     *     path="project/{project_id}/sentences/good",
      *     summary="Frasi Rilevanti",
      *     description="Ritorna le frasi rilevanti nel discorso con relativi score e magnitude",
      *     produces={"application/json"},
-     *     tags={"Project"},
+     *     tags={"project"},
      *     @SWG\Parameter(
-     *         name="id",
+     *         name="project_id",
      *         in="path",
      *         description="Project id",
      *         required=true,
@@ -139,7 +139,7 @@ class Project extends CI_Controller
      *     ),
      *     @SWG\Response(
      *         response="500",
-     *         description="Internal Server Error"
+     *         description="Internal Server Error",
      *     )
      * )
      */
@@ -159,13 +159,13 @@ class Project extends CI_Controller
 
     /**
      * @SWG\Get(
-     *     path="member/{id}/",
+     *     path="project/{project_id}/sentences/bad",
      *     summary="Frasi Problematiche",
      *     description="Ritorna le frasi problematiche nel discorso con relativi score e magnitude",
      *     produces={"application/json"},
      *     tags={"Project"},
      *     @SWG\Parameter(
-     *         name="id",
+     *         name="project_id",
      *         in="path",
      *         description="Project id",
      *         required=true,

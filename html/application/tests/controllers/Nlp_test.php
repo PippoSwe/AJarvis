@@ -83,6 +83,7 @@ class Nlp_test extends TestCase
         $output = $this->request('POST', self::$page.self::$key.'/nlp/',
             json_encode(json_decode($contents)));
         $data = (array) json_decode($output);
+        print_r($data);
         $this->assertResponseCode(200);
         $this->assertArrayHasKey('project_id', $data);
         $this->assertArrayHasKey('standup', $data);
