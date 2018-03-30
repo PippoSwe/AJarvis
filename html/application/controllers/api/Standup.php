@@ -15,13 +15,13 @@ class Standup extends CI_Controller
 
     /**
      * @SWG\Get(
-     *     path="member/{id}/",
+     *     path="standup/{standup_id}/pie",
      *     summary="Distribuzione Tipi",
      *     description="Fornisce i tipi e i dati con il numero di frasi divisi per tipo",
      *     produces={"application/json"},
      *     tags={"Standup"},
      *     @SWG\Parameter(
-     *         name="id",
+     *         name="standup_id",
      *         in="path",
      *         description="Stand up id",
      *         required=true,

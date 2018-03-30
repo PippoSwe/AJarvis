@@ -65,7 +65,8 @@ class Member extends CI_Controller
     private function find() {
         $entry = $this->members->find(
             $limit = $this->input->get('limit'),
-            $offset = $this->input->get('offset')
+            $offset = $this->input->get('offset'),
+            $searchParam = $this->input->get('q')
         );
 
         $this->output
