@@ -44,6 +44,26 @@ class Member_test extends TestCase
         self::$key = $data['id'];
     }
 
+    public function test_like_name_surname()
+    {
+        $output = $this->request('GET', self::$page,
+            ['q' => 'Test Te']);
+        $data = (array) json_decode($output);
+        $this->assertResponseCode(200);
+        $this->assertEquals('Test', $data[0]->firstname );
+        $this->assertEquals('Testoni', $data[0]->lastname );
+    }
+
+    public function test_like_surname_name()
+    {
+        $output = $this->request('GET', self::$page,
+            ['q' => 'Testoni Te']);
+        $data = (array) json_decode($output);
+        $this->assertResponseCode(200);
+        $this->assertEquals('Test', $data[0]->firstname );
+        $this->assertEquals('Testoni', $data[0]->lastname );
+    }
+
     public function test_index()
     {
         $output = $this->request('GET', self::$page,
