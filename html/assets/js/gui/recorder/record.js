@@ -10,7 +10,7 @@ function upload_session() {
         var data = new FormData();
         data.append('file', blob);
         $.ajax({
-            url: "/api/project/1/standup/",
+            url: "/api/project/"+$.urlParam("project_id")+"/standup/",
             type: 'POST',
             data: data,
             contentType: false,
@@ -27,9 +27,11 @@ function upload_session() {
             },
             error: function(xhr, status, text) {
                 Fr.voice.stop();
-                $( "<div class=\"alert alert-danger\">\n" +
-                    "  <strong>Response Error!</strong> " + text + ".\n" +
-                    "</div>" ).appendTo( "#messages"  );
+                var structure = {x:xhr, s:status, t:text, class:"danger", strong:"Errore!", dismiss:"alert-dismissible fade show"};
+                $.get('/assets/tpl/alert.mst', function(template) {
+                    var rendered = Mustache.render(template, {items: structure}); //richiede un'array associativo
+                    $('#message').html(rendered);
+                });
             }
         });
     }, "blob");
