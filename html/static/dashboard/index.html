@@ -21,11 +21,17 @@
                                 response($.map(data, function (item) {
                                     return {
                                         label: item.keyword,
-                                        value: item.id
+                                        value: item.keyword,
+                                        field: item.id
                                     };
                                 }));
                             }
                         });
+                    },
+                    select: function (event, ui) {
+                        var id = ui.item.field;
+                        $('#txtAllowSearchID').attr('value', id);
+                        return true;
                     }
                 });
             });
@@ -57,7 +63,7 @@
             $("#save-keyword").click(function(event) {
                 event.preventDefault();
                 $.ajax({
-                    url: "/api/keyword/",
+                    url: "/api/keyword/"+$("#txtAllowSearchID").val(),
                     type: "GET",
                     success: function(data) {
                         if(data.length > 0)
@@ -116,6 +122,7 @@
                                     <form class="form-inline mt-2">
                                         <div class="form-group mb-2">
                                             <input type="text" name="project-keyword" id="project-keyword" class="form-control ml-2">
+                                            <input type="text" name="txtAllowSearchID" id="txtAllowSearchID" hidden>
                                         </div>
                                         <button type="submit" name="save-keyword" id="save-keyword" class="btn btn-success mb-2 ml-2" disabled="disabled"><span class="ion-ios-checkmark-outline mr-2"></span>Salva</button>
                                     </form>
