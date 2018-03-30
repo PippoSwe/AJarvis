@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <!--#include virtual="/assets/tpl/meta.html"--> 
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-  <!--<link rel="stylesheet" href="/resources/demos/style.css">
-  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>-->
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> 
     <script type="text/javascript">
         $( function() {
@@ -28,27 +26,32 @@
                                 }));
                             }
                         });
-                    },
-                    change: function( event, ui ) {
-                        if( $("#project-keyword").val.length != 0) {
-                            $("#save").removeClass("d-none");
-                        }else {
-                            $("#save").addClass("d-none");
-                        }
                     }
                 });
             });
 
-            function saveEnable() {
+            function saveKeywordEnable() {
                 if ($("#project-keyword").val().length == 0) {
-                    $("#save").attr("disabled",true);
+                    $("#save-keyword").attr("disabled",true);
                     return;
                 }
-                $("#save").attr("disabled",false);
+                $("#save-keyword").attr("disabled",false);
             };
 
             $("#project-keyword").keyup(function() {
-                saveEnable();
+                saveKeywordEnable();
+            });
+
+            function saveMemberEnable() {
+                if ($("#project-member").val().length == 0) {
+                    $("#save-member").attr("disabled",true);
+                    return;
+                }
+                $("#save-member").attr("disabled",false);
+            };
+
+            $("#project-member").keyup(function() {
+                saveMemberEnable();
             });
 
             $("#save-keyword").click(function(event) {
@@ -61,6 +64,24 @@
                             $.get('keyword.mst', function(template) {
                                 var rendered = Mustache.render(template, {items: data});
                                 $('#list-keyword').html(rendered);
+                            });
+                    },
+                    error: function(xhr, status, text) {
+                        aler("Non va");
+                    }
+                });
+            });
+
+            $("#save-member").click(function(event) {
+                event.preventDefault();
+                $.ajax({
+                    url: "/api/member/",
+                    type: "GET",
+                    success: function(data) {
+                        if(data.length > 0)
+                            $.get('member.mst', function(template) {
+                                var rendered = Mustache.render(template, {items: data});
+                                $('#list-member').html(rendered);
                             });
                     },
                     error: function(xhr, status, text) {
@@ -90,27 +111,26 @@
                         <div id="message"></div>
                         <div class="container mt-lg-5">
                             <div class="row border border-info p-3">
-                                <div class="col border border-secondary bg-secondary">
+                                <div class="col border border-secondary ">
                                     <h5 class="card-title border-bottom border-light">Associa Keywords</h5>
                                     <form class="form-inline mt-2">
                                         <div class="form-group mb-2">
-                                            <label for="project-keyword">Keyword:</label>
                                             <input type="text" name="project-keyword" id="project-keyword" class="form-control ml-2">
                                         </div>
-                                        <button type="submit" name="save-keyword" id="save" class="btn btn-primary mb-2 ml-2" disabled="disabled"><span class="ion-ios-checkmark-outline mr-2"></span>Salva</button>
+                                        <button type="submit" name="save-keyword" id="save-keyword" class="btn btn-success mb-2 ml-2" disabled="disabled"><span class="ion-ios-checkmark-outline mr-2"></span>Salva</button>
                                     </form>
-                                    <div id="list-keyword"> <!-- div lista keyword associate a progetto -->
-                                        
+                                    <button data-toggle="collapse" data-target="#demo" class="btn btn-primary">Collapsible</button>
+                                    <div id="demo" class="collapse">
+                                        <div id="list-keyword"> <!-- div lista keyword associate a progetto --></div>   
                                     </div>
                                 </div>
-                                <div class="col border border-secondary ml-5 bg-secondary">
+                                <div class="col border border-secondary ml-5">
                                     <h5 class="card-title border-bottom border-light">Associa Membro</h5>
                                     <form class="form-inline mt-2">
                                         <div class="form-group mb-2">
-                                            <label for="project-member">Membro:</label>
                                             <input type="text" name="project-member" id="project-member" class="form-control ml-2">
                                         </div>
-                                        <button type="submit" name="save-member" id="save" class="btn btn-primary mb-2 ml-2" disabled="disabled"><span class="ion-ios-checkmark-outline mr-2"></span>Salva</button>
+                                        <button type="submit" name="save-member" id="save-member" class="btn btn-success mb-2 ml-2" disabled="disabled"><span class="ion-ios-checkmark-outline mr-2"></span>Salva</button>
                                     </form>
                                     <div id="list-member"> <!-- div lista keyword associate a progetto -->
                                         
