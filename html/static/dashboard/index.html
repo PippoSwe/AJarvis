@@ -4,10 +4,12 @@
     <title>Dashboard | AJarvis</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <!--#include virtual="/assets/tpl/meta.html"--> 
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> 
+    <link rel="stylesheet" type="text/css" href="/assets/css/jquery-ui.css">
+    <script src="/assets/js/gui/jquery-ui.js"></script> 
+    <script src="/assets/js/gui/project-keyword.js"></script>
+    <script src="/assets/js/gui/project-member.js"></script> 
     <script type="text/javascript">
-        function loadList(url, placeholderId, template) {
+        function loadList(url, placeholderId, template, context) {
             $.ajax({
                 url: url,
                 type: "GET",
@@ -16,120 +18,36 @@
                         $.get(template, function(template) {
                             var rendered = Mustache.render(template, {items: data});
                             $(placeholderId).html(rendered);
+                            $(placeholderId+" .delete").click(function() {
+                                var data_id = $(this).attr("data-id");
+                                deleteItem("/api/project/"+$.urlParam("project_id")+"/"+context+"/", data_id, context);
+                            });
+                            $(placeholderId+" .delete").click(function() {
+                                var data_id = $(this).attr("data-id");
+                                deleteItem("/api/project/"+$.urlParam("project_id")+"/"+context+"/", data_id, context);
+                            });
                         });
+
                 },
                 error: function(xhr, status, text) {
-                    aler("Non va");
+                    alert("Non va");
+                }
+            });
+
+        };
+
+        function deleteItem(url, elementId, context) {
+            $.ajax({
+                url: url+elementId,
+                type: "DELETE",
+                success: function(data) {
+                    $("div").remove("#list-"+context+"-"+elementId);
+                },
+                error: function(xhr, status, text) {
+                    alert("Non va");
                 }
             });
         };
-
-        function deleteItem(url, elementId) {
-            $.ajax({
-                url: url,
-                type: "DELETE",
-                success: function(data) {
-                    $("div").remove("#list-keyword-"+elementId);
-                },
-                error: function(xhr, status, text) {
-                    aler("Non va");
-                }
-            });
-        }
-
-        $( function() {
-            var availableKeyword = [];
-            $(document).ready(function() {
-                loadList("/api/project/"+$.urlParam("project_id")+"/keyword/",
-                         "#list-keyword", "keyword.mst");
-                $( "#project-keyword" ).autocomplete({
-                    source: function( request, response ) {
-                        $.ajax({
-                            url: "/api/keyword/",
-                            data: {
-                                q: request.term
-                            },
-                            success: function( data ) {
-                                response($.map(data, function (item) {
-                                    return {
-                                        label: item.keyword,
-                                        value: item.keyword,
-                                        field: item.id
-                                    };
-                                }));
-                            }
-                        });
-                    },
-                    select: function (event, ui) {
-                        var id = ui.item.field;
-                        $('#txtAllowSearchID').attr('value', id);
-                        saveKeywordEnable();
-                        return true;
-                    }
-                });
-            });
-
-            function saveKeywordEnable() {
-                if ($("#project-keyword").val().length == 0) {
-                    $("#save-keyword").attr("disabled",true);
-                    return;
-                }
-                $("#save-keyword").attr("disabled",false);
-            };
-
-            function saveMemberEnable() {
-                if ($("#project-member").val().length == 0) {
-                    $("#save-member").attr("disabled",true);
-                    return;
-                }
-                $("#save-member").attr("disabled",false);
-            };
-
-            $("#project-member").keyup(function() {
-                saveMemberEnable();
-            });
-
-            $("#save-keyword").click(function(event) {
-                event.preventDefault();
-                $.ajax({
-                    url: "/api/project/"+$.urlParam("project_id")+"/keyword/",
-                    type: "POST",
-                    data: "keyword_id="+$("#txtAllowSearchID").val(),
-                    success: function(data) {
-                        loadList("/api/project/"+$.urlParam("project_id")+"/keyword/",
-                         "#list-keyword", "keyword.mst");
-                    },
-                    error: function(xhr, status, text) {
-                        aler("Non va");
-                    }
-                });
-            });
-
-            $("#save-member").click(function(event) {
-                event.preventDefault();
-                $.ajax({
-                    url: "/api/member/",
-                    type: "GET",
-                    success: function(data) {
-                        if(data.length > 0)
-                            $.get('member.mst', function(template) {
-                                var rendered = Mustache.render(template, {items: data});
-                                $('#list-member').html(rendered);
-                            });
-                    },
-                    error: function(xhr, status, text) {
-                        aler("Non va");
-                    }
-                });
-            });
-
-            $(".delete").click(function() {
-                alert(id);
-                var data_id = $(this).attr("data-id");
-                //var div_id = "#list-keyword-"+data_id;
-                deleteItem("/api/project/"+$.urlParam("project_id")+"/keyword/", data_id);
-            });
-        });
     </script>
 </head>
 <body>
@@ -156,7 +74,7 @@
                                     <form class="form-inline mt-2">
                                         <div class="form-group mb-2">
                                             <input type="text" name="project-keyword" id="project-keyword" class="form-control ml-2">
-                                            <input type="text" name="txtAllowSearchID" id="txtAllowSearchID" hidden>
+                                            <input type="text" name="hidden-keyword-id" id="hidden-keyword-id" hidden>
                                         </div>
                                         <button type="submit" name="save-keyword" id="save-keyword" class="btn btn-success mb-2 ml-2" disabled="disabled"><span class="ion-ios-checkmark-outline mr-2"></span>Salva</button>
                                     </form>
@@ -167,6 +85,7 @@
                                     <form class="form-inline mt-2">
                                         <div class="form-group mb-2">
                                             <input type="text" name="project-member" id="project-member" class="form-control ml-2">
+                                            <input type="text" name="hidden-member-id" id="hidden-member-id" hidden>
                                         </div>
                                         <button type="submit" name="save-member" id="save-member" class="btn btn-success mb-2 ml-2" disabled="disabled"><span class="ion-ios-checkmark-outline mr-2"></span>Salva</button>
                                     </form>
