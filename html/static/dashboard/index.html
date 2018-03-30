@@ -24,12 +24,12 @@
             });
         };
 
-        function delete(url, elementId) {
+        function deleteItem(url, elementId) {
             $.ajax({
                 url: url,
                 type: "DELETE",
                 success: function(data) {
-                    $("div").remove("#list-keyword-"+data.id);
+                    $("div").remove("#list-keyword-"+elementId);
                 },
                 error: function(xhr, status, text) {
                     aler("Non va");
@@ -121,6 +121,13 @@
                         aler("Non va");
                     }
                 });
+            });
+
+            $(".delete").click(function() {
+                alert(id);
+                var data_id = $(this).attr("data-id");
+                //var div_id = "#list-keyword-"+data_id;
+                deleteItem("/api/project/"+$.urlParam("project_id")+"/keyword/", data_id);
             });
         });
     </script>
