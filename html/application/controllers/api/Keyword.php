@@ -65,7 +65,8 @@ class Keyword extends CI_Controller
     private function find() {
         $entry = $this->keywords->find(
             $limit = $this->input->get('limit'),
-            $offset = $this->input->get('offset')
+            $offset = $this->input->get('offset'),
+            $searchParam = $this->input->get('q')
         );
         $this->output
             ->set_content_type('application/json')
