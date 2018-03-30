@@ -1,52 +1,43 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Progetti | AJarvis</title>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-
-        <!-- Bootstap CSS -->
-        <link rel="stylesheet" href="/assets/css/bootstrap.min.css" >
-
-        <!--ICONS-->
-        <link rel="stylesheet" href="/assets/css/ionicons.min.css" >
-
-        <!--  JS Popper jQuery -->
-        <script src="/assets/js/jquery-3.3.1.min.js"></script>
-        <!--Mustache-->
-        <script src="/assets/js/gui/mustache.min.js"></script>
-        <script src="/assets/js/gui/popper.min.js" ></script>
-        <script src="/assets/js/gui/bootstrap.min.js"></script>
-    </head>
-    <body class="bg-light form-group">
-        <!-- Nav With Logo -->
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-            </button>
-            <a class="navbar-brand" href="#">AJarvis</a>
-            <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
-                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                    <a class="nav-link" href="index.html">Registrazione</a>
-                    <li class="nav-item">
-                        <a class="nav-link" href="dashboard.html">Dashboard</a>
-                    </li>
-                    <li class="nav-item dropdown">
-
-                        <a class="nav-link dropdown-toggle active" data-toggle="dropdown" href="#">Pannello di Controllo <span class="sr-only">(current)</a>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#">Progetti <span class="sr-only">(current)</a>
-                            <a class="dropdown-item" href="../member/index.html">Membri</a>
-                            <a class="dropdown-item" href="../keyword/index.html">Keywords</a>
+<head>
+    <title>Progetti | AJarvis</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <!--#include virtual="/assets/tpl/meta.html"-->  
+    <script type="text/javascript" src="/assets/js/gui/controller.js"></script>
+    <script type="text/javascript" src="/assets/js/gui/project.js"></script>
+</head>
+<body>
+        <div class="app">
+            <div class="app-body">
+                <!--#include virtual="/assets/tpl/sidebar.html"-->
+                
+                <div class="app-content">
+                    <!--#include virtual="/assets/tpl/navbar.html"-->
+                    <!-- breadcrumb -->
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">Home</li>
+                            <li class="breadcrumb-item active" aria-current="page">Progetti</li>
+                        </ol>
+                    </nav>
+                    <!-- content -->
+                    <div class="container-fluid">
+                        <div id="message"></div>
+                        <div class="container mt-lg-1">
+                            <div class="row">
+                                <div class="col-6 mt-lg-5">
+                                    <a id="btn-insert" class="btn btn-success" href="#" role="button"><span class="ion-ios-plus-outline mr-2"></span>Nuovo progetto</a>
+                                </div>
+                            </div>
                         </div>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Monitor</a>
-                    </li>
-                </ul>
+                        <!-- Managing projects -->
+                        <div class="container mt-5 mt-lg-5" id="list"> &nbsp </div>
+                    </div>
+                </div>
             </div>
-        </nav>
-
+        </div>
+        
         <!-- Modal -->
         <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
@@ -67,64 +58,32 @@
                 </div>
             </div>
         </div>
-
-        <div id="error"></div>
-        <!-- Managing projects -->
-        <div class="container mt-lg-5" id="list">&nbsp; </div>
-        <div class="container mt-lg-5">
-            <div class="row">
-                <div class="col-6 mt-lg-5">
-                    <a class="btn btn-success" href="insert.html" role="button"><span class="ion-ios-plus-outline mr-2"></span>Nuovo Progetto</a>
+        <!-- insert modal -->
+        <div class="modal fade hide" id="save-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="save-title"></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form id="save" method="" action="">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="project" class="col-form-label">Nome progetto:</label>
+                                <input type="text" class="form-control" id="project" name="project" placeholder="Nome progetto" data-placement="right" required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                            <button type="submit" id="confirm-save" class="btn btn-success" disabled="disabled"><span class="ion-ios-checkmark-outline mr-2"></span>Salva</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
-        <script type="text/javascript">
-            $(document).ready(function(){
-                $.ajax({
-                    url: "../../../api/project/",
-                    type: "GET",
-                    success: function(data) {
-                        $.get('project.mst', function(template) {
-                            var rendered = Mustache.render(template, {items: data});
-                            $('#list').html(rendered);
-                        });
-                    },
-                    error: function(xhr, status, text) {
-                        alert(text);
-                    }
-                });
-
-                var x = "";
-
-                $("body").on('click', '.btn-delete', function (event) {
-                    x = this.id;
-                    $("body").on('click', '#confirm-delete', function () {
-                        $.ajax({
-                            url: "../../../api/project/"+x,
-                            type: "DELETE",
-                            success: function(data) {
-                                $("div").remove("#"+x);
-                                var structure = {strong:"Eliminazione del progetto avvenuta con successo", class:"success", t:""}; //passo i messaggi per riusare il file mst
-                                $.get('alert.mst', function(template) {
-                                    var rendered = Mustache.render(template, {items: structure}); //richiede un'array associativo
-                                    $('#error').html(rendered);
-                                });
-                                
-                            },
-                            error: function(xhr, status, text) {
-                                var structure = {x:xhr, s:status, t:text, class:"danger", strong:"Errore!"};
-                                $.get('alert.mst', function(template) {
-                                    var rendered = Mustache.render(template, {items: structure}); //richiede un'array associativo
-                                    $('#error').html(rendered);
-                                });
-                            }
-                        });
-
-                    });
-
-                })
-            });
-        </script>
-
-    </body>
+    
+        
+</body>
 </html>
