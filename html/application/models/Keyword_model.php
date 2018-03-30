@@ -12,12 +12,14 @@ class Keyword_model extends CI_Model {
         parent::__construct();
     }
 
-    public function find($limit = null, $offset = 0)
+    public function find($limit = null, $offset = 0, $searchParam = null)
     {
         //https://www.codeigniter.com/userguide3/database/query_builder.html#looking-for-similar-data
         $collection = $this->db->from('keywords');
         if (!is_null($limit))
             $collection = $collection->limit($limit, $offset);
+        if(!is_null($searchParam))
+            $collection = $collection->like('keyword', $searchParam, 'after');
         $result = $collection
             ->get()
             ->result();

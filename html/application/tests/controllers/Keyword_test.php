@@ -52,6 +52,14 @@ class Keyword_test extends TestCase
         $this->assertCount(1, $data);
     }
 
+    public function test_like(){
+        $output = $this->request('GET', self::$page,
+            ['q' => 'pi']);
+        $data = (array) json_decode($output);
+        $this->assertResponseCode(200);
+        $this->assertEquals('pippo.swe', $data[0]->keyword );
+    }
+
 	public function test_view()
 	{
 		$output = $this->request('GET', self::$page.self::$key);
