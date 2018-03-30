@@ -20,7 +20,18 @@ class Queue_model extends CI_Model {
         //https://www.codeigniter.com/userguide3/database/query_builder.html#looking-for-similar-data
         $collection = $this->db->select('standups.id, standup, project_id, project, 
             standups_nlp.status AS nlp_status, 
-            standups_speech_to_text.status AS stt_status, end')
+            CASE
+                WHEN standups_nlp.status = \'Pending\' THEN \'warning\'
+                WHEN standups_nlp.status = \'Success\' THEN \'success\'
+                ELSE \'danger\'
+            END as nlp_badge_color,        
+            standups_speech_to_text.status AS stt_status,             
+            CASE
+                WHEN standups_speech_to_text.status = \'Pending\' THEN \'warning\'
+                WHEN standups_speech_to_text.status = \'Success\' THEN \'success\'
+                ELSE \'danger\'
+            END as stt_badge_color,            
+            end')
             ->from('standups');
         $collection = $collection->join('projects', 'projects.id = project_id', 'left');
         $collection = $collection->join('standups_nlp', 'standups_nlp.id = standups.id', 'left');
