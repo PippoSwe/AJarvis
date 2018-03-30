@@ -7,9 +7,41 @@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> 
     <script type="text/javascript">
+        function loadList(url, placeholderId, template) {
+            $.ajax({
+                url: url,
+                type: "GET",
+                success: function(data) {
+                    if(data.length > 0)
+                        $.get(template, function(template) {
+                            var rendered = Mustache.render(template, {items: data});
+                            $(placeholderId).html(rendered);
+                        });
+                },
+                error: function(xhr, status, text) {
+                    aler("Non va");
+                }
+            });
+        };
+
+        function delete(url, elementId) {
+            $.ajax({
+                url: url,
+                type: "DELETE",
+                success: function(data) {
+                    $("div").remove("#list-keyword-"+data.id);
+                },
+                error: function(xhr, status, text) {
+                    aler("Non va");
+                }
+            });
+        }
+
         $( function() {
             var availableKeyword = [];
             $(document).ready(function() {
+                loadList("/api/project/"+$.urlParam("project_id")+"/keyword/",
+                         "#list-keyword", "keyword.mst");
                 $( "#project-keyword" ).autocomplete({
                     source: function( request, response ) {
                         $.ajax({
@@ -31,6 +63,7 @@
                     select: function (event, ui) {
                         var id = ui.item.field;
                         $('#txtAllowSearchID').attr('value', id);
+                        saveKeywordEnable();
                         return true;
                     }
                 });
@@ -43,10 +76,6 @@
                 }
                 $("#save-keyword").attr("disabled",false);
             };
-
-            $("#project-keyword").keyup(function() {
-                saveKeywordEnable();
-            });
 
             function saveMemberEnable() {
                 if ($("#project-member").val().length == 0) {
@@ -63,14 +92,12 @@
             $("#save-keyword").click(function(event) {
                 event.preventDefault();
                 $.ajax({
-                    url: "/api/keyword/"+$("#txtAllowSearchID").val(),
-                    type: "GET",
+                    url: "/api/project/"+$.urlParam("project_id")+"/keyword/",
+                    type: "POST",
+                    data: "keyword_id="+$("#txtAllowSearchID").val(),
                     success: function(data) {
-                        if(data.length > 0)
-                            $.get('keyword.mst', function(template) {
-                                var rendered = Mustache.render(template, {items: data});
-                                $('#list-keyword').html(rendered);
-                            });
+                        loadList("/api/project/"+$.urlParam("project_id")+"/keyword/",
+                         "#list-keyword", "keyword.mst");
                     },
                     error: function(xhr, status, text) {
                         aler("Non va");
@@ -126,10 +153,7 @@
                                         </div>
                                         <button type="submit" name="save-keyword" id="save-keyword" class="btn btn-success mb-2 ml-2" disabled="disabled"><span class="ion-ios-checkmark-outline mr-2"></span>Salva</button>
                                     </form>
-                                    <button data-toggle="collapse" data-target="#demo" class="btn btn-primary">Collapsible</button>
-                                    <div id="demo" class="collapse">
-                                        <div id="list-keyword"> <!-- div lista keyword associate a progetto --></div>   
-                                    </div>
+                                    <div id="list-keyword"> <!-- div lista keyword associate a progetto --></div>   
                                 </div>
                                 <div class="col border border-secondary ml-5">
                                     <h5 class="card-title border-bottom border-light">Associa Membro</h5>
@@ -151,53 +175,6 @@
                 </div>
             </div>
         </div>
-        
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Attenzione!</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        Eliminare definitivamente la keyword?
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
-                        <button type="button" id="confirm-delete" class="btn btn-danger" data-dismiss="modal"><span class="ion-ios-trash-outline mr-2"></span>Elimina</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- insert modal -->
-        <div class="modal fade hide" id="save-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="save-title"></h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <form id="save" method="" action="">
-                        <div class="modal-body">
-                                <div class="form-group">
-                                    <label for="keyword" class="col-form-label">Keyword:</label>
-                                    <input type="text" class="form-control" id="keyword" name="keyword" placeholder="Keyword" data-placement="right" required>
-                                </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
-                            <button type="submit" id="confirm-save" class="btn btn-success" disabled="disabled"><span class="ion-ios-checkmark-outline mr-2"></span>Salva</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    
         
 </body>
 </html>

@@ -1,3 +1,3 @@
 {{#items}}
-                                <a href="{{id}}" class="sidebar-nav-link">{{project}}</a>
+                                <a href="/static/dashboard/index.html?project_id={{id}}" class="sidebar-nav-link">{{project}}</a>
 {{/items}}
