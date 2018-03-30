@@ -77,13 +77,13 @@ class Standup extends CI_Controller
 
     /**
      * @SWG\Get(
-     *     path="member/{id}/",
+     *     path="standup/{standup_id}/flow",
      *     summary="Andamento del discorso",
      *     description="Ritorna una serie di Double che rappresentano l'andamento dello standup",
      *     produces={"application/json"},
      *     tags={"Standup"},
      *     @SWG\Parameter(
-     *         name="id",
+     *         name="standup_id",
      *         in="path",
      *         description="Stand up id",
      *         required=true,
@@ -133,13 +133,13 @@ class Standup extends CI_Controller
 
     /**
      * @SWG\Get(
-     *     path="member/{id}/",
+     *     path="standup/{standup_id}/entities",
      *     summary="Entità Rilevanti",
      *     description="Ritorna tutte le entità trovate nel testo dello standup, tranne quelle di tipo OTHER, riodinate per importanza",
      *     produces={"application/json"},
      *     tags={"Standup"},
      *     @SWG\Parameter(
-     *         name="id",
+     *         name="standup_id",
      *         in="path",
      *         description="Stand up id",
      *         required=true,
@@ -183,13 +183,13 @@ class Standup extends CI_Controller
 
     /**
      * @SWG\Get(
-     *     path="member/{id}/",
+     *     path="standup/{standup_id}/sentences",
      *     summary="Testo del discorso",
      *     description="Ritorna l'intero testo del discorso diviso per frasi con i relativi score e magnitude",
      *     produces={"application/json"},
      *     tags={"Standup"},
      *     @SWG\Parameter(
-     *         name="id",
+     *         name="standup_id",
      *         in="path",
      *         description="Stand up id",
      *         required=true,
@@ -233,13 +233,13 @@ class Standup extends CI_Controller
 
     /**
      * @SWG\Get(
-     *     path="member/{id}/",
+     *     path="standup/{standup_id}/sentences/good",
      *     summary="Frasi Rilevanti",
      *     description="Ritorna le frasi rilevanti nel discorso con relativi score e magnitude",
      *     produces={"application/json"},
      *     tags={"Standup"},
      *     @SWG\Parameter(
-     *         name="id",
+     *         name="standup_id",
      *         in="path",
      *         description="Stand up id",
      *         required=true,
@@ -283,13 +283,13 @@ class Standup extends CI_Controller
 
     /**
      * @SWG\Get(
-     *     path="member/{id}/",
+     *     path="standup/{standup_id}/sentences/bad",
      *     summary="Frasi Problematiche",
      *     description="Ritorna le frasi problematiche nel discorso con relativi score e magnitude",
      *     produces={"application/json"},
      *     tags={"Standup"},
      *     @SWG\Parameter(
-     *         name="id",
+     *         name="standup_id",
      *         in="path",
      *         description="Stand up id",
      *         required=true,
@@ -462,6 +462,8 @@ class Standup extends CI_Controller
             "sentence_count" => $sentence_counter,
             "entities_count" => $entities_counter
         );
+
+        throw new Exception($standup_entity);
         $this->output
             ->set_content_type('application/json')
             ->set_output(json_encode($standup_entity));
