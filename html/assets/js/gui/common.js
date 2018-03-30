@@ -8,10 +8,13 @@ function populateSideBar() {
         url: "/api/project/",
         type: "GET",
         success: function(data) {
-            $.get('/assets/tpl/item.mst', function(template) {
+            $.get('/assets/tpl/menu-recorder.mst', function(template) {
+                var rendered = Mustache.render(template, {items: data});
+                $('#component').html(rendered);
+            });
+            $.get('/assets/tpl/menu-dashboard.mst', function(template) {
                 var rendered = Mustache.render(template, {items: data});
                 $('#components').html(rendered);
-                $('#component').html(rendered);
             });
         }
     });

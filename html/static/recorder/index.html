@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Record | AJarvis</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <!--#include virtual="/assets/tpl/meta.html"-->
+
+    <!--  JS Voice Recorder, Wavesurfer and Page interaction -->
+    <script src="/assets/js/gui/recorder/francium-voice-master/recorder.js"></script>
+    <script src="/assets/js/gui/recorder/francium-voice-master/Fr.voice.js"></script>
+    <script src="/assets/js/gui/recorder/countimer/moment.js"></script>
+    <script src="/assets/js/gui/recorder/countimer/ez.countimer.min.js"></script>
+    <script src="/assets/js/gui/recorder/wavesurfer/wavesurfer.min.js"></script>
+    <script src="/assets/js/gui/recorder/wavesurfer/wavesurfer.microphone.min.js"></script>
+    <script src="/assets/js/gui/recorder/record.js"></script>
+
+    <!--ICONS-->
+</head>
+<div class="app">
+    <div class="app-body">
+        <!--#include virtual="/assets/tpl/sidebar.html"-->
+
+        <div class="app-content">
+            <!--#include virtual="/assets/tpl/navbar.html"-->
+            <!-- breadcrumb -->
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">Home</li>
+                    <li class="breadcrumb-item active" aria-current="page">Keywords</li>
+                </ol>
+            </nav>
+
+            <div class="container-fluid">
+                <div id="message"></div>
+                <div id="waveform"></div>
+                <h1 id="timer" class=" text-center pb-3"></h1>
+
+                <!-- correct -->
+                <div class="text-center">
+                    <button id="resume" type="button" class="btn btn-primary d-none">Resume</button>
+                    <button id="pause" type="button" class="btn btn-primary d-none">Pause</button>
+                    <button id="record" type="button" class="btn btn-success">Record</button>
+                    <button id="stop" type="button" class="btn btn-danger d-none">Stop</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+</body>
+</html>
