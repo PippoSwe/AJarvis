@@ -11,6 +11,8 @@ class Standup extends CI_Controller
         $this->load->model('Standup_model', 'standups', TRUE);
         $this->load->model('Sentence_model', 'sentences', TRUE);
         $this->load->model('Entity_model', 'entities', TRUE);
+        $this->load->model('Queue_model', 'queues', TRUE);
+        $this->load->helper(array('google_nlp_helper'));
     }
 
     /**
@@ -376,19 +378,11 @@ class Standup extends CI_Controller
         $nlp = json_decode($this->security->xss_clean($this->input->raw_input_stream));
 
         // PRE: dict needs score, magnitude, etc ...
-        if (!isset($nlp->documentSentiment))
-            show_error("NLP prerequisites missing", 412);
-
-        if (!isset($nlp->documentSentiment->magnitude))
-            show_error("NLP prerequisites missing", 412);
-
-        if (!isset($nlp->documentSentiment->score))
-            show_error("NLP prerequisites missing", 412);
-
-        if (!isset($nlp->sentences))
-            show_error("NLP prerequisites missing", 412);
-
-        if (!isset($nlp->entities))
+        if (!isset($nlp->documentSentiment) ||
+            !isset($nlp->documentSentiment->magnitude) ||
+            !isset($nlp->documentSentiment->score) ||
+            !isset($nlp->sentences) ||
+            !isset($nlp->entities))
             show_error("NLP prerequisites missing", 412);
 
         // Update standup
@@ -399,56 +393,27 @@ class Standup extends CI_Controller
 
         // Normalizzazione
         if (!is_null($nlp->documentSentiment->magnitude))
-            $data["magnitude"] = (float)$nlp->documentSentiment->magnitude;
+            $data["magnitude"] = (float) $nlp->documentSentiment->magnitude;
         if (!is_null($nlp->documentSentiment->score))
-            $data["score"] = (float)$nlp->documentSentiment->score;
+            $data["score"] = (float) $nlp->documentSentiment->score;
 
         // Scrittura e gestion del risultato REST-Style
         $entry = $this->standups->update($id, $data);
 
-        // Insert sentences
-        $sentence_counter = 0;
-        foreach ($nlp->sentences as $sentence) {
-            $data = array(
-                "standup_id" => $entry->id,
-                "sentence" => null,
-                "magnitude" => null,
-                "score" => null
-            );
-            // Normalizzazione
-            if (!empty($sentence->text->content))
-                $data["sentence"] = $sentence->text->content;
-            if (!is_null($sentence->sentiment->score))
-                $data["score"] = (float)$sentence->sentiment->score;
-            if (!is_null($sentence->sentiment->magnitude))
-                $data["magnitude"] = (float)$sentence->sentiment->magnitude;
 
-            // Insert alla sentences
-            $this->sentences->insert($data);
-            $sentence_counter++;
-        }
+        $sentence_records = remap_sentences($entry->id, $nlp->sentences);
+        $sentence_counter = sizeof($sentence_records);
+        $this->sentences->insert_batch($sentence_records);
 
-        // Insert entities
-        $entities_counter = 0;
-        foreach ($nlp->entities as $entities) {
-            $data = array(
-                "standup_id" => $entry->id,
-                "name" => null,
-                "type" => null,
-                "salience" => null
-            );
-            // Normalizzazione
-            if (!empty($entities->name))
-                $data["name"] = $entities->name;
-            if (!empty($entities->type))
-                $data["type"] = $entities->type;
-            if (!is_null($entities->salience))
-                $data["salience"] = round((float)$entities->salience, 8);
+        $entities_records = remap_entities($entry->id, $nlp->entities);
+        $entities_counter = sizeof($entities_records);
+        $this->entities->insert_batch($entities_records);
 
-            // Insert alla sentences
-            $this->entities->insert($data);
-            $entities_counter++;
-        }
+        // Scrittura e gestion del risultato REST-Style
+        $data = array(
+            "status" => "Success"
+        );
+        $this->queues->update_nlp($id, $data);
 
         // Risultato dell'operazione
         $standup_entity = array(
@@ -463,7 +428,6 @@ class Standup extends CI_Controller
             "entities_count" => $entities_counter
         );
 
-        throw new Exception($standup_entity);
         $this->output
             ->set_content_type('application/json')
             ->set_output(json_encode($standup_entity));
