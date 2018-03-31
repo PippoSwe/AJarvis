@@ -1,3 +1,3 @@
 {{#items}}
-	<span class="">{{sentence}}</span>
+	<span class="{{color}}">{{sentence}}</span>. &nbsp;
 {{/items}}
