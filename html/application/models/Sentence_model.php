@@ -36,9 +36,9 @@ class Sentence_model extends CI_Model
     {
         $collection = $this->db->select('sentence, sentences.score, sentences.magnitude,
                                             CASE
-                                                WHEN sentences.score > 0.25 THEN \'success\'
-                                                WHEN sentences.score < -0.25 THEN \'danger\'
-                                                ELSE \'secondary\'
+                                                WHEN sentences.score > 0.25 THEN \'positive\'
+                                                WHEN sentences.score < -0.25 THEN \'negative\'
+                                                ELSE \'mixed\'
                                             END as color ')
             ->from('sentences');
         $collection = $collection->join('standups', 'standups.id = standup_id', 'left');

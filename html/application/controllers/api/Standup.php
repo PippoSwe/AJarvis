@@ -231,7 +231,7 @@ class Standup extends CI_Controller
 
         foreach ($entry as $value){
             if($value->score == 0 && $value->magnitude > 0)
-                $value->color = 'info';
+                $value->color = 'neutral';
         }
 
         $this->output

@@ -1,0 +1,10 @@
+{{#items}}
+	<div class="row">
+		<div class="col-6">     
+			{{sentence}}
+		</div>
+		<div class="col-6">
+        	{{score}}                              
+        </div>
+    </div>
+{{/items}}

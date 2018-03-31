@@ -1,64 +1,33 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Dashboard | AJarvis</title>
+    <title>Standup | AJarvis</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <!--#include virtual="/assets/tpl/meta.html"--> 
     <link rel="stylesheet" type="text/css" href="/assets/css/jquery-ui.css">
     <link rel="stylesheet" type="text/css" href="/assets/css/chartist.min.css">
-    <script src="/assets/js/gui/jquery-ui.js"></script> 
-    <script src="/assets/js/gui/project-keyword.js"></script>
-    <script src="/assets/js/gui/project-member.js"></script> 
+    <script src="/assets/js/gui/jquery-ui.js"></script>
     <script src="/assets/js/chartist/chartist.min.js"></script>
     <script src="/assets/js/chartist/chartist-plugin-threshold.min.js"></script>
     <script type="text/javascript">
-        function loadList(url, placeholderId, template, context) {
+        function loadEntity() {
             $.ajax({
-                url: url,
+                url: "/api/standup/"+$.urlParam("standup_id")+"/entities/?limit=10",
                 type: "GET",
                 success: function(data) {
                     if(data.length > 0)
-                        $.get(template, function(template) {
+                        $.get("entity.mst", function(template) {
                             var rendered = Mustache.render(template, {items: data});
-                            $(placeholderId).html(rendered);
-                            $(placeholderId+" .delete").click(function() {
-                                var data_id = $(this).attr("data-id");
-                                deleteItem("/api/project/"+$.urlParam("project_id")+"/"+context+"/", data_id, context);
-                            });
-                            $(placeholderId+" .delete").click(function() {
-                                var data_id = $(this).attr("data-id");
-                                deleteItem("/api/project/"+$.urlParam("project_id")+"/"+context+"/", data_id, context);
-                            });
+                            $("#entity").html(rendered);
                         });
-
                 },
                 error: function(xhr, status, text) {
-                    alert("Non va");
+                    alert("Problema caricamento entity");
                 }
             });
 
             $.ajax({
-                url: "/api/project/"+$.urlParam("project_id")+"/standup/",
-                type: "GET",
-                success: function(data) {
-                    $.get("standup.mst", function(template) {
-                        var rendered = Mustache.render(template, {items: data});
-                        $("#list-standup").html(rendered);
-                        $("#list-standup .go").click(function() {
-                            window.location.replace("../standup/index.html?standup_id="+$(this).attr("data-id"));
-                        });
-                        $("#list-standup .delete").click(function() {
-                            deleteStandup($(this).attr("data-id"));
-                        });
-                    });
-                },
-                error: function(xhr, status, text) {
-                    alert("Non va");
-                }
-            });
-
-            $.ajax({
-                url: "/api/project/"+$.urlParam("project_id")+"/sentences/good/?limit=3",
+                url: "/api/standup/"+$.urlParam("standup_id")+"/sentences/good/?limit=10",
                 type: "GET",
                 success: function(data) {
                         $.get("sentences.mst", function(template) {
@@ -72,7 +41,7 @@
             });
 
             $.ajax({
-                url: "/api/project/"+$.urlParam("project_id")+"/sentences/bad/?limit=3",
+                url: "/api/standup/"+$.urlParam("standup_id")+"/sentences/bad/?limit=10",
                 type: "GET",
                 success: function(data) {    
                     $.get("sentences.mst", function(template) {
@@ -86,49 +55,67 @@
             });
         };
 
-        function deleteStandup(data_id) {
-            $("body").on('click', '#confirm-delete', function () {
-                $.ajax({
-                    url: "/api/project/"+$.urlParam("project_id")+"/standup/"+data_id,
-                    type: "DELETE",
-                    success: function(data) {
-                        $("div").remove("#standup-"+data_id);
-                    },
-                    error: function(xhr, status, text) {
-                        alert("errore");
-                    }
-                });
+        function loadFlowGraph() {
+            $.ajax({
+                url: "/api/standup/"+$.urlParam("standup_id")+"/flow",
+                type: "GET",
+                success: function(data) {
+                    new Chartist.Line(".graphFlow", {series: [data.series]}, {showArea: true,showLine: false,axisY: {onlyInteger: true},plugins: [Chartist.plugins.ctThreshold({threshold: 0})]});
+                },
+                error: function(xhr, status, text) {
+                    alert("Non va");
+                }
+            });
+        };
+
+        function loadPieGraph() {
+            $.ajax({
+                url: "/api/standup/"+$.urlParam("standup_id")+"/pie",
+                type: "GET",
+                success: function(data) {
+                    new Chartist.Pie(".graphPie", {series: data.series}, {showLabel: false,donut: true,donutWidth: 60,donutSolid: true,startAngle: 270,total: 4});
+                },
+                error: function(xhr, status, text) {
+                    alert("Non va");
+                }
+            });
+        };
+
+        function loadText() {
+            $.ajax({
+                url: "/api/standup/"+$.urlParam("standup_id")+"/sentences",
+                type: "GET",
+                success: function(data) {
+                    $.get("text.mst", function(template) {
+                        var rendered = Mustache.render(template, {items: data});
+                        $("#standup_text").html(rendered);
+                    });
+                },
+                error: function(xhr, status, text) {
+                    alert("Non riesco a caricare il testo");
+                }
             });
         }
 
-        function deleteItem(url, elementId, context) {
-            $.ajax({
-                url: url+elementId,
-                type: "DELETE",
-                success: function(data) {
-                    $("div").remove("#list-"+context+"-"+elementId);
-                },
-                error: function(xhr, status, text) {
-                    alert("Non va");
-                }
-            });
-        };
-
-        function loadGraph() {
-            $.ajax({
-                url: "/api/project/"+$.urlParam("project_id")+"/flow",
-                type: "GET",
-                success: function(data) {
-                    new Chartist.Line(".graph", {series: [data.series]}, {showArea: true,showLine: false,axisY: {onlyInteger: true},plugins: [Chartist.plugins.ctThreshold({threshold: 0})]});
-                },
-                error: function(xhr, status, text) {
-                    alert("Non va");
-                }
-            });
-        };
-
         $(document).ready(function() {
-            loadGraph();
+            $('.carousel').carousel('pause');
+            loadEntity();
+            loadFlowGraph();
+            loadText();
+            $(".fa-pie-chart").click(function() {
+                $(".fa-area-chart").removeClass("text-danger");
+                $(".fa-pie-chart").addClass("text-danger");
+                $(".graphFlow").addClass("d-none");
+                $(".graphPie").removeClass("d-none");
+                loadPieGraph();
+            });
+            $(".fa-area-chart").click(function() {
+                $(".fa-pie-chart").removeClass("text-danger");
+                $(".fa-area-chart").addClass("text-danger");
+                $(".graphFlow").removeClass("d-none");
+                $(".graphPie").addClass("d-none");
+            });
+
         });
     </script>
 </head>
@@ -143,7 +130,8 @@
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item">Home</li>
-                            <li class="breadcrumb-item active" aria-current="page">Dashboard progetto</li>
+                            <li class="breadcrumb-item">Progetto</li>
+                            <li class="breadcrumb-item active" aria-current="page">Standup</li>
                         </ol>
                     </nav>
                     <!-- content -->
@@ -152,30 +140,19 @@
                         <div class="container p-lg-1">
                             <div class="row">
                                 <div class="col-3 mr-2"><!-- -->
-                                    <div class="rowp-1">
+                                    <div class="row p-1">
 
                                         <div class="col">
-                                            <h6 class="card-title">Associa Keywords</h6>
-                                            <form class="form-inline mt-2">
-                                                <div class="form-group mb-2">
-                                                    <input type="text" name="project-keyword" id="project-keyword" class="form-control ml-2">
-                                                    <input type="text" name="hidden-keyword-id" id="hidden-keyword-id" hidden>
+                                            <div class="row">
+                                                <h2 class="card-title w-100">Entità</h2>
+                                                <div class="col">
+                                                    Entità
                                                 </div>
-                                                <button type="submit" name="save-keyword" id="save-keyword" class="btn btn-success mb-2 ml-2" disabled="disabled"><span class="ion-ios-checkmark-outline mr-2"></span>Salva</button>
-                                            </form>
-                                            <div id="list-keyword"> <!-- div lista keyword associate a progetto --></div>   
-                                        </div>
-
-                                        <div class="col mt-2">
-                                            <h6 class="card-title">Associa Membro</h6>
-                                            <form class="form-inline mt-2">
-                                                <div class="form-group mb-2">
-                                                    <input type="text" name="project-member" id="project-member" class="form-control ml-2">
-                                                    <input type="text" name="hidden-member-id" id="hidden-member-id" hidden>
+                                                <div class="col">
+                                                    Salience
                                                 </div>
-                                                <button type="submit" name="save-member" id="save-member" class="btn btn-success mb-2 ml-2" disabled="disabled"><span class="ion-ios-checkmark-outline mr-2"></span>Salva</button>
-                                            </form>
-                                            <div id="list-member"> <!-- div lista keyword associate a progetto -->
+                                            </div>
+                                            <div id="entity">
                                                 
                                             </div>
                                         </div>
@@ -183,15 +160,10 @@
                                     </div>
                                 </div>
                                 <div class="col-8 pl-lg-4">
-                                    <div class="row">
-                                        <h2 class="card-title w-100">Grafico</h2>
-                                        <div class="graph w-100" align="center"></div>
-                                    </div>
-                                    <div class="row">
-                                        <h2 class="card-title w-100">Standup</h2>
-                                        <div class="list-group w-100" id="list-standup">
-                                            
-                                        </div>
+                                    <div class="row w-100">
+                                        <h2 class="card-title w-100">Grafico<i class="fa fa-area-chart text-danger"></i><i class="fa fa-pie-chart"></i></h2>
+                                        <div class="graphFlow w-100" align="center"></div>
+                                        <div class="graphPie w-100 d-none" align="center"></div>
                                     </div>
                                 </div>
                             </div>
@@ -222,6 +194,14 @@
                                         
                                     </div>
                                 </div>
+                            </div>
+
+                            <div class="row mt-3">
+                                <h2 class="card-title w-25">Testo</h2>
+                                <button class="btn btn-primary">Switch</button>
+                            </div>
+                            <div id="standup_text" class="row mt-1">
+                                    
                             </div>
                         </div>
                     </div>
