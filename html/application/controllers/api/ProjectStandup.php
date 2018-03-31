@@ -77,9 +77,12 @@ class ProjectStandup extends CI_Controller
         if(!array_key_exists('file', $_FILES))
             show_error("File is missing", 412);
 
+
+        setlocale(LC_TIME, 'it_IT.UTF-8');
         // Dichiariamo i valori di default
         $data = array(
             "project_id" => $project_id,
+            "standup" =>  strftime("%A %d %B - %H:%M")
         );
 
         // Scrittura e gestion del risultato REST-Style

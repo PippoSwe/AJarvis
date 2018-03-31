@@ -16,22 +16,22 @@ function upload_session() {
             contentType: false,
             processData: false,
             success: function(data) {
-                // Sent to Server
+                $("#stop").addClass("d-none");
                 $("#pause").removeClass("d-none");
                 $("#pause").addClass("d-none");
                 $("#resume").removeClass("d-none");
                 $("#resume").addClass("d-none");
                 $("#record").removeClass("d-none");
-                $("#timer").countimer('stop');
                 Fr.voice.stop();
+                $("#modalLoading").modal("hide");
             },
             error: function(xhr, status, text) {
-                Fr.voice.stop();
                 var structure = {x:xhr, s:status, t:text, class:"danger", strong:"Errore!", dismiss:"alert-dismissible fade show"};
                 $.get('/assets/tpl/alert.mst', function(template) {
                     var rendered = Mustache.render(template, {items: structure}); //richiede un'array associativo
                     $('#message').html(rendered);
                 });
+                $("#modalLoading").modal("hide");
             }
         });
     }, "blob");
@@ -74,10 +74,34 @@ $(document).ready(function() {
         microphone.start()
     });
 
-    $("#stop").click(function() {
-        $("#stop").toggleClass("d-none");
+
+    $("#abort-upload").click(function() {
+        Fr.voice.stop();
+        $("#stop").addClass("d-none");
+        $("#pause").removeClass("d-none");
+        $("#pause").addClass("d-none");
+        $("#resume").removeClass("d-none");
+        $("#resume").addClass("d-none");
+        $("#record").removeClass("d-none");
         microphone.pause();
+    });
+
+
+    $("#confirm-upload").click(function() {
+        $("#modalLoading").modal("show");
         upload_session();
+        microphone.pause();
+    });
+
+
+    $("#stop").click(function() {
+        //$("#stop").toggleClass("d-none");
+        Fr.voice.pause();
+        $("#pause").removeClass("d-none");
+        $("#pause").addClass("d-none");
+        $("#resume").removeClass("d-none");
+        $("#timer").countimer('stop');
+        microphone.pause();
     });
 
 
