@@ -114,6 +114,7 @@ class Nlp_test extends TestCase
 
     public function test_sentences()
     {
+        
         $output = $this->request('GET', self::$page.self::$key.'/sentences/');
         $data = (array) json_decode($output);
         $this->assertResponseCode(200);
