@@ -123,7 +123,6 @@ class Nlp_test extends TestCase
             $this->assertTrue( property_exists($value, 'magnitude') );
             $this->assertTrue( property_exists($value, 'color') );
         }
-        throw new Exception(print_r($data));
     }
 
     public function test_sentences_good()

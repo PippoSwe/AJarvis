@@ -28,6 +28,10 @@ docker push mryattle/ajarvis-rest:latest
 Docker aggiornare immagini post-travis build:
 docker-compose pull web
 
+# Sistemi Linux
+chmod -R 777 application/audio_files
+chmod -R 777 uploads
+
 
 Linux:
 sudo docker-compose up
