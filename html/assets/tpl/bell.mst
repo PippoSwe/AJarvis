@@ -1,10 +1,12 @@
 {{#items}}
-                                            <div class="dropdown-item clearfix">
-                                               <span class="pull-left">{{standup}}</span>
-                                                <span class="pull-right">
-                                                   <span class="badge badge-pill badge-{{stt_badge_color}} text-dark"><span class="ion-ios-mic"></span></span>
-                                                   <span class="badge badge-pill badge-{{nlp_badge_color}} text-dark"><span class="ion-ios-flask"></span></span>
+						
+
+                                            <div class="dropdown-item">
+                                                <span>
+                                                   <span class="badge badge-pill badge-{{stt_badge_color}} text-dark"><i class="fa fa-volume-up"></i></span>
+                                                   <span class="badge badge-pill badge-{{nlp_badge_color}} text-dark"><i class="fa fa-medkit"></i></span>
                                                 </span>
+                                                <span class="ml-2">{{standup}}</span> 
                                             </div>
                                             <div class="dropdown-divider"></div>
 {{/items}}

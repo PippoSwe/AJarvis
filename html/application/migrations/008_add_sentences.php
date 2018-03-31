@@ -18,8 +18,7 @@ class Migration_Add_sentences extends CI_Migration {
                 'unsigned' => TRUE,
             ),
             'sentence' => array(
-                'type' => 'VARCHAR',
-                'constraint' => '100',
+                'type' => 'TEXT',
                 'null' => TRUE,
             ),
             'score' => array(
