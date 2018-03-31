@@ -40,7 +40,35 @@
                     <button id="resume" type="button" class="btn btn-primary d-none">Resume</button>
                     <button id="pause" type="button" class="btn btn-primary d-none">Pause</button>
                     <button id="record" type="button" class="btn btn-success">Record</button>
-                    <button id="stop" type="button" class="btn btn-danger d-none">Stop</button>
+                    <button id="stop" type="button" class="btn btn-danger d-none" data-toggle="modal" data-target="#modalCenter">Stop</button>
+                </div>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="modalCenter" tabindex="-1" role="dialog" aria-labelledby="modalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalLongTitle">Inizio analisi</h5>
+                        </div>
+                        <div class="modal-body">
+                            Vuoi salvare questo standup e iniziare l'analisi dell'audio ?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" id="confirm-upload" class="btn btn-success" data-dismiss="modal"><span class="ion-ios-checkmark-outline mr-2"></span>Procedi</button>
+                            <button type="button" id="abort-upload" class="btn btn-danger" data-dismiss="modal"><span class="ion-ios-trash-outline mr-2"></span>Annulla</button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="modalLoading" tabindex="-1" role="dialog" aria-labelledby="modalLoadingTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="text-center mx-auto text-center">
+                        <img src="/assets/images/loading.gif"  />
+                    </div>
                 </div>
             </div>
 

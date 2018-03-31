@@ -17,10 +17,10 @@ function upload_file($file_path, $file_name)
 {
     // https://github.com/GoogleCloudPlatform/google-cloud-php/blob/master/src/Storage/StorageClient.php
     $CI = & get_instance();
-    $CI->config->load('google_cloud');
     $CI->load->model('Config_model', 'configs', TRUE);
 
-    $bucket_name = $CI->config->item('audio_bucket_name');
+    $bucket_entity = $CI->configs->get("audio_bucket_name");
+    $bucket_name = $bucket_entity->value;
     $entry = $CI->configs->get("key_file");
     if(is_null($entry))
         return;
