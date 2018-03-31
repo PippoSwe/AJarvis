@@ -24,6 +24,7 @@
 			<directory suffix=".php">../helpers</directory>
 			<exclude>
 				<directory suffix=".php">../helpers/google_storage_helper.php</directory>
+				<directory suffix=".php">../helpers/google_nlp_helper.php</directory>
 			</exclude>
 			<directory suffix=".php">../hooks</directory>
 		</whitelist>

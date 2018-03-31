@@ -62,28 +62,18 @@ class Entity_model extends CI_Model {
         return null;
     }
 
+    /*
     public function insert($data)
     {
         $this->db->set($data);
         $this->db->insert('entities');
         return $this->get($this->db->insert_id());
     }
-
-    /*
-    public function update($id, $data)
-    {
-        $this->db->set($data);
-        $this->db->where('id', $id);
-        $this->db->update('entities');
-        return $this->get($id);
-    }
-
-    public function delete($id)
-    {
-        $this->db->where('id', $id);
-        $this->db->delete('entities');
-        return TRUE;
-    }
     */
+
+    public function insert_batch($data)
+    {
+        $this->db->insert_batch('entities', $data);
+    }
 
 }
