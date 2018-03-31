@@ -5,9 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <!--#include virtual="/assets/tpl/meta.html"--> 
     <link rel="stylesheet" type="text/css" href="/assets/css/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/chartist.min.css">
     <script src="/assets/js/gui/jquery-ui.js"></script> 
     <script src="/assets/js/gui/project-keyword.js"></script>
     <script src="/assets/js/gui/project-member.js"></script> 
+    <script src="/assets/js/chartist/chartist.min.js"></script>
+    <script src="/assets/js/chartist/chartist-plugin-threshold.min.js"></script>
     <script type="text/javascript">
         function loadList(url, placeholderId, template, context) {
             $.ajax({
@@ -65,10 +68,16 @@
             });
         };
 
+        function loadGraph() {
+            new Chartist.Line(".graph", {series: [[10,20,30,50,80,50,60,50,30,20,-100]]}, {showArea: true,showLine: false,axisY: {onlyInteger: true},plugins: [Chartist.plugins.ctThreshold({threshold: 0})]});
+        }
+
         $(document).ready(function() {
+            loadGraph();
             $(".go").click(function() {
                 
             });
+
         });
     </script>
 </head>
@@ -124,7 +133,8 @@
                                 </div>
                                 <div class="col-8 border rounded pl-lg-4">
                                     <div class="row">
-                                        <h2 class="card-title">Grafico</h2>
+                                        <h2 class="card-title w-100">Grafico</h2>
+                                        <div class="graph w-100 h-100" align="center"></div>
                                     </div>
                                     <div class="row">
                                         <h2 class="card-title w-100">Standup</h2>
