@@ -41,7 +41,7 @@ function populateBell() {
 
 $(document).ready(function() {
     populateSideBar();
-    populateBell();
+    //populateBell();
     populateNotify();
     setInterval(populateNotify, 5000);
 
@@ -52,6 +52,7 @@ $(document).ready(function() {
             success: function(data) {
                 if(data.length > 0)
                     $("#notify").text(data[0]['result']);
+                    populateBell();
             }
         });
     }

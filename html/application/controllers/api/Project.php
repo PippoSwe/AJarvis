@@ -99,7 +99,8 @@ class Project extends CI_Controller
         $result->series = array();
 
         foreach ($entry as $value) {
-            array_push($result->series, $value->score);
+            if( !is_null($value->score) )
+                array_push($result->series, $value->score);
         }
 
         $this->output
