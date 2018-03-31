@@ -201,4 +201,29 @@ class Queue extends CI_Controller
             ->set_output(json_encode($entry));
     }
 
+    /**
+     * @SWG\Get(
+     *     path="queue/count",
+     *     summary="Numero di processi Speech to Text, Text Analysys in lavorazione",
+     *     description="Numero di processi di Speech to Text e Text Analysys in lavorazione",
+     *     produces={"application/json"},
+     *     tags={"queue"},
+     *     @SWG\Response(
+     *         response=200,
+     *         description="Success",
+     *     ),
+     *     @SWG\Response(
+     *         response="500",
+     *         description="Internal Server Error"
+     *     )
+     * )
+     */
+    public function countPending() {
+        $entry = $this->queues->countPending();
+
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($entry));
+    }
+
 }

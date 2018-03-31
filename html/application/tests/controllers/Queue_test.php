@@ -107,6 +107,13 @@ class Queue_test extends TestCase
         $this->assertArrayHasKey('end', $data);
     }
 
+    public function test_count(){
+        $output = $this->request('GET', self::$page.'/count/');
+        $data = (array) json_decode($output);
+        $this->assertResponseCode(200);
+        $this->assertTrue( property_exists($data[0], 'result') );
+    }
+
     public function test_index()
     {
         $output = $this->request('GET', self::$page,

@@ -91,6 +91,7 @@ $route['api/standup/(:num)/sentences/bad'] = 'api/Standup/sentences_bad/$1';
 
 # Queue
 $route['api/queue/'] = 'api/Queue/index';
+$route['api/queue/count'] = 'api/Queue/countPending';
 $route['api/queue/(:num)'] = 'api/Queue/target/$1';
 $route['api/queue/(:num)/stt'] = 'api/Queue/stt/$1';
 $route['api/queue/(:num)/nlp'] = 'api/Queue/nlp/$1';

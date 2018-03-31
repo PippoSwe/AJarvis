@@ -1,7 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Queue_model extends CI_Model {
+class Queue_model extends CI_Model
+{
 
     public $id;
     public $project;
@@ -44,6 +45,20 @@ class Queue_model extends CI_Model {
         return $result;
     }
 
+    public function countPending()
+    {
+        $collection = $this->db->select('COUNT(*) as result')->from('standups');
+        $collection = $collection->join('projects', 'projects.id = project_id', 'left');
+        $collection = $collection->join('standups_nlp', 'standups_nlp.id = standups.id', 'left');
+        $collection = $collection->join('standups_speech_to_text', 'standups_speech_to_text.id = standups.id', 'left');
+        $collection = $collection->where('standups_speech_to_text.status','Pending');
+        $collection = $collection->or_where('standups_nlp.status','Pending');
+        $result = $collection
+            ->get()
+            ->result();
+        return $result;
+    }
+
     public function get($id)
     {
         $records = $this->db->select('standups.id, standup, project_id, project, 
@@ -55,7 +70,7 @@ class Queue_model extends CI_Model {
             ->join('standups_speech_to_text', 'standups_speech_to_text.id = standups.id', 'left')
             ->where('standups.id', $id)->get()
             ->result();
-        if(sizeof($records) > 0)
+        if (sizeof($records) > 0)
             return $records[0];
         return null;
     }
