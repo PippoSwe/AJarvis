@@ -79,6 +79,14 @@ class Queue_test extends TestCase
         $this->assertArrayHasKey('end', $data);
     }
 
+    public function test_view_pending()
+    {
+        $output = $this->request('GET', self::$page,
+            ['pending' => true]);
+        $data = (array) json_decode($output);
+        $this->assertResponseCode(200);
+    }
+
     public function test_stt() {
         $output = $this->request('PUT', self::$page.self::$key.'/stt/',
             ["status" => "Failed"]);
@@ -105,6 +113,13 @@ class Queue_test extends TestCase
         $this->assertArrayHasKey('nlp_status', $data);
         $this->assertArrayHasKey('id', $data);
         $this->assertArrayHasKey('end', $data);
+    }
+
+    public function test_count(){
+        $output = $this->request('GET', self::$page.'/count/');
+        $data = (array) json_decode($output);
+        $this->assertResponseCode(200);
+        $this->assertTrue( property_exists($data[0], 'result') );
     }
 
     public function test_index()

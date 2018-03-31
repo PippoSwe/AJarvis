@@ -1,0 +1,9 @@
+{{#items}}
+        <div id="list-item-{{id}}" class="list-group-item pb-5">
+            <h4 class="list-group-item-heading float-left">{{standup}}</h4>
+            <div class="pull-right">
+                <span class="p-2 rounded bg-{{stt_badge_color}} text-dark"><span class="ion-ios-mic pr-2"></span>{{stt_status}}</span></span>
+                <span class="p-2 rounded bg-{{nlp_badge_color}} text-dark"><span class="ion-ios-flask pr-2"></span>{{nlp_status}}</span>
+            </div>
+        </div>
+{{/items}}

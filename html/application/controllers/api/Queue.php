@@ -53,7 +53,8 @@ class Queue extends CI_Controller
     private function find() {
         $entry = $this->queues->find(
             $limit = $this->input->get('limit'),
-            $offset = $this->input->get('offset')
+            $offset = $this->input->get('offset'),
+            $onlyPending = $this->input->get('pending')
         );
 
         $this->output
@@ -195,6 +196,31 @@ class Queue extends CI_Controller
         $entry = $this->queues->update_stt($id, $data);
         if($entry == null)
             show_error("Cannot update due to service malfunctioning", 500);
+
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($entry));
+    }
+
+    /**
+     * @SWG\Get(
+     *     path="queue/count",
+     *     summary="Numero di processi Speech to Text, Text Analysys in lavorazione",
+     *     description="Numero di processi di Speech to Text e Text Analysys in lavorazione",
+     *     produces={"application/json"},
+     *     tags={"queue"},
+     *     @SWG\Response(
+     *         response=200,
+     *         description="Success",
+     *     ),
+     *     @SWG\Response(
+     *         response="500",
+     *         description="Internal Server Error"
+     *     )
+     * )
+     */
+    public function countPending() {
+        $entry = $this->queues->countPending();
 
         $this->output
             ->set_content_type('application/json')
