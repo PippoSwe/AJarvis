@@ -1,7 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Sentence_model extends CI_Model {
+class Sentence_model extends CI_Model
+{
 
     public $id;
     public $standup_id;
@@ -31,9 +32,14 @@ class Sentence_model extends CI_Model {
         return $result;
     }
 
-    public function sentences($standup_id = null, $type ='all' , $limit = null, $offset = 0)
+    public function sentences($standup_id = null, $type = 'all', $limit = null, $offset = 0)
     {
-        $collection = $this->db->select('sentence, sentences.score, sentences.magnitude')
+        $collection = $this->db->select('sentence, sentences.score, sentences.magnitude,
+                                            CASE
+                                                WHEN sentences.score > 0.25 THEN \'success\'
+                                                WHEN sentences.score < -0.25 THEN \'danger\'
+                                                ELSE \'secondary\'
+                                            END as color ')
             ->from('sentences');
         $collection = $collection->join('standups', 'standups.id = standup_id', 'left');
         if (!is_null($standup_id))
@@ -61,7 +67,7 @@ class Sentence_model extends CI_Model {
         return $result;
     }
 
-    public function countType($standup_id = null, $type ='positive' , $limit = null, $offset = 0)
+    public function countType($standup_id = null, $type = 'positive', $limit = null, $offset = 0)
     {
         $collection = $this->db->select('COUNT(*) as number')
             ->from('sentences');
@@ -78,7 +84,7 @@ class Sentence_model extends CI_Model {
                 break;
             case 'neutral':
                 $collection = $collection->where('sentences.score BETWEEN -0.25 AND 0.25');
-                $collection = $collection->where('sentences.magnitude','0');
+                $collection = $collection->where('sentences.magnitude', '0');
                 break;
             case 'mixed':
                 $collection = $collection->where('sentences.score BETWEEN -0.25 AND 0.25');
@@ -117,7 +123,7 @@ class Sentence_model extends CI_Model {
             ->join('standups', 'standups.id = standup_id', 'left')
             ->where('sentences.id', $id)->get()
             ->result();
-        if(sizeof($records) > 0)
+        if (sizeof($records) > 0)
             return $records[0];
         return null;
     }

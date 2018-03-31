@@ -122,7 +122,9 @@ class Nlp_test extends TestCase
             $this->assertTrue( property_exists($value, 'sentence') );
             $this->assertTrue( property_exists($value, 'score') );
             $this->assertTrue( property_exists($value, 'magnitude') );
+            $this->assertTrue( property_exists($value, 'color') );
         }
+        throw new Exception(print_r($data));
     }
 
     public function test_sentences_good()
@@ -156,7 +158,6 @@ class Nlp_test extends TestCase
         $output = $this->request('GET', self::$page.self::$key.'/entities/');
         $data = (array) json_decode($output);
         $this->assertResponseCode(200);
-       // throw new Exception( print_r($data));
 
         foreach($data as $value){
             $this->assertTrue( property_exists($value, 'name') );

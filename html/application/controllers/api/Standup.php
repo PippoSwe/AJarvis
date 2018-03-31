@@ -229,6 +229,11 @@ class Standup extends CI_Controller
             $offset = $this->input->get('offset')
         );
 
+        foreach ($entry as $value){
+            if($value->score == 0 && $value->magnitude > 0)
+                $value->color = 'info';
+        }
+
         $this->output
             ->set_content_type('application/json')
             ->set_output(json_encode($entry));

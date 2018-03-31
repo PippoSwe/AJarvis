@@ -1,13 +1,16 @@
 {{#items}}
         <div id="list-item-{{id}}" class="list-group-item pb-5">
-            <h4 class="list-group-item-heading float-left">{{standup}}</h4>
+
+         <div class="d-md-none">
+                <span class="badge badge-pill badge-{{stt_badge_color}} text-dark"><i class="fa fa-cloud-upload" aria-hidden="true"></i></span>
+                <span class="badge badge-pill badge-{{nlp_badge_color}} text-dark"><i class="fa fa-cloud-download" aria-hidden="true"></i></span>
+            </div>
+
+            <h5 class="list-group-item-heading float-left">{{project}}:{{standup}}</h5>
             <div class="d-none d-md-block pull-right">
-                <span class="p-2 rounded bg-{{stt_badge_color}} text-dark"><i class="fa fa-volume-up pr-2"></i>{{stt_status}}</span>
-                <span class="p-2 rounded bg-{{nlp_badge_color}} text-dark"><i class="fa fa-medkit pr-2"></i>{{nlp_status}}</span>
+                <span class="p-2 rounded bg-{{stt_badge_color}} text-dark"><i class="fa fa-cloud-upload pr-2" aria-hidden="true"></i>{{stt_status}}</span>
+                <span class="p-2 rounded bg-{{nlp_badge_color}} text-dark"><i class="fa fa-cloud-download pr-2" aria-hidden="true"></i>{{nlp_status}}</span>
             </div>
-            <div class="d-md-none pull-right">
-            	<span class="badge badge-pill badge-{{stt_badge_color}} text-dark"><i class="fa fa-volume-up"></i></span>
-				<span class="badge badge-pill badge-{{nlp_badge_color}} text-dark"><i class="fa fa-medkit"></i></span>
-            </div>
+           
         </div>
 {{/items}}
