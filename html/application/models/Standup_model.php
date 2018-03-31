@@ -19,7 +19,7 @@ class Standup_model extends CI_Model {
     public function find($project_id = null, $limit = null, $offset = 0)
     {
         //https://www.codeigniter.com/userguide3/database/query_builder.html#looking-for-similar-data
-        $collection = $this->db->select('standups.id, project_id, project, standup, score, magnitude, end')
+        $collection = $this->db->select('standups.id, project_id, project, standup, standups.score, standups.magnitude, end')
             ->from('standups');
         $collection = $collection->join('projects', 'projects.id = project_id', 'left');
         if (!is_null($project_id))

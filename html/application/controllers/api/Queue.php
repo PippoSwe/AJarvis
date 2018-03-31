@@ -53,7 +53,8 @@ class Queue extends CI_Controller
     private function find() {
         $entry = $this->queues->find(
             $limit = $this->input->get('limit'),
-            $offset = $this->input->get('offset')
+            $offset = $this->input->get('offset'),
+            $onlyPending = $this->input->get('pending')
         );
 
         $this->output
