@@ -19,11 +19,11 @@ class Migration_Add_entities extends CI_Migration {
             ),
             'name' => array(
                 'type' => 'VARCHAR',
-                'constraint' => '100',
+                'constraint' => '255',
             ),
             'type' => array(
                 'type' => 'VARCHAR',
-                'constraint' => '25',
+                'constraint' => '150',
             ),
             'salience' => array(
                 'type' => 'DECIMAL',
