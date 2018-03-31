@@ -2,3 +2,4 @@
 *.lock
 vendor
 application/tests/build
+codacy
