@@ -98,10 +98,10 @@
         }
 
         $(document).ready(function() {
-            $('.carousel').carousel('pause');
             loadEntity();
             loadFlowGraph();
             loadText();
+
             $(".fa-pie-chart").click(function() {
                 $(".fa-area-chart").removeClass("text-danger");
                 $(".fa-pie-chart").addClass("text-danger");
@@ -115,6 +115,17 @@
                 $(".graphFlow").removeClass("d-none");
                 $(".graphPie").addClass("d-none");
             });
+
+            $("#switch").click(function() {
+                if($("#switch").html() == "Visualizza colori") {
+                    $("#switch").html('Togli colori');
+                }else
+                    $("#switch").html('Visualizza colori');
+                $(".positive").toggleClass("bg-success");
+                $(".negative").toggleClass("bg-danger");
+                $(".mixed").toggleClass("bg-info");
+                $(".neutral").toggleClass("bg-secondary");
+            })
 
         });
     </script>
@@ -196,9 +207,9 @@
                                 </div>
                             </div>
 
-                            <div class="row mt-3">
+                            <div class="row mt-3" id="text_container">
                                 <h2 class="card-title w-25">Testo</h2>
-                                <button class="btn btn-primary">Switch</button>
+                                <button class="btn btn-primary" id="switch">Visualizza colori</button>
                             </div>
                             <div id="standup_text" class="row mt-1">
                                     
