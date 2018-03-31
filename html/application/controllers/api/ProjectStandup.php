@@ -301,12 +301,7 @@ class ProjectStandup extends CI_Controller
         $wav_file  = $path . '/' . $fname . ".wav";
         $flac_file = $path . '/' . $fname . ".FLAC";
 
-        if(!move_uploaded_file($_FILES['file']['tmp_name'], $wav_file)) {
-            echo "Non va zio canotto";
-            return FALSE;
-        }
-
-        //rename ( $_FILES['file']['tmp_name'], $wav_file );
+        rename ( $_FILES['file']['tmp_name'], $wav_file );
         // convert wav to FLAC
         $command = '/usr/bin/ffmpeg -i ' . $wav_file  . ' -ac 1 ' . $flac_file;
         exec($command);
