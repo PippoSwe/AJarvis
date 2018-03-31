@@ -79,6 +79,14 @@ class Queue_test extends TestCase
         $this->assertArrayHasKey('end', $data);
     }
 
+    public function test_view_pending()
+    {
+        $output = $this->request('GET', self::$page,
+            ['pending' => true]);
+        $data = (array) json_decode($output);
+        $this->assertResponseCode(200);
+    }
+
     public function test_stt() {
         $output = $this->request('PUT', self::$page.self::$key.'/stt/',
             ["status" => "Failed"]);

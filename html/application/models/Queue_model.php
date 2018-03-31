@@ -16,7 +16,7 @@ class Queue_model extends CI_Model
         parent::__construct();
     }
 
-    public function find($limit = null, $offset = 0)
+    public function find($limit = null, $offset = 0, $onlyPending=false)
     {
         //https://www.codeigniter.com/userguide3/database/query_builder.html#looking-for-similar-data
         $collection = $this->db->select('standups.id, standup, project_id, project, 
@@ -37,6 +37,10 @@ class Queue_model extends CI_Model
         $collection = $collection->join('projects', 'projects.id = project_id', 'left');
         $collection = $collection->join('standups_nlp', 'standups_nlp.id = standups.id', 'left');
         $collection = $collection->join('standups_speech_to_text', 'standups_speech_to_text.id = standups.id', 'left');
+        if($onlyPending) {
+            $collection = $collection->where('standups_speech_to_text.status','Pending');
+            $collection = $collection->or_where('standups_nlp.status','Pending');
+        }
         if (!is_null($limit))
             $collection = $collection->limit($limit, $offset);
         $result = $collection

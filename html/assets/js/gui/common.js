@@ -27,7 +27,7 @@ function clearSideBar() {
 
 function populateBell() {
     $.ajax({
-        url: "/api/queue/?limit=3",
+        url: "/api/queue/?limit=3&pending=true",
         type: "GET",
         success: function(data) {
             if(data.length > 0)
@@ -51,8 +51,7 @@ $(document).ready(function() {
             type: "GET",
             success: function(data) {
                 if(data.length > 0)
-                    console.log('intingo');
-                $("#notify").text(data[0]['result']);
+                    $("#notify").text(data[0]['result']);
             }
         });
     }
