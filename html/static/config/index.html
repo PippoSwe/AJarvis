@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Configurazione | AJarvis</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <!--#include virtual="/assets/tpl/meta.html"-->
+    </head>
+    <body>
+        <div class="app">
+            <div class="app-body">
+                <!--#include virtual="/assets/tpl/sidebar.html"-->
+                
+                <div class="app-content">
+                    <!--#include virtual="/assets/tpl/navbar.html"-->
+                    <!-- breadcrumb -->
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">Home</li>
+                            <li class="breadcrumb-item active" aria-current="page">Configurazione</li>
+                        </ol>
+                    </nav>
+                    <!-- content -->
+                    <div class="container-fluid">
+                        <div id="message"></div>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col"></div>
+                                <div class="col-8">
+                                    <form>
+                                        <div class="form-group">
+                                            <label for="audio_bucket_name">Audio bucket name</label>
+                                            <input type="text" class="form-control" id="audio_bucket_name">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="key_file">Key file</label>
+                                            <textarea class="form-control" id="key_file"></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="ip">IP</label>
+                                            <input type="text" class="form-control" id="ip">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="port">Port</label>
+                                            <input type="text" class="form-control" id="port">
+                                        </div>
+                                        <div class="text-center">
+                                            <button type="submit" class="btn btn-success">Salva</button>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="col"></div>
+                            </div>
+                        </div>
+                        <!-- Managing projects -->
+                        <div class="container mt-5 mt-lg-5" id="list"> &nbsp </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </body>
+</html>
