@@ -38,7 +38,7 @@ class Sentence_model extends CI_Model
                                             CASE
                                                 WHEN sentences.score > 0.25 THEN \'positive\'
                                                 WHEN sentences.score < -0.25 THEN \'negative\'
-                                                ELSE \'mixed\'
+                                                ELSE \'mixed    \'
                                             END as color ')
             ->from('sentences');
         $collection = $collection->join('standups', 'standups.id = standup_id', 'left');

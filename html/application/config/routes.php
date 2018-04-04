@@ -96,4 +96,8 @@ $route['api/queue/(:num)'] = 'api/Queue/target/$1';
 $route['api/queue/(:num)/stt'] = 'api/Queue/stt/$1';
 $route['api/queue/(:num)/nlp'] = 'api/Queue/nlp/$1';
 
+# Config
+$route['api/config/read'] = 'api/Config/readData';
+$route['api/config/update'] = 'api/Config/updateData';
+
 

@@ -1,7 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Config_model extends CI_Model {
+class Config_model extends CI_Model
+{
 
     public $key;
     public $value;
@@ -17,9 +18,22 @@ class Config_model extends CI_Model {
             ->from('configs')
             ->where('key', $key)->get()
             ->result();
-        if(sizeof($records) > 0)
+        if (sizeof($records) > 0)
             return $records[0];
         return null;
     }
 
+    public function readAll(){
+        $collection = $this->db->select('*')
+            ->from('configs');
+        $result = $collection
+            ->get()
+            ->result();
+        return $result;
+    }
+
+    public function update($data)
+    {
+        $this->db->update('configs', $data);
+    }
 }
