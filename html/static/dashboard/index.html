@@ -41,11 +41,9 @@
                     type: "GET",
                     success: function(data) {
                         $.get("standup.mst", function(template) {
+                            console.log(data);
                             var rendered = Mustache.render(template, {items: data});
                             $("#list-standup").html(rendered);
-                            $("#list-standup .go").click(function() {
-                                window.location.replace("../standup/index.html?standup_id="+$(this).attr("data-id")+"&project_id="+$.urlParam("project_id"));
-                            });
                             $("#list-standup .delete").click(function() {
                                 deleteStandup($(this).attr("data-id"));
                             });
@@ -118,7 +116,7 @@
                     url: "/api/project/"+$.urlParam("project_id")+"/flow",
                     type: "GET",
                     success: function(data) {
-                    new Chartist.Line(".graph", {series: [data.series]}, {showArea: true,showLine: false,axisY: {onlyInteger: true},plugins: [Chartist.plugins.ctThreshold({threshold: 0})]});
+                        new Chartist.Line(".graph", {series: [data.series]}, {showArea: true,showLine: false,axisY: {onlyInteger: true},plugins: [Chartist.plugins.ctThreshold({threshold: 0})]});
                     },
                     error: function(xhr, status, text) {
                         alert("Non va");
@@ -132,12 +130,9 @@
                     url:"/api/project/"+$.urlParam("project_id"),
                     type: "GET",
                     success: function(data){
-                        //("#project-title").htlm(data.project);
                         $(".project-title").text(data.project);
                     }
                 });
-                
-                //history.pushState(null, "dash", window.location.href);
             });
         </script>
     </head>
