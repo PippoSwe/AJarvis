@@ -1,6 +1,6 @@
 {{#items}}
         <div id="list-keyword-{{keyword_id}}" class="list-group-item border-0 pb-4">
-            <span class="float-left">{{keyword}}</span>
+            <span class="float-left trunc">{{keyword}}</span>
             <div class="btn-group pull-right">
                 <button type="button" data-id="{{keyword_id}}" class="delete close"><span class="ion-ios-close-outline"></span></button>
             </div>

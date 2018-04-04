@@ -1,79 +1,84 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Record | AJarvis</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <!--#include virtual="/assets/tpl/meta.html"-->
+    <head>
+        <title>Record | AJarvis</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <!--#include virtual="/assets/tpl/meta.html"-->
+        <!--  JS Voice Recorder, Wavesurfer and Page interaction -->
+        <script src="/assets/js/gui/recorder/francium-voice-master/recorder.js"></script>
+        <script src="/assets/js/gui/recorder/francium-voice-master/Fr.voice.js"></script>
+        <script src="/assets/js/gui/recorder/countimer/moment.js"></script>
+        <script src="/assets/js/gui/recorder/countimer/ez.countimer.min.js"></script>
+        <script src="/assets/js/gui/recorder/wavesurfer/wavesurfer.min.js"></script>
+        <script src="/assets/js/gui/recorder/wavesurfer/wavesurfer.microphone.min.js"></script>
+        <script src="/assets/js/gui/recorder/record.js"></script>
+        <!--ICONS-->
+    </head>
+    <script type="text/javascript">
+        $(document).ready(function() {
+                $.ajax({
+                    url:"/api/project/"+$.urlParam("project_id"),
+                    type: "GET",
+                    success: function(data){
+                        //("#project-title").htlm(data.project);
+                        $(".project-title").text(data.project);
+                    }
+                });
+            });
 
-    <!--  JS Voice Recorder, Wavesurfer and Page interaction -->
-    <script src="/assets/js/gui/recorder/francium-voice-master/recorder.js"></script>
-    <script src="/assets/js/gui/recorder/francium-voice-master/Fr.voice.js"></script>
-    <script src="/assets/js/gui/recorder/countimer/moment.js"></script>
-    <script src="/assets/js/gui/recorder/countimer/ez.countimer.min.js"></script>
-    <script src="/assets/js/gui/recorder/wavesurfer/wavesurfer.min.js"></script>
-    <script src="/assets/js/gui/recorder/wavesurfer/wavesurfer.microphone.min.js"></script>
-    <script src="/assets/js/gui/recorder/record.js"></script>
-
-    <!--ICONS-->
-</head>
-<div class="app">
-    <div class="app-body">
-        <!--#include virtual="/assets/tpl/sidebar.html"-->
-
-        <div class="app-content">
-            <!--#include virtual="/assets/tpl/navbar.html"-->
-            <!-- breadcrumb -->
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item">Home</li>
-                    <li class="breadcrumb-item active" aria-current="page">Registrazione</li>
-                </ol>
-            </nav>
-
-            <div class="container-fluid">
-                <div id="message"></div>
-                <div id="waveform"></div>
-                <h1 id="timer" class=" text-center pb-3"></h1>
-
-                <!-- correct -->
-                <div class="text-center">
-                    <button id="resume" type="button" class="btn btn-primary d-none">Resume</button>
-                    <button id="pause" type="button" class="btn btn-primary d-none">Pause</button>
-                    <button id="record" type="button" class="btn btn-success">Record</button>
-                    <button id="stop" type="button" class="btn btn-danger d-none" data-toggle="modal" data-target="#modalCenter">Stop</button>
-                </div>
-            </div>
-
-            <!-- Modal -->
-            <div class="modal fade" id="modalCenter" tabindex="-1" role="dialog" aria-labelledby="modalCenterTitle" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="modalLongTitle">Inizio analisi</h5>
+    </script>
+    <body>
+        <div class="app">
+            <div class="app-body">
+                <!--#include virtual="/assets/tpl/sidebar.html"-->
+                <div class="app-content">
+                    <!--#include virtual="/assets/tpl/navbar.html"-->
+                    <!-- breadcrumb -->
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">Home</li>
+                            <li class="breadcrumb-item active" aria-current="page">Registrazione <span class="project-title"></span></li>
+                        </ol>
+                    </nav>
+                    <div class="container-fluid">
+                        <div id="message"></div>
+                        <div id="waveform"></div>
+                        <h1 id="timer" class=" text-center pb-3"></h1>
+                        <!-- correct -->
+                        <div class="text-center">
+                            <button id="resume" type="button" class="btn btn-primary d-none">Resume</button>
+                            <button id="pause" type="button" class="btn btn-primary d-none">Pause</button>
+                            <button id="record" type="button" class="btn btn-success">Record</button>
+                            <button id="stop" type="button" class="btn btn-danger d-none" data-toggle="modal" data-target="#modalCenter">Stop</button>
                         </div>
-                        <div class="modal-body">
-                            Vuoi salvare questo standup e iniziare l'analisi dell'audio ?
+                    </div>
+                    <!-- Modal -->
+                    <div class="modal fade" id="modalCenter" tabindex="-1" role="dialog" aria-labelledby="modalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="modalLongTitle">Inizio analisi</h5>
+                                </div>
+                                <div class="modal-body">
+                                    Vuoi salvare questo standup e iniziare l'analisi dell'audio ?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" id="confirm-upload" class="btn btn-success" data-dismiss="modal"><span class="ion-ios-checkmark-outline mr-2"></span>Procedi</button>
+                                    <button type="button" id="abort-upload" class="btn btn-danger" data-dismiss="modal"><span class="ion-ios-trash-outline mr-2"></span>Annulla</button>
+                                </div>
+                            </div>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" id="confirm-upload" class="btn btn-success" data-dismiss="modal"><span class="ion-ios-checkmark-outline mr-2"></span>Procedi</button>
-                            <button type="button" id="abort-upload" class="btn btn-danger" data-dismiss="modal"><span class="ion-ios-trash-outline mr-2"></span>Annulla</button>
-
+                    </div>
+                    <!-- Modal -->
+                    <div class="modal fade" id="modalLoading" tabindex="-1" role="dialog" aria-labelledby="modalLoadingTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="text-center mx-auto text-center">
+                                <img src="/assets/images/loading.gif"  />
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <!-- Modal -->
-            <div class="modal fade" id="modalLoading" tabindex="-1" role="dialog" aria-labelledby="modalLoadingTitle" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="text-center mx-auto text-center">
-                        <img src="/assets/images/loading.gif"  />
-                    </div>
-                </div>
-            </div>
-
         </div>
-    </div>
-</div>
-</body>
+    </body>
 </html>

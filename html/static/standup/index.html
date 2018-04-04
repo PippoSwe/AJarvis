@@ -126,6 +126,14 @@
             loadFlowGraph();
             loadText();
 
+            $.ajax({
+                url:"/api/project/"+$.urlParam("project_id")+"/standup/"+$.urlParam("standup_id"),
+                type: "GET",
+                success: function(data){        
+                    $(".standup-title").text(data.standup);
+                }
+            });
+
             $(".fa-pie-chart").click(function() {
                 $(".fa-area-chart").removeClass("text-danger");
                 $(".fa-pie-chart").addClass("text-danger");
@@ -166,7 +174,7 @@
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item">Home</li>
                             <li class="breadcrumb-item">Progetto</li>
-                            <li class="breadcrumb-item active" aria-current="page">Standup</li>
+                            <li class="breadcrumb-item active" aria-current="page">Standup <span class="standup-title"></span></li>
                         </ol>
                     </nav>
                     <!-- content -->
