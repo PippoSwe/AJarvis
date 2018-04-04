@@ -1,8 +1,11 @@
 {{#items}}
         <div id="standup-{{id}}" class="list-group-item">
-            <h4 class="list-group-item-heading float-left">{{standup}}</h4>
+        <div class="float-left">
+        <button type="button" data-id="{{id}}" class="delete close" data-toggle="modal" data-target="#exampleModalCenter"><span class="ion-android-cancel text-danger outline-none"></span></button>
+        </div>
+            <span class="float-left ml-2">{{standup}}</span>
             <div class="btn-group pull-right">
-            	<button type="button" data-id="{{id}}" class="delete btn btn-danger" data-toggle="modal" data-target="#exampleModalCenter"><span class="ion-ios-trash pr-2"></span>Cancella</button>
+            	
             	<button type="button" data-id="{{id}}" href="../standup/index.html" class="go btn btn-primary">Vai<span class="ion-ios-arrow-right pl-2"></span></button>
         	</div>
         </div>

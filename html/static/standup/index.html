@@ -22,7 +22,11 @@
                         });
                 },
                 error: function(xhr, status, text) {
-                    alert("Problema caricamento entity");
+                    var structure = {x:xhr, s:status, t:"Problema caricamento delle entità", class:"danger", strong:"Errore!", dismiss:"alert-dismissible fade show"};
+                    $.get('/assets/tpl/alert.mst', function(template) {
+                        var rendered = Mustache.render(template, {items: structure}); //richiede un'array associativo
+                        $('#message').html(rendered);
+                    });
                 }
             });
 
@@ -36,7 +40,11 @@
                         });
                 },
                 error: function(xhr, status, text) {
-                    alert("Errore caricamento frasi positive");
+                    var structure = {x:xhr, s:status, t:"Problema con il caricamento delle frasi positive", class:"danger", strong:"Errore!", dismiss:"alert-dismissible fade show"};
+                    $.get('/assets/tpl/alert.mst', function(template) {
+                        var rendered = Mustache.render(template, {items: structure}); //richiede un'array associativo
+                        $('#message').html(rendered);
+                    });
                 }
             });
 
@@ -50,7 +58,11 @@
                     });
                 },
                 error: function(xhr, status, text) {
-                    alert("Errore caricamento frasi negative");
+                    var structure = {x:xhr, s:status, t:"Problema con il caricamento delle frasi negative", class:"danger", strong:"Errore!", dismiss:"alert-dismissible fade show"};
+                    $.get('/assets/tpl/alert.mst', function(template) {
+                        var rendered = Mustache.render(template, {items: structure}); //richiede un'array associativo
+                        $('#message').html(rendered);
+                    });
                 }
             });
         };
@@ -63,7 +75,11 @@
                     new Chartist.Line(".graphFlow", {series: [data.series]}, {showArea: true,showLine: false,axisY: {onlyInteger: true},plugins: [Chartist.plugins.ctThreshold({threshold: 0})]});
                 },
                 error: function(xhr, status, text) {
-                    alert("Non va");
+                    var structure = {x:xhr, s:status, t:"Problema con il caricamento del grafico che rappresenta il flusso dello standup", class:"danger", strong:"Errore!", dismiss:"alert-dismissible fade show"};
+                    $.get('/assets/tpl/alert.mst', function(template) {
+                        var rendered = Mustache.render(template, {items: structure}); //richiede un'array associativo
+                        $('#message').html(rendered);
+                    });
                 }
             });
         };
@@ -76,7 +92,11 @@
                     new Chartist.Pie(".graphPie", {series: data.series}, {showLabel: false,donut: true,donutWidth: 60,donutSolid: true,startAngle: 270,total: 4});
                 },
                 error: function(xhr, status, text) {
-                    alert("Non va");
+                    var structure = {x:xhr, s:status, t:"Problema con il caricamento del grafico che rappresenta le frasi", class:"danger", strong:"Errore!", dismiss:"alert-dismissible fade show"};
+                    $.get('/assets/tpl/alert.mst', function(template) {
+                        var rendered = Mustache.render(template, {items: structure}); //richiede un'array associativo
+                        $('#message').html(rendered);
+                    });
                 }
             });
         };
@@ -92,7 +112,11 @@
                     });
                 },
                 error: function(xhr, status, text) {
-                    alert("Non riesco a caricare il testo");
+                    var structure = {x:xhr, s:status, t:"Problema con il caricamento del testo dello standup", class:"danger", strong:"Errore!", dismiss:"alert-dismissible fade show"};
+                    $.get('/assets/tpl/alert.mst', function(template) {
+                        var rendered = Mustache.render(template, {items: structure}); //richiede un'array associativo
+                        $('#message').html(rendered);
+                    });
                 }
             });
         }
@@ -117,10 +141,10 @@
             });
 
             $("#switch").click(function() {
-                if($("#switch").html() == "Visualizza colori") {
-                    $("#switch").html('Togli colori');
+                if($("#switch").html() == "Evidenzia frasi") {
+                    $("#switch").html('Nascondi');
                 }else
-                    $("#switch").html('Visualizza colori');
+                    $("#switch").html('Evidenzia frasi');
                 $(".positive").toggleClass("bg-success");
                 $(".negative").toggleClass("bg-danger");
                 $(".mixed").toggleClass("bg-info");
@@ -150,69 +174,79 @@
                         <div id="message"></div>
                         <div class="container p-lg-1">
                             <div class="row">
-                                <div class="col-3 mr-2"><!-- -->
-                                    <div class="row p-1">
+                                <div class="col-3"><!-- -->
+                                    <div class="row">
 
                                         <div class="col">
-                                            <div class="row">
-                                                <h2 class="card-title w-100">Entità</h2>
-                                                <div class="col">
-                                                    Entità
+                                            <div class="card">
+                                                <div class="card-header"><i class="fa fa-flag mr-2"></i>Entità</div>
+                                                <div class="card-body">
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <strong>Entità</strong>
+                                                        </div>
+                                                        <div class="col">
+                                                            <strong>Salience</strong>
+                                                        </div>
+                                                    </div>
+                                                     <div id="entity"></div>
                                                 </div>
-                                                <div class="col">
-                                                    Salience
-                                                </div>
-                                            </div>
-                                            <div id="entity">
-                                                
                                             </div>
                                         </div>
 
                                     </div>
                                 </div>
-                                <div class="col-8 pl-lg-4">
-                                    <div class="row w-100">
-                                        <h2 class="card-title w-100">Grafico<i class="fa fa-area-chart text-danger"></i><i class="fa fa-pie-chart"></i></h2>
+                                <div class="col-9 ">
+                                    <div class="card mb-3">
+                                        <div class="card-header">
+                                            <i class="fa fa-bar-chart mr-2"></i>Grafico<span class="pull-right"> <i class="fa fa-area-chart text-danger"></i><i class="fa fa-pie-chart ml-2"></i></span>
+                                        </div>
                                         <div class="graphFlow w-100" align="center"></div>
                                         <div class="graphPie w-100 d-none" align="center"></div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="row mt-5">
+                            <div class="row mt-4">
                                 <div class="col-6">
-                                    <div class="row" id="header-positive-sentences">
-                                        <div class="col-6">
-                                            Frase
+                                    <div class="card border-success mb-3">
+                                        <div class="card-header bg-success" id="header-positive-sentences">
+                                            <div class="row">
+                                                <div class="col-10">Frase</div>
+                                                <div class="col-2 text-center">Score</div>
+                                            </div>
                                         </div>
-                                        <div class="col-6">
-                                            Score
+                                        <div class="card-body">
+                                            <div id="positive-sentences">
+                                                
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div id="positive-sentences">
-                                        
                                     </div>
                                 </div>
                                 <div class="col-6">
-                                    <div class="row" id="header-negative-sentences">
-                                        <div class="col-6">
-                                            Frase
+                                    <div class="card border-danger mb-3">
+                                        <div class="card-header bg-danger" id="header-negative-sentences">
+                                            <div class="row">
+                                                <div class="col-10">Frase</div>
+                                                <div class="col-2 text-center">Score</div>
+                                            </div>
                                         </div>
-                                        <div class="col-6">
-                                            Score
+                                        <div class="card-body">
+                                            <div id="negative-sentences">
+                                                
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div id="negative-sentences">
-                                        
                                     </div>
                                 </div>
                             </div>
 
                             <div class="row mt-3" id="text_container">
-                                <h2 class="card-title w-25">Testo</h2>
-                                <button class="btn btn-primary" id="switch">Visualizza colori</button>
-                            </div>
-                            <div id="standup_text" class="row mt-1">
-                                    
+                                <div class="card">
+                                    <div class="card-header"><i class="fa fa-file-text mr-2"></i>Testo
+                                    <button class="btn btn-primary pull-right" id="switch">Evidenzia frasi</button></div>
+                                    <div id="standup_text" class="card-body text-justify">
+                                            
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

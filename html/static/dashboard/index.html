@@ -1,138 +1,137 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Dashboard | AJarvis</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <!--#include virtual="/assets/tpl/meta.html"--> 
-    <link rel="stylesheet" type="text/css" href="/assets/css/jquery-ui.css">
-    <link rel="stylesheet" type="text/css" href="/assets/css/chartist.min.css">
-    <script src="/assets/js/gui/jquery-ui.js"></script> 
-    <script src="/assets/js/gui/project-keyword.js"></script>
-    <script src="/assets/js/gui/project-member.js"></script> 
-    <script src="/assets/js/chartist/chartist.min.js"></script>
-    <script src="/assets/js/chartist/chartist-plugin-threshold.min.js"></script>
-    <script type="text/javascript">
-        function loadList(url, placeholderId, template, context) {
-            $.ajax({
-                url: url,
-                type: "GET",
-                success: function(data) {
-                    if(data.length > 0)
-                        $.get(template, function(template) {
+    <head>
+        <title>Dashboard | AJarvis</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <!--#include virtual="/assets/tpl/meta.html"-->
+        <link rel="stylesheet" type="text/css" href="/assets/css/jquery-ui.css">
+        <link rel="stylesheet" type="text/css" href="/assets/css/chartist.min.css">
+        <script src="/assets/js/gui/jquery-ui.js"></script>
+        <script src="/assets/js/gui/project-keyword.js"></script>
+        <script src="/assets/js/gui/project-member.js"></script>
+        <script src="/assets/js/chartist/chartist.min.js"></script>
+        <script src="/assets/js/chartist/chartist-plugin-threshold.min.js"></script>
+        <script type="text/javascript">
+            function loadList(url, placeholderId, template, context) {
+                $.ajax({
+                    url: url,
+                    type: "GET",
+                    success: function(data) {
+                        if(data.length > 0)
+                            $.get(template, function(template) {
+                                var rendered = Mustache.render(template, {items: data});
+                                $(placeholderId).html(rendered);
+                                $(placeholderId+" .delete").click(function() {
+                                    var data_id = $(this).attr("data-id");
+                                    deleteItem("/api/project/"+$.urlParam("project_id")+"/"+context+"/", data_id, context);
+                                });
+                                $(placeholderId+" .delete").click(function() {
+                                    var data_id = $(this).attr("data-id");
+                                    deleteItem("/api/project/"+$.urlParam("project_id")+"/"+context+"/", data_id, context);
+                                });
+                            });
+                    },
+                    error: function(xhr, status, text) {
+                        alert("Non va");
+                    }
+                });
+
+                $.ajax({
+                    url: "/api/project/"+$.urlParam("project_id")+"/standup/",
+                    type: "GET",
+                    success: function(data) {
+                        $.get("standup.mst", function(template) {
                             var rendered = Mustache.render(template, {items: data});
-                            $(placeholderId).html(rendered);
-                            $(placeholderId+" .delete").click(function() {
-                                var data_id = $(this).attr("data-id");
-                                deleteItem("/api/project/"+$.urlParam("project_id")+"/"+context+"/", data_id, context);
+                            $("#list-standup").html(rendered);
+                            $("#list-standup .go").click(function() {
+                                window.location.replace("../standup/index.html?standup_id="+$(this).attr("data-id"));
                             });
-                            $(placeholderId+" .delete").click(function() {
-                                var data_id = $(this).attr("data-id");
-                                deleteItem("/api/project/"+$.urlParam("project_id")+"/"+context+"/", data_id, context);
+                            $("#list-standup .delete").click(function() {
+                                deleteStandup($(this).attr("data-id"));
                             });
                         });
+                    },
+                    error: function(xhr, status, text) {
+                        alert("Non va");
+                    }
+                });
 
-                },
-                error: function(xhr, status, text) {
-                    alert("Non va");
-                }
-            });
-
-            $.ajax({
-                url: "/api/project/"+$.urlParam("project_id")+"/standup/",
-                type: "GET",
-                success: function(data) {
-                    $.get("standup.mst", function(template) {
-                        var rendered = Mustache.render(template, {items: data});
-                        $("#list-standup").html(rendered);
-                        $("#list-standup .go").click(function() {
-                            window.location.replace("../standup/index.html?standup_id="+$(this).attr("data-id"));
-                        });
-                        $("#list-standup .delete").click(function() {
-                            deleteStandup($(this).attr("data-id"));
-                        });
-                    });
-                },
-                error: function(xhr, status, text) {
-                    alert("Non va");
-                }
-            });
-
-            $.ajax({
-                url: "/api/project/"+$.urlParam("project_id")+"/sentences/good/?limit=3",
-                type: "GET",
-                success: function(data) {
+                $.ajax({
+                    url: "/api/project/"+$.urlParam("project_id")+"/sentences/good/?limit=3",
+                    type: "GET",
+                    success: function(data) {
                         $.get("sentences.mst", function(template) {
                             var rendered = Mustache.render(template, {items: data});
                             $("#positive-sentences").html(rendered);
                         });
-                },
-                error: function(xhr, status, text) {
-                    alert("Errore caricamento frasi positive");
-                }
-            });
-
-            $.ajax({
-                url: "/api/project/"+$.urlParam("project_id")+"/sentences/bad/?limit=3",
-                type: "GET",
-                success: function(data) {    
-                    $.get("sentences.mst", function(template) {
-                        var rendered = Mustache.render(template, {items: data});
-                        $("#negative-sentences").html(rendered);
-                    });
-                },
-                error: function(xhr, status, text) {
-                    alert("Errore caricamento frasi negative");
-                }
-            });
-        };
-
-        function deleteStandup(data_id) {
-            $("body").on('click', '#confirm-delete', function () {
-                $.ajax({
-                    url: "/api/project/"+$.urlParam("project_id")+"/standup/"+data_id,
-                    type: "DELETE",
-                    success: function(data) {
-                        $("div").remove("#standup-"+data_id);
                     },
                     error: function(xhr, status, text) {
-                        alert("errore");
+                    alert("Errore caricamento frasi positive");
                     }
                 });
-            });
-        }
 
-        function deleteItem(url, elementId, context) {
-            $.ajax({
-                url: url+elementId,
-                type: "DELETE",
-                success: function(data) {
-                    $("div").remove("#list-"+context+"-"+elementId);
-                },
-                error: function(xhr, status, text) {
-                    alert("Non va");
-                }
-            });
-        };
+                $.ajax({
+                    url: "/api/project/"+$.urlParam("project_id")+"/sentences/bad/?limit=3",
+                    type: "GET",
+                    success: function(data) {
+                        $.get("sentences.mst", function(template) {
+                            var rendered = Mustache.render(template, {items: data});
+                            $("#negative-sentences").html(rendered);
+                        });
+                    },
+                    error: function(xhr, status, text) {
+                        alert("Errore caricamento frasi negative");
+                    }
+                });
+            };
 
-        function loadGraph() {
-            $.ajax({
-                url: "/api/project/"+$.urlParam("project_id")+"/flow",
-                type: "GET",
-                success: function(data) {
+            function deleteStandup(data_id) {
+                $("body").on('click', '#confirm-delete', function () {
+                    $.ajax({
+                        url: "/api/project/"+$.urlParam("project_id")+"/standup/"+data_id,
+                        type: "DELETE",
+                        success: function(data) {
+                            $("div").remove("#standup-"+data_id);
+                        },
+                        error: function(xhr, status, text) {
+                            alert("errore");
+                        }
+                    });
+                });
+            }
+
+            function deleteItem(url, elementId, context) {
+                $.ajax({
+                    url: url+elementId,
+                    type: "DELETE",
+                    success: function(data) {
+                        $("div").remove("#list-"+context+"-"+elementId);
+                    },
+                    error: function(xhr, status, text) {
+                        alert("Non va");
+                    }
+                });
+            };
+
+            function loadGraph() {
+                $.ajax({
+                    url: "/api/project/"+$.urlParam("project_id")+"/flow",
+                    type: "GET",
+                    success: function(data) {
                     new Chartist.Line(".graph", {series: [data.series]}, {showArea: true,showLine: false,axisY: {onlyInteger: true},plugins: [Chartist.plugins.ctThreshold({threshold: 0})]});
-                },
-                error: function(xhr, status, text) {
-                    alert("Non va");
-                }
-            });
-        };
+                    },
+                    error: function(xhr, status, text) {
+                        alert("Non va");
+                    }
+                });
+            };
 
-        $(document).ready(function() {
-            loadGraph();
-        });
-    </script>
-</head>
-<body>
+            $(document).ready(function() {
+                loadGraph();
+            });
+        </script>
+    </head>
+    <body>
         <div class="app">
             <div class="app-body">
                 <!--#include virtual="/assets/tpl/sidebar.html"-->
@@ -151,73 +150,80 @@
                         <div id="message"></div>
                         <div class="container p-lg-1">
                             <div class="row">
-                                <div class="col-3 mr-2"><!-- -->
-                                    <div class="rowp-1">
-
-                                        <div class="col">
-                                            <h6 class="card-title">Associa Keywords</h6>
-                                            <form class="form-inline mt-2">
-                                                <div class="form-group mb-2">
-                                                    <input type="text" name="project-keyword" id="project-keyword" class="form-control ml-2">
-                                                    <input type="text" name="hidden-keyword-id" id="hidden-keyword-id" hidden>
-                                                </div>
-                                                <button type="submit" name="save-keyword" id="save-keyword" class="btn btn-success mb-2 ml-2" disabled="disabled"><span class="ion-ios-checkmark-outline mr-2"></span>Salva</button>
-                                            </form>
-                                            <div id="list-keyword"> <!-- div lista keyword associate a progetto --></div>   
-                                        </div>
-
-                                        <div class="col mt-2">
-                                            <h6 class="card-title">Associa Membro</h6>
-                                            <form class="form-inline mt-2">
-                                                <div class="form-group mb-2">
-                                                    <input type="text" name="project-member" id="project-member" class="form-control ml-2">
-                                                    <input type="text" name="hidden-member-id" id="hidden-member-id" hidden>
-                                                </div>
-                                                <button type="submit" name="save-member" id="save-member" class="btn btn-success mb-2 ml-2" disabled="disabled"><span class="ion-ios-checkmark-outline mr-2"></span>Salva</button>
-                                            </form>
-                                            <div id="list-member"> <!-- div lista keyword associate a progetto -->
-                                                
+                                <div class="col-3"><!-- -->
+                                <div class="row p-1">
+                                    <div class="col">
+                                        <div class="card">
+                                            <div class="card-header"><i class="fa fa-key mr-2"></i>Keyword</div>
+                                            <div class="card-body">
+                                                <form>
+                                                    <div class="form-group mb-2">
+                                                        <input type="text" name="project-keyword" id="project-keyword" class="form-control">
+                                                        <input type="text" name="hidden-keyword-id" id="hidden-keyword-id" hidden>
+                                                    </div>
+                                                    <button type="submit" name="save-keyword" id="save-keyword" class="btn btn-success mb-2" disabled="disabled"><span class="ion-ios-checkmark-outline mr-2"></span>Salva</button>
+                                                </form>
+                                                <div id="list-keyword"> <!-- div lista keyword associate a progetto --></div>
                                             </div>
                                         </div>
-
                                     </div>
-                                </div>
-                                <div class="col-8 pl-lg-4">
-                                    <div class="row">
-                                        <h2 class="card-title w-100">Grafico</h2>
-                                        <div class="graph w-100" align="center"></div>
-                                    </div>
-                                    <div class="row">
-                                        <h2 class="card-title w-100">Standup</h2>
-                                        <div class="list-group w-100" id="list-standup">
-                                            
+                                    <div class="col mt-4">
+                                        <div class="card">
+                                            <div class="card-header"><i class="fa fa-users mr-2"></i>Membri</div>
+                                            <div class="card-body">
+                                                <form>
+                                                    <div class="form-group mb-2">
+                                                        <input type="text" name="project-member" id="project-member" class="form-control">
+                                                        <input type="text" name="hidden-member-id" id="hidden-member-id" hidden>
+                                                    </div>
+                                                    <button type="submit" name="save-member" id="save-member" class="btn btn-success mb-2" disabled="disabled"><span class="ion-ios-checkmark-outline mr-2"></span>Salva</button>
+                                                </form>
+                                                <div id="list-member"> <!-- div lista keyword associate a progetto --></div>
+                                            </div>
                                         </div>
-                                    </div>
                                 </div>
                             </div>
-                            <div class="row mt-5">
-                                <div class="col-6">
-                                    <div class="row" id="header-positive-sentences">
-                                        <div class="col-6">
-                                            Frase
-                                        </div>
-                                        <div class="col-6">
-                                            Score
-                                        </div>
+                        </div>
+                        <div class="col-9">
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <i class="fa fa-bar-chart mr-2"></i>Grafico
+                                </div>
+                                <div class="graph w-100" align="center"></div>
+                            </div>
+                            <div class="card mt-4">
+                                <div class="card-header"><i class="fa fa-bullhorn mr-2"></i>Standup</div>
+                                <div class="list-group list-group-flush" id="list-standup">
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-5">
+                        <div class="col-6">
+                            <div class="card border-success mb-3">
+                                <div class="card-header bg-success" id="header-positive-sentences">
+                                    <div class="row">
+                                        <div class="col-10">Frase</div>
+                                        <div class="col-2 text-center">Score</div>
                                     </div>
+                                </div>
+                                <div class="card-body">
                                     <div id="positive-sentences">
                                         
                                     </div>
                                 </div>
-                                <div class="col-6">
-                                    <div class="row" id="header-negative-sentences">
-                                        <div class="col-6">
-                                            Frase
-                                        </div>
-                                        <div class="col-6">
-                                            Score
-                                        </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="card border-danger mb-3">
+                                <div class="card-header bg-danger" id="header-negative-sentences">
+                                    <div class="row">
+                                        <div class="col-10">Frase</div>
+                                        <div class="col-2 text-center">Score</div>
                                     </div>
+                                </div>
+                                <div class="card-body">
                                     <div id="negative-sentences">
                                         
                                     </div>
@@ -228,25 +234,27 @@
                 </div>
             </div>
         </div>
-        <!-- delete modal -->
-        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Attenzione!</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        Eliminare definitivamente lo standup?
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
-                        <button type="button" id="confirm-delete" class="btn btn-danger" data-dismiss="modal"><span class="ion-ios-trash-outline mr-2"></span>Elimina</button>
-                    </div>
-                </div>
+    </div>
+</div>
+<!-- delete modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Attenzione!</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Eliminare definitivamente lo standup?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                <button type="button" id="confirm-delete" class="btn btn-danger" data-dismiss="modal"><span class="ion-ios-trash-outline mr-2"></span>Elimina</button>
             </div>
         </div>
+    </div>
+</div>
 </body>
 </html>
