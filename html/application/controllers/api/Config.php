@@ -20,14 +20,17 @@ class Config extends CI_Controller
 
    function updateData(){
        $data = array(
-           array('key' => 'audio_bucket_name', 'value' => 'ajarvis-rest'),
-           array('key' => 'key_file', 'value' => ''),
-           array('key' => 'ip', 'value' => ''),
-           array('key' => 'port ', 'value' => ''),
+           array('key' => 'audio_bucket_name', 'value' => $this->input->post('audio_bucket_name')),
+           array('key' => 'key_file', 'value' => $this->input->post('key_file')),
+           array('key' => 'ip', 'value' => $this->input->post('ip')),
+           array('key' => 'port ', 'value' => $this->input->post('port')),
        );
 
-       foreach($data as $updateData)
+       foreach($data as $updateData) {
            $this->configs->update($updateData);
+
+       }
+
    }
 
 }

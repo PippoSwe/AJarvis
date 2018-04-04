@@ -97,18 +97,6 @@
     </div>
 </div>
 
-<script>
-    $( document ).ready(function() {
-        $.ajax({
-            url: '/api/config/read/',
-            type: "GET",
-            success: function (data) {
-                if (data.length > 0)
-                    console.log(data);
-            }
-        });
-    });
-</script>
 
 </body>
 </html>
