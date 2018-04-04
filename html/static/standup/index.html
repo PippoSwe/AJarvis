@@ -6,6 +6,7 @@
     <!--#include virtual="/assets/tpl/meta.html"--> 
     <link rel="stylesheet" type="text/css" href="/assets/css/jquery-ui.css">
     <link rel="stylesheet" type="text/css" href="/assets/css/chartist.min.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/fixChart.css">
     <script src="/assets/js/gui/jquery-ui.js"></script>
     <script src="/assets/js/chartist/chartist.min.js"></script>
     <script src="/assets/js/chartist/chartist-plugin-threshold.min.js"></script>
@@ -89,7 +90,7 @@
                 url: "/api/standup/"+$.urlParam("standup_id")+"/pie",
                 type: "GET",
                 success: function(data) {
-                    new Chartist.Pie(".graphPie", {series: data.series}, {showLabel: false,donut: true,donutWidth: 60,donutSolid: true,startAngle: 270,total: 4});
+                    new Chartist.Pie(".graphPie", {series: data.series}, {showLabel: true,donut: true,donutWidth: 60,donutSolid: true, donutSolid: true, startAngle: 270,total: 8, height: 300});
                 },
                 error: function(xhr, status, text) {
                     var structure = {x:xhr, s:status, t:"Problema con il caricamento del grafico che rappresenta le frasi", class:"danger", strong:"Errore!", dismiss:"alert-dismissible fade show"};
@@ -209,8 +210,20 @@
                                         <div class="card-header">
                                             <i class="fa fa-bar-chart mr-2"></i>Grafico<span class="pull-right"> <i class="fa fa-area-chart text-danger"></i><i class="fa fa-pie-chart ml-2"></i></span>
                                         </div>
-                                        <div class="graphFlow w-100" align="center"></div>
-                                        <div class="graphPie w-100 d-none" align="center"></div>
+                                        <div class="graphFlow" align="center"></div>
+                                        <div class="graphPie d-none" align="center">
+                                            <div class="btn-group dropleft pull-right">
+                                                <button type="button" class="btn btn-secondary dropdown-toggle p-1 mt-1 mr-1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Leggenda
+                                                </button>
+                                                <div class="dropdown-menu">
+                                                    <span class="dropdown-item"><i class="ion-record text-danger mr-2"></i>Frasi negative</span>
+                                                    <span class="dropdown-item"><i class="ion-record text-info mr-2"></i>Frasi miste</span>
+                                                    <span class="dropdown-item"><i class="ion-record text-secondary mr-2"></i>Frasi neutrali</span>
+                                                    <span class="dropdown-item"><i class="ion-record text-success mr-2"></i>Frasi positive</span>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

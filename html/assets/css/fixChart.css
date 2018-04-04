@@ -1,0 +1,46 @@
+.ct-label {
+	fill: white;
+	color: white;
+}
+
+.ct-series-a .ct-bar, .ct-series-a .ct-slice-donut, .ct-series-a .ct-slice-donut-solid {
+    stroke: #28a745;
+    fill: #28a745;
+}
+
+.ct-series-b .ct-bar, .ct-series-b .ct-slice-donut, .ct-series-b .ct-slice-donut-solid {
+    stroke: #dc3545;
+    fill: #dc3545;
+}
+
+.ct-series-c .ct-bar, .ct-series-c .ct-slice-donut, .ct-series-c .ct-slice-donut-solid {
+    stroke: #17a2c8;
+    fill: #17a2c8;
+}
+
+.ct-series-d .ct-bar, .ct-series-d .ct-slice-donut, .ct-series-d .ct-slice-donut-solid {
+    stroke: #2ECC71;
+    fill: #2ECC71;
+}
+
+.ct-series-e .ct-bar, .ct-series-e .ct-slice-donut, .ct-series-e .ct-slice-donut-solid {
+    stroke: #CF000F;
+    fill: #CF000F;
+}
+
+.ct-series-f .ct-bar, .ct-series-f .ct-slice-donut, .ct-series-f .ct-slice-donut-solid {
+    stroke: #ECF0F1;
+    fill: #ECF0F1;
+}
+
+.ct-grid {
+	/*stroke: white;*/
+}
+
+.ct-area {
+	fill-opacity: .3;
+}
+
+.ct-series-a .ct-area {
+	/*fill: white;*/
+}

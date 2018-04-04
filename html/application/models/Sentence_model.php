@@ -109,7 +109,7 @@ class Sentence_model extends CI_Model
             $collection = $collection->where('standup_id', $standup_id);
         if (!is_null($limit))
             $collection = $collection->limit($limit, $offset);
-        $this->db->order_by('end', 'ASC');
+        $this->db->order_by('sentences.id', 'ASC');
         $result = $collection
             ->get()
             ->result();
