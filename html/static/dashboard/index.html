@@ -41,7 +41,6 @@
                     type: "GET",
                     success: function(data) {
                         $.get("standup.mst", function(template) {
-                            console.log(data);
                             var rendered = Mustache.render(template, {items: data});
                             $("#list-standup").html(rendered);
                             $("#list-standup .delete").click(function() {
