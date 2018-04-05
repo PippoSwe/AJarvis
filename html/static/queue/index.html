@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Queue | AJarvis</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <!--#include virtual="/assets/tpl/meta.html"-->  
-    <script type="text/javascript" src="/assets/js/gui/controller.js"></script>
-    <script type="text/javascript" src="/assets/js/gui/queue.js"></script>
-</head>
-<body>
+    <head>
+        <title>Queue | AJarvis</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <!--#include virtual="/assets/tpl/meta.html"-->
+        <script type="text/javascript" src="/assets/js/gui/controller.js"></script>
+        <script type="text/javascript" src="/assets/js/gui/queue.js"></script>
+    </head>
+    <body>
         <div class="app">
             <div class="app-body">
                 <!--#include virtual="/assets/tpl/sidebar.html"-->
@@ -21,11 +21,17 @@
                             <li class="breadcrumb-item active" aria-current="page">Queue</li>
                         </ol>
                     </nav>
-                        <!-- Managing Queue -->
-                        <div class="container mt-5 smt-lg-5" id="list"> &nbsp </div>
+                    <!-- Managing Queue -->
+                    <div class="container col-lg-10">
+                        <div class="card">
+                            <div class="card-header"><i class="ion-load-a pr-2"></i> Processi</div>
+                            <div class="card-body">
+                                <div class="smt-lg-5" id="list"> &nbsp </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>     
-</body>
+            </div>
+        </div>
+    </body>
 </html>
-
