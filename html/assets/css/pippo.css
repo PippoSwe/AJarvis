@@ -6,7 +6,7 @@
 }
 
 .trunc{
- width:100px;
+ width:140px;
  white-space: nowrap;
  overflow: hidden;
  text-overflow: ellipsis;
