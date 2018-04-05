@@ -181,12 +181,10 @@
                     <!-- content -->
                     <div class="container-fluid">
                         <div id="message"></div>
-                        <div class="container p-lg-1">
+                        <div class="container">
                             <div class="row">
-                                <div class="col-3"><!-- -->
-                                    <div class="row">
+                                <div class="col-12 col-lg-3 mb-5"><!-- -->
 
-                                        <div class="col">
                                             <div class="card">
                                                 <div class="card-header"><i class="fa fa-flag mr-2"></i>Entità</div>
                                                 <div class="card-body">
@@ -201,12 +199,10 @@
                                                      <div id="entity"></div>
                                                 </div>
                                             </div>
-                                        </div>
-
-                                    </div>
                                 </div>
-                                <div class="col-9 ">
-                                    <div class="card mb-3">
+
+                                <div class="col-12 col-lg-9">
+                                    <div class="card mb-5">
                                         <div class="card-header">
                                             <i class="fa fa-bar-chart mr-2"></i>Grafico<span class="pull-right"> <i class="fa fa-area-chart text-danger"></i><i class="fa fa-pie-chart ml-2"></i></span>
                                         </div>
@@ -227,13 +223,14 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row mt-4">
-                                <div class="col-6">
-                                    <div class="card border-success mb-3">
+
+                            <div class="row mt-5">
+                                <div class="col-12 col-lg-6">
+                                    <div class="card border-success mb-5">
                                         <div class="card-header bg-success" id="header-positive-sentences">
                                             <div class="row">
-                                                <div class="col-10">Frase</div>
-                                                <div class="col-2 text-center">Score</div>
+                                                <div class="col-9 col-md-10">Frase</div>
+                                                <div class="col-3 col-md-2 text-center">Score</div>
                                             </div>
                                         </div>
                                         <div class="card-body">
@@ -243,12 +240,12 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-6">
-                                    <div class="card border-danger mb-3">
+                                <div class="col-12 col-lg-6">
+                                    <div class="card border-danger mb-5">
                                         <div class="card-header bg-danger" id="header-negative-sentences">
                                             <div class="row">
-                                                <div class="col-10">Frase</div>
-                                                <div class="col-2 text-center">Score</div>
+                                                <div class="col-9 col-md-10">Frase</div>
+                                                <div class="col-3 col-md-2 text-center">Score</div>
                                             </div>
                                         </div>
                                         <div class="card-body">
@@ -260,12 +257,13 @@
                                 </div>
                             </div>
 
-                            <div class="row mt-3" id="text_container">
+                            <div class="row mt-5" id="text_container">
+                                <div class="col-12">
                                 <div class="card">
                                     <div class="card-header"><i class="fa fa-file-text mr-2"></i>Testo
                                     <button class="btn btn-primary pull-right" id="switch">Evidenzia frasi</button></div>
                                     <div id="standup_text" class="card-body text-justify">
-                                            
+                                </div> 
                                     </div>
                                 </div>
                             </div>
