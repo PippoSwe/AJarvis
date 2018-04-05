@@ -6,7 +6,7 @@
             <span class="float-left ml-2">{{standup}}</span>
             <div class="btn-group pull-right">
             	
-            	<span class="border-2 border-primary rounded"><a type="button" data-id="{{id}}" href="../standup/index.html?standup_id={{id}}&project_id={{project_id}}" class="go btn">Vai<i class="ion-ios-arrow-right pl-2"></i></a></span>
+            	<a data-id="{{id}}" href="../standup/index.html?standup_id={{id}}&project_id={{project_id}}" class="btn btn-primary">Vai<i class="ion-ios-arrow-right pl-2"></i></a>
         	</div>
         </div>
 {{/items}}
