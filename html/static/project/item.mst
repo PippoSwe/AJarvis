@@ -2,7 +2,7 @@
         <div id="list-item-{{id}}" class="list-group-item pb-5">
             <h5 class="list-group-item-heading float-left pt-2">{{project}}</h5>
             <div class="btn-group pull-right">
-                <button type="button" data-id="{{id}}" class="edit btn btn-secondary"><span class="ion-edit pr-2"></span><Modifica</button>
+                <button type="button" data-id="{{id}}" class="edit btn btn-secondary"><span class="ion-edit pr-2"></span>Modifica</button>
                 <button type="button" data-id="{{id}}" class="delete btn btn-danger" data-toggle="modal" data-target="#exampleModalCenter"><span class="ion-ios-trash pr-2"></span>Cancella</button>
             </div>
         </div>
