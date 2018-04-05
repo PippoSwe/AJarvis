@@ -11,8 +11,3 @@
  overflow: hidden;
  text-overflow: ellipsis;
 }
-
-.go {
-	background-color: #000 !important;
-	color: white;
-}
