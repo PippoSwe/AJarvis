@@ -10,6 +10,11 @@
 	<meta charset="utf-8">
         <!-- Bootstap CSS -->
         <link rel="stylesheet" href="../../assets/css/bootstrap.min.css" >
+        <link rel="stylesheet" href="../../assets/css/pippo.css">
+	 	<link rel="stylesheet" href="../../assets/css/ionicons.min.css">
+	 	<link rel="stylesheet" href="../../assets/css/font-awesome.min.css">
+
+
         <!--  JS Popper jQuery -->
         <script src="../../assets/js/jquery-3.3.1.min.js"></script>
         <!--Mustache-->
@@ -39,43 +44,49 @@
 		});
 	</script>
 </head>
-<body>
-	<nav class="navbar navbar-dark bg-dark navbar-fixed-top">
-		<div class="container">
-			<div class="navbar-header">
-				<a class="navbar-brand" href="#home">AJarvis</a>
-			</div><!--
-			<button class="navbar-toggler hidden-md-up pull-xs-right" data-target="#collapsenav" data-toggle="collapse" type="button">☰	</button>-->
-			<!--<div class="collapse navbar-collapse" id="navbarSupportedContent">-->
-			<div class="nav navbar" id="navbarSupportedContent">
-				<ul class="list-inline">
-					<li class="list-inline-item"><a class="nav-link" href="/static/recorder/index.html">Registrazione</a></li>
-					<li class="list-inline-item"><a class="nav-link" href="/static/project/index.html">Progetti</a></li>
-					<li class="list-inline-item"><a class="nav-link" href="/static/member/index.html">Membri</a></li>
-					<li class="list-inline-item"><a class="nav-link" href="/static/keyword/index.html">Keyword</a></li>
-					<li class="list-inline-item"><a class="nav-link" href="/static/config/index.html">Configurazione</a></li>
-				</ul>
+<body class="bodyIndex">
+<div class="container">
+	<div class="text-center">
+		<img src="../../assets/images/logo.png" alt="AJarvis">
+	</div>
+	<div class="timeline">
+		<div class="entry">
+			<div class="title">
+				<h3>Configura AJarvis</h3>
+			</div>
+			<div class="body-custom">
+				<p>Se è la prima volta che accedi configura l'applicazione</p>
+				<a id="btn-insert" class="btn btn-success" href="#" role="button"><i class="fa fa-wrench mr-2" aria-hidden="true"></i>Configura AJarvis</a>
 			</div>
 		</div>
-	</nav>
-	<div id="alert-no-project">
+		<div class="entry">
+			<div class="title">
+				<h3>Crea progetto</h3>
+			</div>
+			<div class="body-custom">
+				<p>Se è la prima volta che accedi crea il tuo primo progetto</p>
+				<a id="btn-insert" class="btn btn-success" href="#" role="button"><i class="ion-ios-plus-outline mr-2"></i>Nuovo progetto</a>
+			</div>
+		</div>
+		<div class="entry">
+			<div class="title">
+				<h3>Aggiungi membri</h3>
+			</div>
+			<div class="body-custom">
+				<p>Aggiungi i membri dell'azienda per una migliore gestione dei tuoi progetti</p>
+				<a id="btn-insert" class="btn btn-success" href="#" role="button"><i class="ion-ios-plus-outline mr-2"></i>Aggiungi membri</a>
+			</div>
+		</div>
+		
 	</div>
-	<div class="bg-danger w-100">descrizione ajarvis</div>
-	<footer class="footer">    
-	    <div class="container">
-	        <span class="text-muted">inserire le tecnologie utilizzate</span>
-	    </div>
-
-	</footer>
+	
+	<div id="alert-no-project"></div>
+</div>
+	
+	<!--<footer class="footer">
+			<div class="container">
+					<span class="text-muted">inserire le tecnologie utilizzate</span>
+			</div>
+	</footer>-->
 </body>
-<style type="text/css">
-	.footer {
-        position: absolute;
-        bottom: 0;
-        background-color: #000;
-        width: 100%;
-        height: 80px;
-        line-height: 80px;
-    }
-</style>
 </html>
