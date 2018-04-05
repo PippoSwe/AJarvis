@@ -1,89 +1,81 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
-?><!DOCTYPE html>
-<html lang="en">
+	
+?>
+<!DOCTYPE html>
+<html lang="it">
 <head>
+	<meta charset="UTF-8">
+	<title>Welcome to AJarvis</title>
+	<!--#include virtual="/assets/tpl/meta.html"-->
 	<meta charset="utf-8">
-	<title>Welcome to CodeIgniter</title>
+        <!-- Bootstap CSS -->
+        <link rel="stylesheet" href="../../assets/css/bootstrap.min.css" >
+        <!--  JS Popper jQuery -->
+        <script src="../../assets/js/jquery-3.3.1.min.js"></script>
+        <!--Mustache-->
+        <script src="../../assets/js/gui/popper.min.js" ></script>
+        <script src="../../assets/js/gui/bootstrap.min.js"></script>
 
-	<style type="text/css">
-
-	::selection { background-color: #E13300; color: white; }
-	::-moz-selection { background-color: #E13300; color: white; }
-
-	body {
-		background-color: #fff;
-		margin: 40px;
-		font: 13px/20px normal Helvetica, Arial, sans-serif;
-		color: #4F5155;
-	}
-
-	a {
-		color: #003399;
-		background-color: transparent;
-		font-weight: normal;
-	}
-
-	h1 {
-		color: #444;
-		background-color: transparent;
-		border-bottom: 1px solid #D0D0D0;
-		font-size: 19px;
-		font-weight: normal;
-		margin: 0 0 14px 0;
-		padding: 14px 15px 10px 15px;
-	}
-
-	code {
-		font-family: Consolas, Monaco, Courier New, Courier, monospace;
-		font-size: 12px;
-		background-color: #f9f9f9;
-		border: 1px solid #D0D0D0;
-		color: #002166;
-		display: block;
-		margin: 14px 0 14px 0;
-		padding: 12px 10px 12px 10px;
-	}
-
-	#body {
-		margin: 0 15px 0 15px;
-	}
-
-	p.footer {
-		text-align: right;
-		font-size: 11px;
-		border-top: 1px solid #D0D0D0;
-		line-height: 32px;
-		padding: 0 10px 0 10px;
-		margin: 20px 0 0 0;
-	}
-
-	#container {
-		margin: 10px;
-		border: 1px solid #D0D0D0;
-		box-shadow: 0 0 8px #D0D0D0;
-	}
-	</style>
+        <noscript>
+            <div class="alert alert-danger" role="alert">
+                <h4 class="alert-heading">Attenzione!</h4>
+                <p>Per avere a disposizione tutte le funzionalità di questo sito è necessario abilitare Javascript, prima di continuare.<br/> Grazie, </p>
+                <strong class="ml-5">Il Team Pippo.Swe</strong>
+            </div>
+        </noscript>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$.ajax({
+	            url: "/api/project/",
+	            type: "GET",
+	            success: function(data) {
+	                if(data.length < 0)
+	                	$("#alert-no-project").html("<div class='alert alert-success alert-dismissible fade show' role='alert'><h4 class='alert-heading'>Benvenuto!</h4><p>Sembra che sia la prima volta che accedi ad AJarvis</p><hr><p class='mb-0'>La prima cosa da fare è creare un progetto, altrimenti non è possibile registrare uno standup. <a class='nav-link' href='/static/project/index.html'>Clicca qui per inserire un progetto</a></p><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>");
+	            },
+	            error: function(xhr, status, text) {
+	                alert("nonva");
+	            }
+	        });
+		});
+	</script>
 </head>
 <body>
-
-<div id="container">
-	<h1>Welcome to CodeIgniter!</h1>
-
-	<div id="body">
-		<p>The page you are looking at is being generated dynamically by CodeIgniter.</p>
-
-		<p>If you would like to edit this page you'll find it located at:</p>
-		<code>application/views/welcome_message.php</code>
-
-		<p>The corresponding controller for this page is found at:</p>
-		<code>application/controllers/Welcome.php</code>
-
-		<p>If you are exploring CodeIgniter for the very first time, you should start by reading the <a href="user_guide/">User Guide</a>.</p>
+	<nav class="navbar navbar-dark bg-dark navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="#home">AJarvis</a>
+			</div><!--
+			<button class="navbar-toggler hidden-md-up pull-xs-right" data-target="#collapsenav" data-toggle="collapse" type="button">☰	</button>-->
+			<!--<div class="collapse navbar-collapse" id="navbarSupportedContent">-->
+			<div class="nav navbar" id="navbarSupportedContent">
+				<ul class="list-inline">
+					<li class="list-inline-item"><a class="nav-link" href="/static/recorder/index.html">Registrazione</a></li>
+					<li class="list-inline-item"><a class="nav-link" href="/static/project/index.html">Progetti</a></li>
+					<li class="list-inline-item"><a class="nav-link" href="/static/member/index.html">Membri</a></li>
+					<li class="list-inline-item"><a class="nav-link" href="/static/keyword/index.html">Keyword</a></li>
+					<li class="list-inline-item"><a class="nav-link" href="/static/config/index.html">Configurazione</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<div id="alert-no-project">
 	</div>
+	<div class="bg-danger w-100">descrizione ajarvis</div>
+	<footer class="footer">    
+	    <div class="container">
+	        <span class="text-muted">inserire le tecnologie utilizzate</span>
+	    </div>
 
-	<p class="footer">Page rendered in <strong>{elapsed_time}</strong> seconds. <?php echo  (ENVIRONMENT === 'development') ?  'CodeIgniter Version <strong>' . CI_VERSION . '</strong>' : '' ?></p>
-</div>
-
+	</footer>
 </body>
+<style type="text/css">
+	.footer {
+        position: absolute;
+        bottom: 0;
+        background-color: #000;
+        width: 100%;
+        height: 80px;
+        line-height: 80px;
+    }
+</style>
 </html>
