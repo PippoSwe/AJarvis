@@ -11,3 +11,14 @@
  	overflow: hidden;
  	text-overflow: ellipsis;
 }
+
+@media only screen and (max-width: 992px) {
+    .hidden-text {
+		display: none;
+	}
+
+	.rm-padding-icon {
+		padding: 0 !important;
+		margin: 0 !important;
+	}
+}
