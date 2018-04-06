@@ -40,85 +40,88 @@ function upload_session() {
 
 $(document).ready(function() {
 
-    var wavesurfer = WaveSurfer.create({
-        container: '#waveform',
-        barHeight: 30,
-        barWidth: null,
-        cursorWidth: 0,
-        progressColor: 'black',
-        cursorColor: 'black',
-        waveColor: 'black',
-        height: 200
-    });
-    var microphone = Object.create(WaveSurfer.Microphone);
+    if( !/[?&]project_id=/.test(location.search) ) { $('#record').addClass('disabled') }
+    else {
+        
+        var wavesurfer = WaveSurfer.create({
+            container: '#waveform',
+            barHeight: 30,
+            barWidth: null,
+            cursorWidth: 0,
+            progressColor: 'black',
+            cursorColor: 'black',
+            waveColor: 'black',
+            height: 200
+        });
+        var microphone = Object.create(WaveSurfer.Microphone);
 
-    microphone.init({
-        wavesurfer: wavesurfer
-    });
+        microphone.init({
+            wavesurfer: wavesurfer
+        });
 
-    microphone.on('deviceReady', function(stream) {
-        console.log('Device ready!', stream);
-    });
-    microphone.on('deviceError', function(code) {
-        console.warn('Device error: ' + code);
-    });
+        microphone.on('deviceReady', function (stream) {
+            console.log('Device ready!', stream);
+        });
+        microphone.on('deviceError', function (code) {
+            console.warn('Device error: ' + code);
+        });
 
-    $("#timer").countimer({
-        // Auto start on inti
-        autoStart : false
-    });
+        $("#timer").countimer({
+            // Auto start on inti
+            autoStart: false
+        });
 
-    $("#record").click(function() {
-        $("#record").toggleClass("d-none");
-        Fr.voice.record(false, recoding_session());
-        microphone.start()
-    });
-
-
-    $("#abort-upload").click(function() {
-        Fr.voice.stop();
-        $("#stop").addClass("d-none");
-        $("#pause").removeClass("d-none");
-        $("#pause").addClass("d-none");
-        $("#resume").removeClass("d-none");
-        $("#resume").addClass("d-none");
-        $("#record").removeClass("d-none");
-        microphone.pause();
-    });
+        $("#record").click(function () {
+            $("#record").toggleClass("d-none");
+            Fr.voice.record(false, recoding_session());
+            microphone.start()
+        });
 
 
-    $("#confirm-upload").click(function() {
-        $("#modalLoading").modal("show");
-        upload_session();
-        microphone.pause();
-    });
+        $("#abort-upload").click(function () {
+            Fr.voice.stop();
+            $("#stop").addClass("d-none");
+            $("#pause").removeClass("d-none");
+            $("#pause").addClass("d-none");
+            $("#resume").removeClass("d-none");
+            $("#resume").addClass("d-none");
+            $("#record").removeClass("d-none");
+            microphone.pause();
+        });
 
 
-    $("#stop").click(function() {
-        //$("#stop").toggleClass("d-none");
-        Fr.voice.pause();
-        $("#pause").removeClass("d-none");
-        $("#pause").addClass("d-none");
-        $("#resume").removeClass("d-none");
-        $("#timer").countimer('stop');
-        microphone.pause();
-    });
+        $("#confirm-upload").click(function () {
+            $("#modalLoading").modal("show");
+            upload_session();
+            microphone.pause();
+        });
 
 
-    $("#pause").click(function() {
-        Fr.voice.pause();
-        $("#pause").toggleClass("d-none");
-        $("#resume").toggleClass("d-none");
-        $("#timer").countimer('stop');
-        microphone.pause();
-    });
+        $("#stop").click(function () {
+            //$("#stop").toggleClass("d-none");
+            Fr.voice.pause();
+            $("#pause").removeClass("d-none");
+            $("#pause").addClass("d-none");
+            $("#resume").removeClass("d-none");
+            $("#timer").countimer('stop');
+            microphone.pause();
+        });
 
-    $("#resume").click(function() {
-        Fr.voice.resume();
-        $("#pause").toggleClass("d-none");
-        $("#resume").toggleClass("d-none");
-        $("#timer").countimer('resume');
-        microphone.play();
-    });
 
+        $("#pause").click(function () {
+            Fr.voice.pause();
+            $("#pause").toggleClass("d-none");
+            $("#resume").toggleClass("d-none");
+            $("#timer").countimer('stop');
+            microphone.pause();
+        });
+
+        $("#resume").click(function () {
+            Fr.voice.resume();
+            $("#pause").toggleClass("d-none");
+            $("#resume").toggleClass("d-none");
+            $("#timer").countimer('resume');
+            microphone.play();
+        });
+    }
 });
