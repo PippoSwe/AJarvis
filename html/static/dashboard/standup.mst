@@ -6,7 +6,13 @@
             <span class="float-left ml-2">{{standup}}</span>
             <div class="btn-group pull-right">
             	
-            	<a data-id="{{id}}" href="../standup/index.html?standup_id={{id}}&project_id={{project_id}}" class="btn btn-primary">Vai<i class="ion-ios-arrow-right pl-2"></i></a>
-        	</div>
+            {{#score}}    
+                <a data-id="{{id}}" href="../standup/index.html?standup_id={{id}}&project_id={{project_id}}" class="btn btn-primary">Vai<i class="ion-ios-arrow-right pl-2"></i></a>
+        	{{/score}}
+            {{^score}}
+                <a data-id="{{id}}" href="../standup/index.html?standup_id={{id}}&project_id={{project_id}}" class="btn btn-warning disabled">In elaborazione<i class="ion-alert-circled pl-2"></i></a>
+            {{/score}}
+
+            </div>
         </div>
 {{/items}}
