@@ -25,28 +25,33 @@
                         <div class="container">
                             <div class="row">
                                 <div class="col"></div>
-                                <div class="col-8">
-                                    <form id="save">
-                                        <div class="form-group">
-                                            <label for="audio_bucket_name">Audio bucket name</label>
-                                            <input type="text" class="form-control" name="audio_bucket_name" id="audio_bucket_name">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="key_file">Key file</label>
-                                            <textarea class="form-control" name="key_file" id="key_file"></textarea>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="ip">IP</label>
-                                            <input type="text" class="form-control" name="ip" id="ip">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="port">Port</label>
-                                            <input type="text" class="form-control" name="port" id="port">
-                                        </div>
-                                        <div class="text-center">
-                                            <button type="submit" class="btn btn-success" id="saveButton">Salva</button>
-                                        </div>
-                                    </form>
+                                <div class="card w-75">
+                                    <div class="card-header">
+                                        <i class="fa fa-file-code-o pr-2"></i>Parametri configurazione
+                                    </div>
+                                    <div class="card-body">
+                                        <form id="save">
+                                            <div class="form-group">
+                                                <label for="audio_bucket_name">Audio bucket name</label>
+                                                <input type="text" class="form-control" name="audio_bucket_name" id="audio_bucket_name">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="key_file">Key file</label>
+                                                <textarea class="form-control" name="key_file" id="key_file"></textarea>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="ip">IP</label>
+                                                <input type="text" class="form-control" name="ip" id="ip">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="port">Port</label>
+                                                <input type="text" class="form-control" name="port" id="port">
+                                            </div>
+                                            <div class="text-center">
+                                                <button type="submit" class="btn btn-success" disabled="true" id="saveButton"><i class="ion-ios-checkmark-outline mr-2"></i>Salva</button>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
                                 <div class="col"></div>
                             </div>
@@ -60,6 +65,8 @@
 
         <script>
             $( document ).ready(function() {
+                checkEventInput();
+
                 $.ajax({
                     url: '/api/config/read/',
                     type: "GET",
@@ -73,17 +80,37 @@
                 });
 
                 $('#saveButton').click(function () {
-                    console.log($("#save").serialize());
                     $.ajax({
                         url: '/api/config/update/',
                         type: "POST",
-                        data: $("#save").serialize(),
-                        success: function (data) {
-                            console.log('salvato');
-                        }
+                        data: $("#save").serialize()
                     })
                 });
             });
+
+            function checkEventInput() {
+                $("#audio_bucket_name").keyup(function() {
+                    checkEmpty();
+                });
+
+                $("#key_file").keyup(function() {
+                    checkEmpty();
+                });
+
+                $("#ip").keyup(function() {
+                    checkEmpty();
+                });
+
+                $("#port").keyup(function() {
+                    checkEmpty();
+                });
+            }
+
+            function checkEmpty() {
+                if( $("#audio_bucket_name").val().length > 0 && $("#key_file").val().length > 0 && $("#ip").val().length > 0 && $("#port").val().length > 0)
+                    $("#saveButton").attr("disabled",false);
+                else $("#saveButton").attr("disabled",true);
+            }
         </script>
         
     </body>

@@ -12,6 +12,10 @@
  	text-overflow: ellipsis;
 }
 
+#key_file {
+  height: 10em;
+}
+
 @media only screen and (max-width: 992px) {
     .hidden-text {
 		display: none;
