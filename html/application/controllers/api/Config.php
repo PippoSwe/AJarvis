@@ -22,4 +22,12 @@ class Config extends CI_Controller
        $this->configs->update(array('key' => 'key_file', 'value' => $this->input->post('key_file')));
    }
 
+   function checkKey()
+   {
+        $this->load->helper(array('google_storage_helper'));
+        $entry = checkConnection($this->input->post('key_file'));
+        $this->output
+           ->set_content_type('application/json')
+           ->set_output(json_encode($entry));
+   }
 }

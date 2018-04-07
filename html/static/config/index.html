@@ -64,14 +64,40 @@
                     }
                 });
 
-                $('#saveButton').click(function () {
-                    $.ajax({
-                        url: '/api/config/update/',
-                        type: "POST",
-                        data: $("#save").serialize()
-                    })
+                $('#saveButton').click(function (event) {
+                    event.preventDefault();
+                    checkConnection();                        
                 });
             });
+
+            function checkConnection() {
+                $.ajax({
+                    url: '/api/config/checkConnection/',
+                    type: "POST",
+                    data: $("#save").serialize(),
+                    success: function (data) {
+                        $.ajax({
+                            url: '/api/config/update/',
+                            type: "POST",
+                            data: $("#save").serialize(),
+                            success: function() {
+                                var structure = {strong:"Inserimento avvenuto con successo", class:"success", t:"", dismiss:"alert-dismissible fade show"}; //passo i messaggi per riusare il file mst
+                                $.get('/assets/tpl/alert.mst', function(template) {
+                                    var rendered = Mustache.render(template, {items: structure}); //richiede un'array associativo
+                                    $('#message').html(rendered);
+                                });
+                            }
+                        })
+                    },
+                    error: function(xhr, state, text) {
+                        var structure = {strong:"La chiave inserita non è valida", class:"danger", t:"", dismiss:"alert-dismissible fade show"}; //passo i messaggi per riusare il file mst
+                        $.get('/assets/tpl/alert.mst', function(template) {
+                            var rendered = Mustache.render(template, {items: structure}); //richiede un'array associativo
+                            $('#message').html(rendered);
+                        });
+                    }
+                })
+            }
 
             function checkEventInput() {
                 $("#key_file").keyup(function() {

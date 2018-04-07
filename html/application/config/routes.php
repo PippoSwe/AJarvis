@@ -99,5 +99,6 @@ $route['api/queue/(:num)/nlp'] = 'api/Queue/nlp/$1';
 # Config
 $route['api/config/read'] = 'api/Config/readData';
 $route['api/config/update'] = 'api/Config/updateData';
+$route['api/config/checkConnection'] = 'api/Config/checkKey';
 
 

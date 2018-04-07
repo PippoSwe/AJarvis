@@ -38,3 +38,11 @@ function upload_file($file_path, $file_name)
         ]
     );
 }
+
+function checkConnection($key)
+{
+    $storage = new StorageClient([
+        'keyFile' => json_decode($key, true)
+    ]);
+    return $storage->buckets();
+}
