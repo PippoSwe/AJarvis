@@ -12,6 +12,22 @@ class Config_test extends TestCase
 {
     private static $page = 'api/config/';
 
+    public static function setUpBeforeClass()
+    {
+        parent::setUpBeforeClass();
+        $CI =& get_instance();
+        $CI->load->database();
+    }
+
+    public function setUp()
+    {
+        $this->request->setCallable(
+            function ($CI) {
+                $CI->load->database();
+            }
+        );
+    }
+
     public function test_read()
     {
         $output = $this->request('GET', self::$page . 'read');
@@ -33,16 +49,17 @@ class Config_test extends TestCase
 
     public function test_connection()
     {
-        try{
         $this->request('POST', self::$page . 'checkConnection', [
             'key_file' => 'test']);
-        }catch(Exception $e){}
+        $this->assertResponseCode(500);
     }
 
-    public function delete()
-    {
-        $this->load->model('Config_model', 'configs', TRUE);
-        delete('test');
+    public function test_key_delete() {
+        $CI =& get_instance();
+        $CI->load->database();
+        $CI->load->model('Config_model', 'configs', TRUE);
+        $CI->configs->delete("key_file");
     }
+
 
 }

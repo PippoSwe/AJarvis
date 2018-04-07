@@ -1,6 +1,11 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+# Includes the autoloader for libraries installed with composer
+require  FCPATH . '/vendor/autoload.php';
+
+use Google\Cloud\Core\Exception\GoogleException;
+
 class Config extends CI_Controller
 {
 
@@ -8,6 +13,7 @@ class Config extends CI_Controller
     {
         parent::__construct();
         $this->load->model('Config_model', 'configs', TRUE);
+        $this->load->helper(array('google_storage_helper'));
     }
 
 /**
@@ -89,10 +95,14 @@ class Config extends CI_Controller
    */
    function checkKey()
    {
-        $this->load->helper(array('google_storage_helper'));
-        $entry = checkConnection($this->input->post('key_file'));
-        $this->output
-           ->set_content_type('application/json')
-           ->set_output(json_encode($entry));
+        try {
+            $entry = checkConnection($this->input->post('key_file'));
+            $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode($entry));
+        }
+        catch(GoogleException $e) {
+            show_error("Cannot connection to Google", 500);
+        }
    }
 }
