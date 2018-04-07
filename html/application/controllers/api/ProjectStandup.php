@@ -99,7 +99,12 @@ class ProjectStandup extends CI_Controller
 
         // Conversione ffmpeg + invio a Google Storage
         $fname = "standup-".$entry->id;
-        $this->save_audio($fname);
+        try{
+            $this->save_audio($fname);
+        }catch(Exception $e){
+            $this->standups->delete($entry->id);
+            show_error("Error in upload process", 500);
+        }
 
         // Response
         $this->output
