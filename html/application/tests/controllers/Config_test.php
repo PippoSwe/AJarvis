@@ -27,7 +27,7 @@ class Config_test extends TestCase
     public function test_update()
     {
         $this->request('POST', self::$page . 'update', [
-            'audio_bucket_name' => 'test', 'key_file' => 'test', 'ip' => 'test', 'port' => 'test']);
+            'key_file' => 'test']);
         $this->assertResponseCode(200);
     }
 

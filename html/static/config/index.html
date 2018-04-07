@@ -32,20 +32,8 @@
                                     <div class="card-body">
                                         <form id="save">
                                             <div class="form-group">
-                                                <label for="audio_bucket_name">Audio bucket name</label>
-                                                <input type="text" class="form-control" name="audio_bucket_name" id="audio_bucket_name">
-                                            </div>
-                                            <div class="form-group">
                                                 <label for="key_file">Key file</label>
                                                 <textarea class="form-control" name="key_file" id="key_file"></textarea>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="ip">IP</label>
-                                                <input type="text" class="form-control" name="ip" id="ip">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="port">Port</label>
-                                                <input type="text" class="form-control" name="port" id="port">
                                             </div>
                                             <div class="text-center">
                                                 <button type="submit" class="btn btn-success" disabled="true" id="saveButton"><i class="ion-ios-checkmark-outline mr-2"></i>Salva</button>
@@ -89,25 +77,13 @@
             });
 
             function checkEventInput() {
-                $("#audio_bucket_name").keyup(function() {
-                    checkEmpty();
-                });
-
                 $("#key_file").keyup(function() {
-                    checkEmpty();
-                });
-
-                $("#ip").keyup(function() {
-                    checkEmpty();
-                });
-
-                $("#port").keyup(function() {
                     checkEmpty();
                 });
             }
 
             function checkEmpty() {
-                if( $("#audio_bucket_name").val().length > 0 && $("#key_file").val().length > 0 && $("#ip").val().length > 0 && $("#port").val().length > 0)
+                if( $("#key_file").val().length > 0 )
                     $("#saveButton").attr("disabled",false);
                 else $("#saveButton").attr("disabled",true);
             }
