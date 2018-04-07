@@ -31,4 +31,10 @@ class Config_test extends TestCase
         $this->assertResponseCode(200);
     }
 
+        public function test_update()
+    {
+        $this->request('POST', self::$page . 'checkConnection');
+        $this->assertResponseCode(500);
+    }
+
 }
