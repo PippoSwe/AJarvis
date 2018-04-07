@@ -56,7 +56,7 @@
 			</div>
 			<div class="body-custom">
 				<p>Se è la prima volta che accedi configura l'applicazione</p>
-				<a id="btn-insert" class="btn btn-success" href="#" role="button"><i class="fa fa-wrench mr-2" aria-hidden="true"></i>Configura AJarvis</a>
+				<button id="btn-insert" class="btn btn-success" href="#" type="button" data-toggle="modal" data-target="#key-modal"><i class="fa fa-wrench mr-2" aria-hidden="true"></i>Configura AJarvis</button>
 			</div>
 		</div>
 		<div class="entry">
@@ -65,24 +65,75 @@
 			</div>
 			<div class="body-custom">
 				<p>Se è la prima volta che accedi crea il tuo primo progetto</p>
-				<a id="btn-insert" class="btn btn-success" href="#" role="button"><i class="ion-ios-plus-outline mr-2"></i>Nuovo progetto</a>
+				<button id="btn-insert" class="btn btn-success" href="#" type="button" data-toggle="modal" data-target="#projectect-modal"><i class="ion-ios-plus-outline mr-2"></i>Nuovo progetto</button>
 			</div>
 		</div>
-		<div class="entry">
-			<div class="title">
-				<h3>Aggiungi membri</h3>
-			</div>
-			<div class="body-custom">
-				<p>Aggiungi i membri dell'azienda per una migliore gestione dei tuoi progetti</p>
-				<a id="btn-insert" class="btn btn-success" href="#" role="button"><i class="ion-ios-plus-outline mr-2"></i>Aggiungi membri</a>
-			</div>
-		</div>
-		
 	</div>
 	
 	<div id="alert-no-project"></div>
-</div>
+
 	
+
+
+</div>
+
+<!-- MODALs -->
+
+<!-- Config_modal-->
+<div class="modal fade hide" id="key-modal" tabindex="-1" role="dialog" aria-labelledby="key-modal" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<div class="modal-title" id="save-title"><i class="fa fa-file-code-o pr-2"></i>Parametri configurazione</div>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<form id="save" method="" action="">
+				<div class="modal-body">
+					<div class="form-group">
+						<div class="form-group">
+							<label for="key_file"> Key file</label>
+							<textarea class="form-control" name="key_file" id="key_file" placeholder="Key file..."></textarea>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+					<button type="submit" id="confirm-save" class="btn btn-success" disabled="disabled"><span class="ion-ios-checkmark-outline mr-2"></span>Salva</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<!-- New project modal -->
+ <div class="modal fade hide" id="projectect-modal" tabindex="-1" role="dialog" aria-labelledby="projectect-modal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="modal-title" id="save-title"><i class="fa fa-list pr-2"></i>Nuovo Progetto</div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form id="save" method="" action="">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="project" class="col-form-label">Nome progetto:</label>
+                                <input type="text" class="form-control" id="project" name="project" placeholder="Nome progetto" data-placement="right" required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                            <button type="submit" id="confirm-save" class="btn btn-success" disabled="disabled"><span class="ion-ios-checkmark-outline mr-2"></span>Salva</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
 	<!--<footer class="footer">
 			<div class="container">
 					<span class="text-muted">inserire le tecnologie utilizzate</span>
