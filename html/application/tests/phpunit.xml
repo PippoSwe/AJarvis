@@ -13,11 +13,13 @@
 			<directory suffix=".php">../controllers</directory>
             <exclude>
                 <file>../controllers/Migrate.php</file>
+				<file>../controllers/Welcome.php</file>
 				<file>../controllers/api/Swagger.php</file>
             </exclude>
 			<directory suffix=".php">../models</directory>
 			<directory suffix=".php">../views</directory>
 			<exclude>
+				<file>../views/welcome_message.php</file>
 				<directory suffix=".php">../views/errors</directory>
 			</exclude>
 			<directory suffix=".php">../libraries</directory>
