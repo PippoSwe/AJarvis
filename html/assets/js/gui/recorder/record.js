@@ -50,7 +50,7 @@ $(document).ready(function() {
             cursorWidth: 0,
             progressColor: 'black',
             cursorColor: 'black',
-            waveColor: 'black',
+            waveColor: 'salmon',
             height: 200
         });
         var microphone = Object.create(WaveSurfer.Microphone);

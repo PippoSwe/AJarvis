@@ -47,7 +47,7 @@
 <body class="bodyIndex">
 <div class="container">
 	<div class="text-center">
-		<img src="../../assets/images/logo.png" alt="AJarvis">
+		<img class="img-logo" src="../../assets/images/logo.png" alt="AJarvis">
 	</div>
 	<div class="timeline">
 		<div class="entry">
