@@ -41,6 +41,8 @@ function upload_file($file_path, $file_name)
 
 function checkConnection($key)
 {
+    if(empty($key))
+        return;
     $storage = new StorageClient([
         'keyFile' => json_decode($key, true)
     ]);

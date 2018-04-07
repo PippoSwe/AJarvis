@@ -71,6 +71,42 @@ class Standup_test extends TestCase
         self::$key = $data['id'];
     }
 
+    public function test_post_google_cant_connect()
+    {
+        $this->request('POST', 'api/config/updateData', [
+            'key_file' => 'fake'
+        ]);
+        /*
+        $CI =& get_instance();
+        $CI->load->database();
+        $CI->load->model('Config_model', 'configs', TRUE);
+
+        // Inserisco chiave per far fallire il file upload
+        $CI->configs->update(array('key' => 'key_file', 'value' => 'fake_key'));
+        */
+
+        /* Necessari aggiunstamenti alla funzione save_audio()
+            per consentire il fake upload dei dati */
+        copy(realpath(dirname(__FILE__))."/fixtures/sample.wav",
+            "/var/www/html/uploads/test.wav");
+        $files = [
+            'file' => [
+                'name'     => "test.wav",
+                'type'     => 'audio/wav',
+                'tmp_name' => "/var/www/html/uploads/test.wav",
+            ],
+        ];
+        $this->request->setFiles($files);
+        $this->request('POST', self::$fk1_page.self::$fk1_key.'/standup/');
+        $this->assertResponseCode(500);
+
+        // Cancellazione della chiave
+        $CI =& get_instance();
+        $CI->load->database();
+        $CI->load->model('Config_model', 'configs', TRUE);
+        $CI->configs->delete("key_file");
+    }
+
     public function test_cant_post()
     {
         /* Necessari aggiunstamenti alla funzione save_audio()
