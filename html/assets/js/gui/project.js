@@ -7,7 +7,7 @@ function Project() {
         $("#confirm-save").attr("disabled",false);
     };
     this.inizializeInsertForm = function(controller) {
-        $("#save-title").html("Inserisci una nuovo progetto");
+        $("#save-title").html("Inserisci un nuovo progetto");
         $("#confirm-save").attr("disabled",true);
         $("#save").attr("method","POST");
         $("#save").attr("action",controller.page);
@@ -33,4 +33,5 @@ $(document).ready(function() {
     var c = new Controller(entity, "/api/project/");
     c.loadList();
     c.onClickSave();
+    checKeySetted();
 });

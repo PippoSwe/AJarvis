@@ -39,6 +39,7 @@ function upload_session() {
 }
 
 $(document).ready(function() {
+    checKeySetted();
 
     if( !/[?&]project_id=/.test(location.search) ) { $('#record').addClass('disabled') }
     else {

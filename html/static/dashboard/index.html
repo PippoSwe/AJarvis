@@ -152,6 +152,7 @@
             };
 
             $(document).ready(function() {
+                checKeySetted();
                 loadGraph();
                 $.ajax({
                     url:"/api/project/"+$.urlParam("project_id"),

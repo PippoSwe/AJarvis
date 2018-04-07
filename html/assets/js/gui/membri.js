@@ -42,4 +42,5 @@ $(document).ready(function() {
     var c = new Controller(entity, "/api/member/");
     c.loadList();
     c.onClickSave();
+    checKeySetted();
 });

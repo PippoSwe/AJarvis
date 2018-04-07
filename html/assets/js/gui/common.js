@@ -46,6 +46,20 @@ function populateNotify() {
     });
 }
 
+function checKeySetted() {
+    $.ajax({
+        url:"/api/config/read/",
+        type:"GET",
+        success: function(data){
+            console.log(data);
+            if(data.length === 0){
+
+                window.location.replace("/static/config/index.html");
+            }
+        }
+    });
+}
+
 $(document).ready(function() {
     refresh();
     setInterval(refresh, 5000);
@@ -56,4 +70,6 @@ $(document).ready(function() {
     }
 
 });
+
+
 

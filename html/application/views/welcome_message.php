@@ -30,114 +30,84 @@
         </noscript>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			$.ajax({
-	            url: "/api/project/",
-	            type: "GET",
-	            success: function(data) {
-	                if(data.length < 0)
-	                	$("#alert-no-project").html("<div class='alert alert-success alert-dismissible fade show' role='alert'><h4 class='alert-heading'>Benvenuto!</h4><p>Sembra che sia la prima volta che accedi ad AJarvis</p><hr><p class='mb-0'>La prima cosa da fare è creare un progetto, altrimenti non è possibile registrare uno standup. <a class='nav-link' href='/static/project/index.html'>Clicca qui per inserire un progetto</a></p><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>");
-	            },
-	            error: function(xhr, status, text) {
-	                alert("nonva");
-	            }
-	        });
-		});
+			var key_set=false;
+			var pro_set=false;
+
+			   $.ajax({
+				url: "/api/config/read/",
+				type: "GET",
+				success:function(data){
+
+					if(data.length === 0){
+						$("#alert-no-project").html("<div class='alert alert-success alert-dismissible fade show' role='alert'><h4 class='alert-heading'>Benvenuto!</h4><p>Sembra che sia la prima volta che accedi ad AJarvis</p><hr><p class='mb-0'>Configura AJarvis<i class='fa fa-bolt pl-2'></i>.</div>");
+					}
+					else{
+						key_set=true;
+						$(".active-nonactive-key").addClass("d-none");
+					}
+
+					if(key_set){
+						$.ajax({
+				            url: "/api/project/",
+				            type: "GET",
+				            success: function(data) {
+				                if(data.length === 0){
+				                	$("#alert-no-project").html("<div class='alert alert-success alert-dismissible fade show' role='alert'><h4 class='alert-heading'>Benvenuto!</h4><p>Crea il tuo primo progetto con AJarvis</p><hr><p class='mb-0'>La prima cosa da fare è creare un progetto, altrimenti non è possibile registrare uno standup. </div>");
+				                }
+
+				                else{
+				                	pro_set=true;
+				                	$(".active-nonactive-pro").addClass("d-none");
+
+				                	if(key_set && pro_set){
+										$(".time-off").addClass("d-none");
+										window.location.replace("/static/queue/index.html");
+									}
+				                }
+
+				            }
+
+				        });
+					}else{
+						$(".active-nonactive-pro").addClass("d-none");
+					}
+					
+				}
+
+			});
+
+		}); //docready
+
 	</script>
+
+
 </head>
 <body class="bodyIndex">
 <div class="container">
 	<div class="text-center">
 		<img class="img-logo" src="../../assets/images/logo.png" alt="AJarvis">
 	</div>
-	<div class="timeline">
-		<div class="entry">
+	<div id="alert-no-project"></div>
+	<div class="timeline time-off">
+		<div class="entry entry active-nonactive-key">
 			<div class="title">
 				<h3>Configura AJarvis</h3>
 			</div>
 			<div class="body-custom">
 				<p>Se è la prima volta che accedi configura l'applicazione</p>
-				<button id="btn-insert" class="btn btn-success" href="#" type="button" data-toggle="modal" data-target="#key-modal"><i class="fa fa-wrench mr-2" aria-hidden="true"></i>Configura AJarvis</button>
+				<a id="btn-insert" class="btn btn-success" href="/static/config/index.html" role="button"><i class="fa fa-wrench mr-2" aria-hidden="true"></i>Configura AJarvis</a>
 			</div>
 		</div>
-		<div class="entry">
+		<div class="entry active-nonactive-pro">
 			<div class="title">
 				<h3>Crea progetto</h3>
 			</div>
 			<div class="body-custom">
 				<p>Se è la prima volta che accedi crea il tuo primo progetto</p>
-				<button id="btn-insert" class="btn btn-success" href="#" type="button" data-toggle="modal" data-target="#projectect-modal"><i class="ion-ios-plus-outline mr-2"></i>Nuovo progetto</button>
+				<a id="btn-insert" class="btn btn-success" href="/static/project/index.html" role="button"><i class="ion-ios-plus-outline mr-2"></i>Nuovo progetto</a>
 			</div>
 		</div>
 	</div>
-	
-	<div id="alert-no-project"></div>
-
-	
-
-
 </div>
-
-<!-- MODALs -->
-
-<!-- Config_modal-->
-<div class="modal fade hide" id="key-modal" tabindex="-1" role="dialog" aria-labelledby="key-modal" aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<div class="modal-title" id="save-title"><i class="fa fa-file-code-o pr-2"></i>Parametri configurazione</div>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-				<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<form id="save" method="" action="">
-				<div class="modal-body">
-					<div class="form-group">
-						<div class="form-group">
-							<label for="key_file"> Key file</label>
-							<textarea class="form-control" name="key_file" id="key_file" placeholder="Key file..."></textarea>
-						</div>
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
-					<button type="submit" id="confirm-save" class="btn btn-success" disabled="disabled"><span class="ion-ios-checkmark-outline mr-2"></span>Salva</button>
-				</div>
-			</form>
-		</div>
-	</div>
-</div>
-
-<!-- New project modal -->
- <div class="modal fade hide" id="projectect-modal" tabindex="-1" role="dialog" aria-labelledby="projectect-modal" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <div class="modal-title" id="save-title"><i class="fa fa-list pr-2"></i>Nuovo Progetto</div>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <form id="save" method="" action="">
-                        <div class="modal-body">
-                            <div class="form-group">
-                                <label for="project" class="col-form-label">Nome progetto:</label>
-                                <input type="text" class="form-control" id="project" name="project" placeholder="Nome progetto" data-placement="right" required>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
-                            <button type="submit" id="confirm-save" class="btn btn-success" disabled="disabled"><span class="ion-ios-checkmark-outline mr-2"></span>Salva</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-
-	<!--<footer class="footer">
-			<div class="container">
-					<span class="text-muted">inserire le tecnologie utilizzate</span>
-			</div>
-	</footer>-->
 </body>
 </html>
