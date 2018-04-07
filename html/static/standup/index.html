@@ -130,7 +130,9 @@
             $.ajax({
                 url:"/api/project/"+$.urlParam("project_id")+"/standup/"+$.urlParam("standup_id"),
                 type: "GET",
-                success: function(data){        
+                success: function(data){
+                    $("#project-link").attr("href", "/static/dashboard/index.html?project_id="+$.urlParam("project_id"));
+                    $("#project-title").text(data.project);
                     $(".standup-title").text(data.standup);
                 }
             });
@@ -173,8 +175,8 @@
                     <!-- breadcrumb -->
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item">Home</li>
-                            <li class="breadcrumb-item">Progetto</li>
+                            <li class="breadcrumb-item"><a href="/">Home</a></li>
+                            <li class="breadcrumb-item"><a id="project-link" href="#">Dashboard <span id="project-title">&nbsp;</span></a></li>
                             <li class="breadcrumb-item active" aria-current="page">Standup <span class="standup-title"></span></li>
                         </ol>
                     </nav>
