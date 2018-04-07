@@ -19,11 +19,7 @@ function upload_file($file_path, $file_name)
     $CI = & get_instance();
     $CI->load->model('Config_model', 'configs', TRUE);
 
-    $bucket_entity = $CI->configs->get("audio_bucket_name");
-    if(is_null($bucket_entity))
-        return;
-
-    $bucket_name = $bucket_entity->value;
+    $bucket_name = "ajarvis-storage";
     $entry = $CI->configs->get("key_file");
     if(is_null($entry))
         return;

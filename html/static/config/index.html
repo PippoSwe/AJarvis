@@ -60,10 +60,7 @@
                     type: "GET",
                     success: function (data) {
                         if (data.length > 0)
-                            $('#audio_bucket_name').val(data[0].value);
-                            $('#key_file').val(data[1].value);
-                            $('#ip').val(data[2].value);
-                            $('#port').val(data[3].value);
+                            $('#key_file').val(data[0].value);
                     }
                 });
 

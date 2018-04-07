@@ -35,8 +35,6 @@ class Config_model extends CI_Model
     public function update($data)
     {
         $this->load->database();
-       // $this->db->where('key', $data->key);
-       // $this->db->update('configs', $data);
         $this->db->replace('configs', $data);
     }
 }
