@@ -41,6 +41,7 @@ class Queue_model extends CI_Model
             $collection = $collection->where('standups_speech_to_text.status','Pending');
             $collection = $collection->or_where('standups_nlp.status','Pending');
         }
+        $collection = $collection->order_by('standups.id','DESC');
         if (!is_null($limit))
             $collection = $collection->limit($limit, $offset);
         $result = $collection

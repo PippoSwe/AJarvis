@@ -19,6 +19,7 @@ class Migration_Add_keywords extends CI_Migration {
         ));
         $this->dbforge->add_key('id', TRUE);
         $this->dbforge->create_table('keywords');
+        $this->db->query('ALTER TABLE `keywords` ADD UNIQUE INDEX (`keyword`)');
     }
 
     public function down()

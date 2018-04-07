@@ -19,6 +19,7 @@ class Migration_Add_projects extends CI_Migration {
         ));
         $this->dbforge->add_key('id', TRUE);
         $this->dbforge->create_table('projects');
+        $this->db->query('ALTER TABLE `projects` ADD UNIQUE INDEX (`project`)');
     }
 
     public function down()

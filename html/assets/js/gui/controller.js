@@ -62,6 +62,7 @@ function Controller(entity, page) {
             error: function(xhr, status, text) {
                 var structure = {x:xhr, s:status, t:text, class:"danger", strong:"Errore!"};
                 ref.alert(structure);
+                $(".modal").modal('hide');
             }
         });
     };

@@ -28,6 +28,7 @@ class Migration_Add_projects_members extends CI_Migration {
         $this->dbforge->add_field('CONSTRAINT FOREIGN KEY (member_id) REFERENCES members(id) ON DELETE CASCADE');
         $this->dbforge->add_key(array('project_id', 'member_id'));
         $this->dbforge->create_table('projects_members');
+        $this->db->query('ALTER TABLE `projects_members` ADD UNIQUE INDEX (`project_id`,`member_id`)');
     }
 
     public function down()
