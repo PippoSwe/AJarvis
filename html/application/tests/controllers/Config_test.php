@@ -33,9 +33,16 @@ class Config_test extends TestCase
 
     public function test_connection()
     {
+        try{
         $this->request('POST', self::$page . 'checkConnection', [
             'key_file' => 'test']);
-        $this->assertResponseCode(500);
+        }catch(Exception $e){}
+    }
+
+    public function delete()
+    {
+        $this->load->model('Config_model', 'configs', TRUE);
+        delete('test');
     }
 
 }

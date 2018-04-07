@@ -37,4 +37,11 @@ class Config_model extends CI_Model
         $this->load->database();
         $this->db->replace('configs', $data);
     }
+
+    public function delete($data)
+    {
+        $this->load->database
+        $this->db->where('value', $id);
+        $this->db->delete('configs');
+    }
 }
