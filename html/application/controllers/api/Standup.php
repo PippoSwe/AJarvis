@@ -21,7 +21,7 @@ class Standup extends CI_Controller
      *     summary="Distribuzione Tipi",
      *     description="Fornisce i tipi e i dati con il numero di frasi divisi per tipo",
      *     produces={"application/json"},
-     *     tags={"Standup"},
+     *     tags={"standup"},
      *     @SWG\Parameter(
      *         name="standup_id",
      *         in="path",
@@ -83,7 +83,7 @@ class Standup extends CI_Controller
      *     summary="Andamento del discorso",
      *     description="Ritorna una serie di Double che rappresentano l'andamento dello standup",
      *     produces={"application/json"},
-     *     tags={"Standup"},
+     *     tags={"standup"},
      *     @SWG\Parameter(
      *         name="standup_id",
      *         in="path",
@@ -140,7 +140,7 @@ class Standup extends CI_Controller
      *     summary="Entità Rilevanti",
      *     description="Ritorna tutte le entità trovate nel testo dello standup, tranne quelle di tipo OTHER, riodinate per importanza",
      *     produces={"application/json"},
-     *     tags={"Standup"},
+     *     tags={"standup"},
      *     @SWG\Parameter(
      *         name="standup_id",
      *         in="path",
@@ -190,7 +190,7 @@ class Standup extends CI_Controller
      *     summary="Testo del discorso",
      *     description="Ritorna l'intero testo del discorso diviso per frasi con i relativi score e magnitude",
      *     produces={"application/json"},
-     *     tags={"Standup"},
+     *     tags={"standup"},
      *     @SWG\Parameter(
      *         name="standup_id",
      *         in="path",
@@ -245,7 +245,7 @@ class Standup extends CI_Controller
      *     summary="Frasi Rilevanti",
      *     description="Ritorna le frasi rilevanti nel discorso con relativi score e magnitude",
      *     produces={"application/json"},
-     *     tags={"Standup"},
+     *     tags={"standup"},
      *     @SWG\Parameter(
      *         name="standup_id",
      *         in="path",
@@ -295,7 +295,7 @@ class Standup extends CI_Controller
      *     summary="Frasi Problematiche",
      *     description="Ritorna le frasi problematiche nel discorso con relativi score e magnitude",
      *     produces={"application/json"},
-     *     tags={"Standup"},
+     *     tags={"standup"},
      *     @SWG\Parameter(
      *         name="standup_id",
      *         in="path",

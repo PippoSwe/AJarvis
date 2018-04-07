@@ -57,7 +57,7 @@ class Project extends CI_Controller
      *     summary="Andamento del discorso",
      *     description="Ritorna una serie di Double che rappresentano l'andamento del progetto",
      *     produces={"application/json"},
-     *     tags={"Project"},
+     *     tags={"project"},
      *     @SWG\Parameter(
      *         name="project_id",
      *         in="path",
@@ -164,7 +164,7 @@ class Project extends CI_Controller
      *     summary="Frasi Problematiche",
      *     description="Ritorna le frasi problematiche nel discorso con relativi score e magnitude",
      *     produces={"application/json"},
-     *     tags={"Project"},
+     *     tags={"project"},
      *     @SWG\Parameter(
      *         name="project_id",
      *         in="path",
