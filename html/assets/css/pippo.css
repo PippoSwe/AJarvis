@@ -2,7 +2,7 @@
 
 .ajarvis-logo{
 	font-family: "Cubic";
-	color: #c9c8c8;
+	color: /*#c9c8c8*/ #ffffff;
 }
 
 .trunc{
@@ -45,7 +45,11 @@
 
 /*+++++++++++++++++++ PROVA TIMELINE +++++++++++++++++++*/
 
-@charset "UTF-8";
+.img-logo{
+	width: 60%;
+	height: auto;
+}
+
 body-custom {
   
   display: flex;
@@ -67,7 +71,7 @@ body-custom * {
   width: 100%;
   max-width: 800px;
   padding: 100px 40px;
-  position: fixed;
+  position: relative;
 
 }
 .timeline:before {
@@ -113,11 +117,11 @@ body-custom * {
 .entry .title h3 {
 	color: #ffffff;
   margin: 0;
-  font-size: 120%;
+  font-size: 100%;
 }
 .entry .title p {
   margin: 0;
-  font-size: 100%;
+  font-size: 80%;
 }
 .entry .body-custom {
   margin: 0 0 3em;
