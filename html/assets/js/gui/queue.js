@@ -2,7 +2,7 @@ $(document).ready(function() {
     populateQueue();
     checKeySetted();
 
-    //setInterval(populateQueue, 5000);
+    setInterval(populateQueue, 5000);
 
     function populateQueue() {
         $.ajax({
