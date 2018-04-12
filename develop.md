@@ -810,3 +810,29 @@ Documentazione delle API HTTP/HTTPS esposte dal microservizio AJarvis
 | ---- | --------------------- |
 | 200  | Success               |
 | 500  | Internal Server Error |
+
+# Cloud Functions
+
+Questa parte di documentazione è relativa alla guida per gli sviluppatori sulla configurazione delle *Google Cloud Functions* per *AJarvis*~G~
+
+## Source Repository
+
+Il sorgente del codice *NodeJS*~G~ eseguito nella *Cloud Function* deve provenire da un *Source Repository* creato come clone del *repository* *GitHub*~G~ messo a disposizione per *AJarvis*~G~, disponibile al seguente indirizzo: https://github.com/micheleantonazzi/AJarvisGoogleFunctions.git 
+
+## Storage di configurazione
+
+La google function necessita per il corretto funzionamento e iterazione con il *server Rest* di *AJarvis*~G~ della creazione di uno storage (all'interno dello stesso progetto *Google Cloud*) denominato *ajarvis-config* il quale dovrà contenere il file *ajarvis_rest.json* che in formato *json* espone i seguenti dati:
+
+- **projectID**: ID del progetto *Google Cloud*;
+- **host**: indirizzo host del server rest API;
+- **porta**: porta del server rest API.
+
+## Configurazione function
+
+### Creazione funzione
+
+La funzione che va configurata deve avere come attivatore l'evento di '*caricamento su bucket*' che nello specifico dovrà essere il bucket di *Cloud Storage* dove vengono caricati i file audio registrati durante gli *standup*~G~ da *AJarvis*~G~.
+Come spiegato precedentemente la sorgente della cloud function creata deve essere il repository precedentemente creato.
+
+
+
