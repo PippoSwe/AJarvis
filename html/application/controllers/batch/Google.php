@@ -19,8 +19,6 @@ function standup_resource($var)
 class Google extends MY_Standup
 {
 
-    private $voice_pause = 1.5;
-
     function __construct()
     {
         parent::__construct();
@@ -36,6 +34,11 @@ class Google extends MY_Standup
 
         if($entry->value != 'local')
             show_error("You need to declare 'local' conversion service");
+
+        $voice_pause = 2.0;
+        $entry = $this->configs->get("silence_tolerance");
+        if(!is_null($entry))
+            $voice_pause = floatval($entry->value);
 
         $entry = $this->configs->get("key_file");
         if(is_null($entry))
@@ -102,7 +105,7 @@ class Google extends MY_Standup
             foreach ($result->alternatives() as $alternative) {
                 foreach ($alternative['words'] as $wordInfo) {
                     $transcription .= $wordInfo['word'];
-                    if((floatval($wordInfo['endTime']) - floatval($wordInfo['startTime'])) > $this->voice_pause)
+                    if((floatval($wordInfo['endTime']) - floatval($wordInfo['startTime'])) > $voice_pause)
                         $transcription .= ".";
                     $transcription .= " ";
                 }

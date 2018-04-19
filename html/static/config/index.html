@@ -41,6 +41,10 @@
                                                     <option value="local">Local Cronjob</option>
                                                 </select>
                                             </div>
+                                            <div class="form-group">
+                                                <label for="silence_tolerance">Utterance</label>
+                                                <input class="form-control" name="silence_tolerance" id="silence_tolerance" value="2.0" placeholder="2.0" />
+                                            </div>
                                             <div class="text-center">
                                                 <button type="submit" class="btn btn-success" disabled="true" id="saveButton"><i class="ion-ios-checkmark-outline mr-2"></i>Salva</button>
                                             </div>
@@ -64,8 +68,12 @@
                     url: '/api/config/read/',
                     type: "GET",
                     success: function (data) {
-                        $('#key_file').val(data.key_file);
-                        $('#service_type option[value='+data.service_type+']').attr('selected','selected');
+                        if(data.key_file != undefined)
+                            $('#key_file').val(data.key_file);
+                        if(data.silence_tolerance != undefined)
+                            $('#silence_tolerance').val(data.silence_tolerance);
+                        if(data.service_type != undefined)
+                            $('#service_type option[value='+data.service_type+']').attr('selected','selected');
                     }
                 });
 
@@ -113,6 +121,9 @@
                 $("#key_file").keyup(function() {
                     checkEmpty();
                 });
+                $("#silence_tolerance").keyup(function() {
+                    checkSilenceEmpty();
+                });
                 $("#service_type").change(function() {
                     $("#saveButton").attr("disabled",false);
                 });
@@ -120,6 +131,12 @@
 
             function checkEmpty() {
                 if( $("#key_file").val().length > 0 )
+                    $("#saveButton").attr("disabled",false);
+                else
+                    $("#saveButton").attr("disabled",true);
+            }
+            function checkSilenceEmpty() {
+                if( $("#silence_tolerance").val().length > 0 )
                     $("#saveButton").attr("disabled",false);
                 else
                     $("#saveButton").attr("disabled",true);

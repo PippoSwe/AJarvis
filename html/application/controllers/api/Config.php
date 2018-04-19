@@ -78,6 +78,10 @@ class Config extends CI_Controller
            $this->configs->update(
                array('key' => 'service_type', 'value' => $this->input->post('service_type'))
            );
+       if(!empty($this->input->post('silence_tolerance')))
+           $this->configs->update(
+               array('key' => 'silence_tolerance', 'value' => $this->input->post('silence_tolerance'))
+           );
    }
 
   /**
