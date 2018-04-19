@@ -13,6 +13,7 @@
 			<directory suffix=".php">../controllers</directory>
             <exclude>
 				<file>../controllers/api/Config.php</file>
+				<file>../controllers/batch/Google.php</file>
                 <file>../controllers/Migrate.php</file>
 				<file>../controllers/Welcome.php</file>
 				<file>../controllers/api/Swagger.php</file>
@@ -27,6 +28,9 @@
 				<directory suffix=".php">../views/errors</directory>
 			</exclude>
 			<directory suffix=".php">../libraries</directory>
+			<exclude>
+				<file>../libraries/Uuid.php</file>
+			</exclude>
 			<directory suffix=".php">../helpers</directory>
 			<exclude>
 				<directory suffix=".php">../helpers/google_storage_helper.php</directory>

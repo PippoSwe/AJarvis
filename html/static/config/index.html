@@ -34,6 +34,13 @@
                                                 <label for="key_file">Key file</label>
                                                 <textarea class="form-control" name="key_file" id="key_file"></textarea>
                                             </div>
+                                            <div class="form-group">
+                                                <label for="service_type">Servizio conversione</label>
+                                                <select class="form-control" id="service_type" name="service_type">
+                                                    <option value="remote">Google Cloud Functions</option>
+                                                    <option value="local">Local Cronjob</option>
+                                                </select>
+                                            </div>
                                             <div class="text-center">
                                                 <button type="submit" class="btn btn-success" disabled="true" id="saveButton"><i class="ion-ios-checkmark-outline mr-2"></i>Salva</button>
                                             </div>
@@ -53,13 +60,12 @@
         <script>
             $( document ).ready(function() {
                 checkEventInput();
-
                 $.ajax({
                     url: '/api/config/read/',
                     type: "GET",
                     success: function (data) {
-                        if (data.length > 0)
-                            $('#key_file').val(data[0].value);
+                        $('#key_file').val(data.key_file);
+                        $('#service_type option[value='+data.service_type+']').attr('selected','selected');
                     }
                 });
 
@@ -80,11 +86,12 @@
                             type: "POST",
                             data: $("#save").serialize(),
                             success: function() {
+                                $("#saveButton").attr("disabled",true);
                                 if( /[?&]first_time=true/.test(location.search) ) { 
                                     console.log("non funge");
                                     history.back();
                                  }
-                                var structure = {strong:"Inserimento avvenuto con successo", class:"success", t:"", dismiss:"alert-dismissible fade show"}; //passo i messaggi per riusare il file mst
+                                var structure = {strong:"Configurazione avvenuta con successo", class:"success", t:"", dismiss:"alert-dismissible fade show"}; //passo i messaggi per riusare il file mst
                                 $.get('/assets/tpl/alert.mst', function(template) {
                                     var rendered = Mustache.render(template, {items: structure}); //richiede un'array associativo
                                     $('#message').html(rendered);
@@ -106,12 +113,16 @@
                 $("#key_file").keyup(function() {
                     checkEmpty();
                 });
+                $("#service_type").change(function() {
+                    $("#saveButton").attr("disabled",false);
+                });
             }
 
             function checkEmpty() {
                 if( $("#key_file").val().length > 0 )
                     $("#saveButton").attr("disabled",false);
-                else $("#saveButton").attr("disabled",true);
+                else
+                    $("#saveButton").attr("disabled",true);
             }
         </script>
         

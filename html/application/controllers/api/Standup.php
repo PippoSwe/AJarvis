@@ -1,18 +1,14 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Standup extends CI_Controller
+require_once  FCPATH . '/application/core/MY_Standup.php';
+class Standup extends MY_Standup
 {
 
     function __construct()
     {
         //http://www.restapitutorial.com/lessons/httpmethods.html
         parent::__construct();
-        $this->load->model('Standup_model', 'standups', TRUE);
-        $this->load->model('Sentence_model', 'sentences', TRUE);
-        $this->load->model('Entity_model', 'entities', TRUE);
-        $this->load->model('Queue_model', 'queues', TRUE);
-        $this->load->helper(array('google_nlp_helper'));
     }
 
     /**
@@ -381,6 +377,11 @@ class Standup extends CI_Controller
      */
     private function nlp($id)
     {
+        $standup_entity = $this->set_nlp($id, $this->security->xss_clean($this->input->raw_input_stream));
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($standup_entity));
+        /*
         $nlp = json_decode($this->security->xss_clean($this->input->raw_input_stream));
 
         // PRE: dict needs score, magnitude, etc ...
@@ -437,7 +438,7 @@ class Standup extends CI_Controller
         $this->output
             ->set_content_type('application/json')
             ->set_output(json_encode($standup_entity));
-
+        */
     }
 
 }

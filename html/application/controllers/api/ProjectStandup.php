@@ -11,6 +11,7 @@ class ProjectStandup extends CI_Controller
         $this->load->model('Standup_model', 'standups', TRUE);
         $this->load->model('Sentence_model', 'sentences', TRUE);
         $this->load->model('Entity_model', 'entities', TRUE);
+        $this->load->model('Config_model', 'configs', TRUE);
         $this->load->helper(array('google_storage_helper'));
     }
 
@@ -312,6 +313,11 @@ class ProjectStandup extends CI_Controller
         exec($command);
 
         unlink( $wav_file );
+        $entry = $this->configs->get("service_type");
+        if(!is_null($entry))
+            if($entry->value == 'local')
+                return TRUE;
+
         upload_file( $flac_file, $fname . ".FLAC" );
         unlink( $flac_file );
         return TRUE;

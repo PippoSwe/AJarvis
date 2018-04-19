@@ -1,14 +1,14 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Queue extends CI_Controller
+require_once  FCPATH . '/application/core/MY_Standup.php';
+class Queue extends MY_Standup
 {
 
     function __construct()
     {
         //http://www.restapitutorial.com/lessons/httpmethods.html
         parent::__construct();
-        $this->load->model('Queue_model', 'queues', TRUE);
     }
 
     public function index() {
@@ -142,7 +142,7 @@ class Queue extends CI_Controller
             $data["status"] = $this->input->input_stream('status');
 
         // Scrittura e gestion del risultato REST-Style
-        $entry = $this->queues->update_nlp($id, $data);
+        $entry = $this->set_nlp_status($id, $data);
         if($entry == null)
             show_error("Cannot update due to service malfunctioning", 500);
 
@@ -193,7 +193,7 @@ class Queue extends CI_Controller
             $data["status"] = $this->input->input_stream('status');
 
         // Scrittura e gestion del risultato REST-Style
-        $entry = $this->queues->update_stt($id, $data);
+        $entry = $this->set_stt_status($id, $data);
         if($entry == null)
             show_error("Cannot update due to service malfunctioning", 500);
 
