@@ -58,6 +58,7 @@ class Google extends MY_Standup
         $input = realpath($path."/".$flac_files[0]);
 
         // id to perform the indexing
+        $gs_url = "gs://ajarvis-cron/".$flac_files[0];
         $id = str_replace("standup-", "", $flac_files[0]);
         $id = explode(".", $id)[0];
 
@@ -81,14 +82,14 @@ class Google extends MY_Standup
             $options = array();
             $options['enableWordTimeOffsets'] = true;
             $operation = $speech->beginRecognizeOperation(
-                fopen($input, 'r'),
+                $gs_url,
                 $options
             );
         }
         catch(ServiceException $e) {
             $this->set_stt_status($id,
                 ["status" => "Failed"]);
-            show_error("Google Cloud key is wrong");
+            show_error($e);
             exit;
         }
 

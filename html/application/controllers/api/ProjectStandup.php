@@ -313,12 +313,13 @@ class ProjectStandup extends CI_Controller
         exec($command);
 
         unlink( $wav_file );
+        upload_file( $flac_file, $fname . ".FLAC" );
+
         $entry = $this->configs->get("service_type");
         if(!is_null($entry))
             if($entry->value == 'local')
                 return TRUE;
 
-        upload_file( $flac_file, $fname . ".FLAC" );
         unlink( $flac_file );
         return TRUE;
     }
