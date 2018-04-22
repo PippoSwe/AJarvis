@@ -47,7 +47,7 @@ class Google extends MY_Standup
         $json_key = json_decode($entry->value, true);
 
         //php index.php batch/speech index
-        $path = realpath("./application/audio_files");
+        $path = realpath("./application/cron_files");
         $audio_files = directory_map($path, 1);
         $flac_files = array_values(array_filter($audio_files, "standup_resource"));
         if(sizeof($flac_files) == 0)

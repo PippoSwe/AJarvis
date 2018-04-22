@@ -304,8 +304,10 @@ class ProjectStandup extends CI_Controller
     private function save_audio($fname)
     {
         $path      = realpath("./application/audio_files");
+        $cron_path      = realpath("./application/cron_files");
         $wav_file  = $path . '/' . $fname . ".wav";
         $flac_file = $path . '/' . $fname . ".FLAC";
+        $cron_file = $cron_path . '/' . $fname . ".FLAC";
 
         rename ( $_FILES['file']['tmp_name'], $wav_file );
         // convert wav to FLAC
@@ -318,7 +320,7 @@ class ProjectStandup extends CI_Controller
         $entry = $this->configs->get("service_type");
         if(!is_null($entry))
             if($entry->value == 'local')
-                return TRUE;
+                copy($flac_file, $cron_file);
 
         unlink( $flac_file );
         return TRUE;
