@@ -23,6 +23,9 @@ class Google extends MY_Standup
     {
         parent::__construct();
         $this->load->model('Config_model', 'configs', TRUE);
+        $this->load->model('Standup_model', 'standups', TRUE);
+        $this->load->model('ProjectKeyword_model', 'projects_keywords', TRUE);
+        $this->load->model('ProjectMember_model', 'projects_members', TRUE);
         $this->load->library('Uuid');
         $this->load->helper(array('directory', 'google_nlp_helper'));
     }
@@ -73,6 +76,31 @@ class Google extends MY_Standup
         // Adesso il nuovo file è quello con l'uuid
         $input = realpath($new_input);
 
+        // Keywords per il progetto
+        $phrases = array();
+        $standup_entry = $this->standups->get($id);
+        if(!is_null($standup_entry)) {
+            // Keywords
+            foreach($this
+                        ->projects_keywords
+                        ->find($standup_entry->project_id)
+                    as $keyword_entry) {
+                $phrases[] = $keyword_entry->keyword;
+
+            }
+            // Members
+            foreach($this
+                        ->projects_members
+                        ->find($standup_entry->project_id)
+                    as $member_entry) {
+                $member = $member_entry->firstname;
+                if(!empty($member_entry->lastname) && !empty($member))
+                    $member .= " ";
+                $member .= $member_entry->lastname;
+                $phrases[] = $member;
+            }
+        }
+
         try {
             $speech = new SpeechClient([
                 'keyFile' => $json_key,
@@ -81,6 +109,13 @@ class Google extends MY_Standup
             // Start nlp
             $options = array();
             $options['enableWordTimeOffsets'] = true;
+            if(sizeof($phrases) > 0)
+                $options['speechContexts'] = array(
+                    array(
+                        'phrases' => $phrases
+                    )
+                );
+
             $operation = $speech->beginRecognizeOperation(
                 $gs_url,
                 $options
