@@ -34,7 +34,7 @@ class Sentence_model extends CI_Model
 
     public function sentences($standup_id = null, $type = 'all', $limit = null, $offset = 0)
     {
-        $collection = $this->db->select('sentence, sentences.score, sentences.magnitude,
+        $collection = $this->db->select('sentences.id, sentence, sentences.score, sentences.magnitude,
                                             CASE
                                                 WHEN sentences.score > 0.25 THEN \'positive\'
                                                 WHEN sentences.score < -0.25 THEN \'negative\'
@@ -133,16 +133,6 @@ class Sentence_model extends CI_Model
         $this->db->insert_batch('sentences', $data);
     }
 
-    /*
-    public function insert($data)
-    {
-        $this->db->set($data);
-        $this->db->insert('sentences');
-        return $this->get($this->db->insert_id());
-    }
-    */
-
-    /*
     public function update($id, $data)
     {
         $this->db->set($data);
@@ -150,6 +140,15 @@ class Sentence_model extends CI_Model
         $this->db->update('sentences');
         return $this->get($id);
     }
+
+    public function insert($data)
+    {
+        $this->db->set($data);
+        $this->db->insert('sentences');
+        return $this->get($this->db->insert_id());
+    }
+
+    /*
 
     public function delete($id)
     {
