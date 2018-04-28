@@ -25,13 +25,15 @@ class Queue_model extends CI_Model
                 WHEN standups_nlp.status = \'Pending\' THEN \'warning\'
                 WHEN standups_nlp.status = \'Success\' THEN \'success\'
                 ELSE \'danger\'
-            END as nlp_badge_color,        
+            END as nlp_badge_color,   
+            standups_nlp.logs AS nlp_logs,      
             standups_speech_to_text.status AS stt_status,             
             CASE
                 WHEN standups_speech_to_text.status = \'Pending\' THEN \'warning\'
                 WHEN standups_speech_to_text.status = \'Success\' THEN \'success\'
                 ELSE \'danger\'
-            END as stt_badge_color,            
+            END as stt_badge_color,   
+            standups_speech_to_text.logs AS stt_logs,          
             end')
             ->from('standups');
         $collection = $collection->join('projects', 'projects.id = project_id', 'left');
