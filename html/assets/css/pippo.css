@@ -168,4 +168,8 @@ body-custom * {
     cursor: pointer; /* Add a pointer on hover */
 }
 
+#bellList .badge {
+  font-size: 1.03em;
+}
+
 
