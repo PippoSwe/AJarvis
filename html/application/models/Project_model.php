@@ -102,7 +102,7 @@ class Project_model extends CI_Model {
     public function statistics($id) {
         $records = $this->db->query('SELECT 1 AS id, 
     "Numero frasi rilevate" AS name, 
-    CAST(count(*) AS DECIMAL(10,2)) AS value 
+    CAST(count(*) as CHAR(25)) AS value 
 FROM sentences 
 WHERE standup_id IN (
     SELECT id 
@@ -112,7 +112,7 @@ WHERE standup_id IN (
 UNION 
 SELECT 2 AS id, 
     "Numero frasi positive" AS name, 
-    CAST(count(*) AS DECIMAL(10,2)) AS value 
+    CAST(count(*) as CHAR(25)) AS value 
 FROM sentences 
 WHERE standup_id IN (
     SELECT id 
@@ -123,7 +123,7 @@ AND score > 0.25
 UNION 
 SELECT 3 AS id, 
     "Numero frasi negative" AS name, 
-    CAST(count(*) AS DECIMAL(10,2)) AS value 
+    CAST(count(*) as CHAR(25)) AS value 
 FROM sentences 
 WHERE standup_id IN (
     SELECT id 
@@ -134,7 +134,7 @@ AND score < -0.25
 UNION 
 SELECT 4 AS id, 
     "Numero frasi neutre" AS name, 
-    CAST(count(*) AS DECIMAL(10,2)) AS value 
+    CAST(count(*) as CHAR(25)) AS value 
 FROM sentences 
 WHERE standup_id IN (
     SELECT id 
@@ -146,7 +146,7 @@ AND score <= 0.25
 UNION 
 SELECT 5 AS id, 
     "Numero argomenti" AS name, 
-    CAST(count(*) AS DECIMAL(10,2)) AS value 
+    CAST(count(*) as CHAR(25)) AS value 
 FROM entities 
 WHERE standup_id IN (
     SELECT id 
@@ -156,7 +156,7 @@ WHERE standup_id IN (
 UNION 
 SELECT 6 AS id, 
     "Andamento generale del progetto" AS name, 
-    CASE WHEN AVG(score) IS NULL THEN 0.00 ELSE AVG(score) END AS value 
+    CASE WHEN AVG(score) IS NULL THEN 0.00 ELSE CAST(ROUND(AVG(score), 2) as CHAR(25)) END AS value 
 FROM (SELECT '.$id.' AS project_id) AS R
 LEFT JOIN standups ON R.project_id = standups.project_id
 WHERE R.project_id = '.$id.'
@@ -164,7 +164,7 @@ GROUP BY R.project_id
 UNION 
 SELECT 7 AS id, 
     "Affidabilità delle traduzioni" AS name, 
-    CASE WHEN AVG(magnitude) IS NULL THEN 0.00 ELSE AVG(magnitude) END AS value 
+    CASE WHEN AVG(magnitude) IS NULL THEN 0.00 ELSE CAST(ROUND(AVG(magnitude), 2) as CHAR(25)) END AS value 
 FROM (SELECT '.$id.' AS project_id) AS R
 LEFT JOIN standups ON R.project_id = standups.project_id
 WHERE R.project_id = '.$id.'
