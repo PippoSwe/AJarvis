@@ -1,0 +1,8 @@
+{{#items}}
+                                        <div class="row">
+                                            <div class="col">
+                                                <strong>{{name}}</strong>
+                                            </div>
+                                            <div class="col">{{value}}</div>
+                                        </div>
+{{/items}}                                        

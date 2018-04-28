@@ -172,4 +172,14 @@ body-custom * {
   font-size: 1.03em;
 }
 
+#myChart {
+  height:100%;
+  width:100%;
+  min-height:150px;
+}
+
+#myChart-license-text{
+  display: none !important;
+}
+
 

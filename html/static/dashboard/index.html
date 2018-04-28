@@ -44,14 +44,16 @@
                 });
 
                 $.ajax({
-                    url: "/api/project/"+$.urlParam("project_id")+"/entities/?limit=15",
+                    url: "/api/project/"+$.urlParam("project_id")+"/entities/?limit=25",
                     type: "GET",
                     success: function(data) {
+                        var words = [];
                         if(data.length > 0)
-                            $.get("/static/standup/entity.mst", function(template) {
-                                var rendered = Mustache.render(template, {items: data});
-                                $("#entity").html(rendered);
-                            });
+                            for(var i=0; i<data.length; ++i) {
+                                var word={"text":data[i].name, "count":data[i].sum_salience};
+                                words.push(word);
+                            }
+                            cloudWords(words);
                     },
                     error: function(xhr, status, text) {
                         var structure = {x:xhr, s:status, t:"Problema caricamento delle entità", class:"danger", strong:"Errore!", dismiss:"alert-dismissible fade show"};
@@ -175,44 +177,51 @@
                 });
             };
 
-            function cloudWords(argument) {
+            function loadStats() {
+                $.ajax({
+                    url: "/api/project/"+$.urlParam("project_id")+"/statistics",
+                    type: "GET",
+                    success: function(data) {
+                        if(data.length > 0)
+                            $.get(template, function(template) {
+                                var rendered = Mustache.render(template, {items: data});
+                                $("#stats").html(rendered);
+                            });
+                    },
+                    error: function(xhr, status, text) {
+                        var structure = {strong:"Errore", class:"danger", t:"Impossibile caricare le entità", dismiss:"alert-dismissible fade show"}; //passo i messaggi per riusare il file mst
+                        $.get('/assets/tpl/alert.mst', function(template) {
+                            var rendered = Mustache.render(template, {items: structure}); //richiede un'array associativo
+                            $('#message').html(rendered);
+                        });
+                    }
+                });
+            }
+
+            function cloudWords(words) {
+                console.log(words);
                 var myConfig = {
                     "graphset":[
                         {
                             "type":"wordcloud",
                             "options":{
-                                "style":{
-                                    "tooltip":{
-                                      visible: true,
-                                      text: '%text: %hits'
-                                    }
-                                },
-                                "words":[
-                                    {
-                                        "text":"time",
-                                        "count":"342"
-                                    }
-
-                                ]
+                                "words": words
                             }
                         }
                     ]
                 };
-
-
-
-
-                    zingchart.render({ 
-                        id: 'myChart', 
-                        data: myConfig, 
-                        height: '100%', 
-                        width: '100%' 
-                    });
+                zingchart.render({ 
+                    id: 'myChart', 
+                    data: myConfig, 
+                    height: '100%', 
+                    width: '100%' 
+                });
             }
 
             $(document).ready(function() {
                 checKeySetted();
                 loadGraph();
+                cloudWords();
                 $.ajax({
                     url:"/api/project/"+$.urlParam("project_id"),
                     type: "GET",
@@ -288,7 +297,7 @@
                             </div>
                         </div>
 
-                        <div class="row mt-5">
+                        <div class="row mt-5 mb-3">
                             <div class="col-12 col-lg-6">
                                 <div class="card border-success mb-5">
                                     <div class="card-header bg-success" id="header-positive-sentences">
@@ -325,8 +334,8 @@
                                 <div class="card mt-5">
                                     <div class="card-header"><i class="fa fa-flag mr-2"></i>Entità frequenti</div>
                                     <div class="card-body">
-                                        <div id="my-chart">
-                                            
+                                        <div class="row">
+                                            <div id="myChart"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -336,7 +345,7 @@
                                 <div class="card mt-5">
                                     <div class="card-header"><i class="fa fa-line-chart mr-2"></i>Statistiche</div>
                                     <div class="card-body">
-                                        
+                                        <div id="stats"></div>
                                     </div>
                                 </div>
                             </div>
