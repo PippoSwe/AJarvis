@@ -12,6 +12,65 @@ class Standup extends MY_Standup
     }
 
     /**
+     * @SWG\Put(
+     *     path="standup/{standup_id}/sentences/{sentence_id}/",
+     *     summary="Aggiorna sentence",
+     *     description="Aggiorna la sentence",
+     *     produces={"application/json"},
+     *     tags={"standup"},
+     *     @SWG\Parameter(
+     *         name="sentence_id",
+     *         in="path",
+     *         description="Sentence id",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="standup_id",
+     *         in="path",
+     *         description="Standup id",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="sentence",
+     *         in="query",
+     *         description="Sentence",
+     *         required=true,
+     *         type="string",
+     *     ),
+     *     @SWG\Response(
+     *         response=200,
+     *         description="Success",
+     *     ),
+     *     @SWG\Response(
+     *         response="500",
+     *         description="Internal Server Error"
+     *     )
+     * )
+     */
+    public function sentence_update($standup_id, $id) {
+        // Dichiariamo i valori di default
+        $data = array(
+            "standup_id" => $standup_id,
+            "sentence" => null
+        );
+
+        // Normalizzazione
+        if(!empty($this->input->input_stream('sentence')))
+            $data["sentence"] = $this->input->input_stream('sentence');
+
+        // Scrittura e gestion del risultato REST-Style
+        $entry = $this->sentences->update($id, $data);
+        if($entry == null)
+            show_error("Cannot update due to service malfunctioning", 500);
+
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($entry));
+    }
+
+    /**
      * @SWG\Get(
      *     path="standup/{standup_id}/pie",
      *     summary="Distribuzione Tipi",
