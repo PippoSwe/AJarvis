@@ -11,7 +11,10 @@
         <script src="/assets/js/gui/project-member.js"></script>
         <script src="/assets/js/chartist/chartist.min.js"></script>
         <script src="/assets/js/chartist/chartist-plugin-threshold.min.js"></script>
-                <script type="text/javascript">
+        <script src= "https://cdn.zingchart.com/zingchart.min.js"></script>
+        <script> zingchart.MODULESDIR = "https://cdn.zingchart.com/modules/";
+        ZC.LICENSE = ["569d52cefae586f634c54f86dc99e6a9","ee6b7db5b51705a13dc2339db3edaf6d"];</script></head>
+        <script type="text/javascript">
             function loadList(url, placeholderId, template, context) {
                 $.ajax({
                     url: url,
@@ -33,6 +36,25 @@
                     },
                     error: function(xhr, status, text) {
                         var structure = {strong:"Errore!", class:"danger", t:"Caricamento liste non riuscito", dismiss:"alert-dismissible fade show"}; //passo i messaggi per riusare il file mst
+                        $.get('/assets/tpl/alert.mst', function(template) {
+                            var rendered = Mustache.render(template, {items: structure}); //richiede un'array associativo
+                            $('#message').html(rendered);
+                        });
+                    }
+                });
+
+                $.ajax({
+                    url: "/api/project/"+$.urlParam("project_id")+"/entities/?limit=15",
+                    type: "GET",
+                    success: function(data) {
+                        if(data.length > 0)
+                            $.get("/static/standup/entity.mst", function(template) {
+                                var rendered = Mustache.render(template, {items: data});
+                                $("#entity").html(rendered);
+                            });
+                    },
+                    error: function(xhr, status, text) {
+                        var structure = {x:xhr, s:status, t:"Problema caricamento delle entità", class:"danger", strong:"Errore!", dismiss:"alert-dismissible fade show"};
                         $.get('/assets/tpl/alert.mst', function(template) {
                             var rendered = Mustache.render(template, {items: structure}); //richiede un'array associativo
                             $('#message').html(rendered);
@@ -153,6 +175,41 @@
                 });
             };
 
+            function cloudWords(argument) {
+                var myConfig = {
+                    "graphset":[
+                        {
+                            "type":"wordcloud",
+                            "options":{
+                                "style":{
+                                    "tooltip":{
+                                      visible: true,
+                                      text: '%text: %hits'
+                                    }
+                                },
+                                "words":[
+                                    {
+                                        "text":"time",
+                                        "count":"342"
+                                    }
+
+                                ]
+                            }
+                        }
+                    ]
+                };
+
+
+
+
+                    zingchart.render({ 
+                        id: 'myChart', 
+                        data: myConfig, 
+                        height: '100%', 
+                        width: '100%' 
+                    });
+            }
+
             $(document).ready(function() {
                 checKeySetted();
                 loadGraph();
@@ -213,21 +270,6 @@
                                         <div id="list-member"> <!-- div lista keyword associate a progetto --></div>
                                     </div>
                                 </div>
-
-                                <div class="card mt-5">
-                                    <div class="card-header"><i class="fa fa-flag mr-2"></i>Entità frequenti</div>
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col">
-                                                <strong>Entità</strong>
-                                            </div>
-                                            <div class="col">
-                                                <strong>Salience</strong>
-                                            </div>
-                                        </div>
-                                         <div id="entity"></div>
-                                    </div>
-                                </div>
                             </div>
 
                             <div class="col-12 col-lg-9 ">
@@ -278,6 +320,27 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="col-12 col-lg-6">
+                                <div class="card mt-5">
+                                    <div class="card-header"><i class="fa fa-flag mr-2"></i>Entità frequenti</div>
+                                    <div class="card-body">
+                                        <div id="my-chart">
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-lg-6">
+                                <div class="card mt-5">
+                                    <div class="card-header"><i class="fa fa-line-chart mr-2"></i>Statistiche</div>
+                                    <div class="card-body">
+                                        
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
