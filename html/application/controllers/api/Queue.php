@@ -140,6 +140,8 @@ class Queue extends MY_Standup
         // Normalizzazione
         if(!empty($this->input->input_stream('status')))
             $data["status"] = $this->input->input_stream('status');
+        if(!empty($this->input->input_stream('logs')))
+            $data["logs"] = $this->input->input_stream('logs');
 
         // Scrittura e gestion del risultato REST-Style
         $entry = $this->set_nlp_status($id, $data);
@@ -191,6 +193,8 @@ class Queue extends MY_Standup
         // Normalizzazione
         if(!empty($this->input->input_stream('status')))
             $data["status"] = $this->input->input_stream('status');
+        if(!empty($this->input->input_stream('logs')))
+            $data["logs"] = $this->input->input_stream('logs');
 
         // Scrittura e gestion del risultato REST-Style
         $entry = $this->set_stt_status($id, $data);

@@ -123,7 +123,7 @@ class Google extends MY_Standup
         }
         catch(ServiceException $e) {
             $this->set_stt_status($id,
-                ["status" => "Failed"]);
+                ["status" => "Failed", "logs" => $e->getTraceAsString()]);
             show_error($e);
             exit;
         }
@@ -151,7 +151,7 @@ class Google extends MY_Standup
         // non è riuscito a truadurre nulla
         if(empty($transcription)) {
             $this->set_stt_status($id,
-                ["status" => "Failed"]);
+                ["status" => "Failed", "logs" => "Non sono riuscito a trascrivere l'audio in testo"]);
             show_error("No transcription found");
             exit;
         }
@@ -172,7 +172,7 @@ class Google extends MY_Standup
         $standup_entity = $this->set_nlp($id, json_encode($language->annotateText($transcription, $config)->info()));
         if($standup_entity == null)
             $this->set_nlp_status($id,
-                ["status" => "Failed"]);
+                ["status" => "Failed", "logs" => "Nessuna analisi disponibile"]);
         else {
             $this->set_stt_status($id,
             ["status" => "Success"]);

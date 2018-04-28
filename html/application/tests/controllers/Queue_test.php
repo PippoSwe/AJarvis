@@ -89,7 +89,7 @@ class Queue_test extends TestCase
 
     public function test_stt() {
         $output = $this->request('PUT', self::$page.self::$key.'/stt/',
-            ["status" => "Failed"]);
+            ["status" => "Failed", "logs" => "Dunno why"]);
         $data = (array) json_decode($output);
         $this->assertResponseCode(200);
         $this->assertArrayHasKey('project', $data);
@@ -103,7 +103,7 @@ class Queue_test extends TestCase
 
     public function test_nlp() {
         $output = $this->request('PUT', self::$page.self::$key.'/nlp/',
-            ["status" => "Failed"]);
+            ["status" => "Failed", "logs" => "Dunno why"]);
         $data = (array) json_decode($output);
         $this->assertResponseCode(200);
         $this->assertArrayHasKey('project', $data);
