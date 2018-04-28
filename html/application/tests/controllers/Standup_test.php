@@ -16,12 +16,15 @@ class Standup_test extends TestCase
     private static $fk1_key;
     private static $key;
     private static $fk1_page = 'api/project/';
+    private static $sentences;
 
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
         $CI =& get_instance();
         $CI->load->database();
+        $CI->load->model('Sentence_model', 'sentences', TRUE);
+        self::$sentences = $CI->sentences;
     }
 
     public function setUp()
@@ -124,6 +127,27 @@ class Standup_test extends TestCase
         $data = (array) json_decode($output);
         $this->assertResponseCode(500);
     }
+
+
+    public function test_update_sentence() {
+        $data = array(
+            "standup_id" => self::$key,
+            "sentence" => "new sentence",
+            "score" => 0.0,
+            "magnitude" => 0.0
+        );
+        $sentence = self::$sentences->insert($data);
+        $output = $this->request('PUT', 'api/standup/'.self::$key.'/sentences/'.$sentence->id,
+            ['sentence' => 'Bust my balls']);
+        $data = (array) json_decode($output);
+        $this->assertResponseCode(200);
+        $this->assertArrayHasKey('id', $data);
+        $this->assertArrayHasKey('standup_id', $data);
+        $this->assertArrayHasKey('sentence', $data);
+        $this->assertArrayHasKey('magnitude', $data);
+        $this->assertArrayHasKey('score', $data);
+    }
+
 
     public function test_put()
     {

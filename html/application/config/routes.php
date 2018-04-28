@@ -88,6 +88,7 @@ $route['api/standup/(:num)/entities'] = 'api/Standup/entities/$1';
 $route['api/standup/(:num)/sentences'] = 'api/Standup/sentences/$1';
 $route['api/standup/(:num)/sentences/good'] = 'api/Standup/sentences_good/$1';
 $route['api/standup/(:num)/sentences/bad'] = 'api/Standup/sentences_bad/$1';
+$route['api/standup/(:num)/sentences/(:num)'] = 'api/Standup/sentence_update/$1/$2';
 
 # Queue
 $route['api/queue/'] = 'api/Queue/index';

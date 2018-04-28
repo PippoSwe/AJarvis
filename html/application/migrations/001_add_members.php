@@ -20,6 +20,10 @@ class Migration_Add_members extends CI_Migration {
                 'type' => 'VARCHAR',
                 'constraint' => '100',
             ),
+            'work' => array(
+                'type' => 'BIT',
+                'constraint' => '1',
+            ),
         ));
         $this->dbforge->add_key('id', TRUE);
         $this->dbforge->create_table('members');

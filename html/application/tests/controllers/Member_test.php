@@ -35,7 +35,7 @@ class Member_test extends TestCase
     public function test_post()
     {
         $output = $this->request('POST', self::$page, [
-            'firstname' => 'Test','lastname' => 'Testoni']);
+            'firstname' => 'Test','lastname' => 'Testoni','work' => true]);
         $data = (array) json_decode($output);
         $this->assertResponseCode(200);
         $this->assertArrayHasKey('firstname', $data);

@@ -1,3 +1,3 @@
 {{#items}}
-	<span class="{{color}}">{{sentence}}</span>
+	<span class="{{color}}" data-sentence_id="{{id}}">{{sentence}}</span>
 {{/items}}
