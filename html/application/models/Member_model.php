@@ -20,6 +20,7 @@ class Member_model extends CI_Model {
         if (!is_null($limit))
             $collection = $collection->limit($limit, $offset);
         if (!is_null($searchParam)){
+            $collection = $collection->where('work', 1);
             $collection = $collection->like('CONCAT(firstname,\' \',lastname)', $searchParam, 'after');
             $collection = $collection->or_like('CONCAT(lastname,\' \',firstname)', $searchParam, 'after');
         }
