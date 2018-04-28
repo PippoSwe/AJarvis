@@ -16,6 +16,9 @@ class Migration_Add_nlp extends CI_Migration {
                 'default' => 'Pending',
                 'null' => FALSE,
             ),
+            'logs' => array(
+                'type' => 'TEXT',
+            ),
         ));
         $this->dbforge->add_key('id', TRUE);
         $this->dbforge->add_field('CONSTRAINT FOREIGN KEY (id) REFERENCES standups(id) ON DELETE CASCADE');

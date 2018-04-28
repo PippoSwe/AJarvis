@@ -34,7 +34,7 @@ class Sentence_model extends CI_Model
 
     public function sentences($standup_id = null, $type = 'all', $limit = null, $offset = 0)
     {
-        $collection = $this->db->select('sentence, sentences.score, sentences.magnitude,
+        $collection = $this->db->select('sentences.id, sentence, sentences.score, sentences.magnitude,
                                             CASE
                                                 WHEN sentences.score > 0.25 THEN \'positive\'
                                                 WHEN sentences.score < -0.25 THEN \'negative\'
