@@ -95,6 +95,13 @@ class Member extends CI_Controller
      *         required=true,
      *         type="string",
      *     ),
+     *     @SWG\Parameter(
+     *         name="work",
+     *         in="query",
+     *         description="Indica se il lavoratore lavora opppure no",
+     *         required=false,
+     *         type="string",
+     *     ),
      *     @SWG\Response(
      *         response=200,
      *         description="Success",
@@ -109,7 +116,8 @@ class Member extends CI_Controller
         // Dichiariamo i valori di default
         $data = array(
             "firstname" => null,
-            "lastname" => null
+            "lastname" => null,
+            "work" => false,
         );
 
         // Normalizzazione
@@ -117,6 +125,8 @@ class Member extends CI_Controller
             $data["firstname"] = $this->input->post('firstname');
         if(!empty($this->input->post('lastname')))
             $data["lastname"] = $this->input->post('lastname');
+        if(!empty($this->input->post('work')))
+            $data["work"] = $this->input->post('work');
 
         // Scrittura e gestion del risultato REST-Style
         $entry = $this->members->insert($data);
@@ -194,6 +204,13 @@ class Member extends CI_Controller
      *         required=true,
      *         type="string",
      *     ),
+     *     @SWG\Parameter(
+     *         name="work",
+     *         in="query",
+     *         description="Indica se il lavoratore lavora oppure no ",
+     *         required=false,
+     *         type="string",
+     *     ),
      *     @SWG\Response(
      *         response=200,
      *         description="Success",
@@ -208,7 +225,8 @@ class Member extends CI_Controller
         // Dichiariamo i valori di default
         $data = array(
             "firstname" => null,
-            "lastname" => null
+            "lastname" => null,
+            "work" => false,
         );
 
         // Normalizzazione
@@ -216,6 +234,8 @@ class Member extends CI_Controller
             $data["firstname"] = $this->input->input_stream('firstname');
         if(!empty($this->input->input_stream('lastname')))
             $data["lastname"] = $this->input->input_stream('lastname');
+        if(!empty($this->input->input_stream('work')))
+            $data["work"] = $this->input->input_stream('work');
 
         // Scrittura e gestion del risultato REST-Style
         $entry = $this->members->update($id, $data);
