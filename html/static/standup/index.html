@@ -152,15 +152,64 @@
             });
 
             $("#switch").click(function() {
-                if($("#switch").html() == "Evidenzia frasi") {
-                    $("#switch").html('Nascondi');
-                }else
-                    $("#switch").html('Evidenzia frasi');
+                var _this = $(this);
+
+                if(_this.data('value') == 'evidenzia'){
+                    _this.data('value', 'nascondi');
+                    _this.find('#switch_text').text('Nascondi');
+                }
+                else {
+                    _this.data('value', 'evidenzia');
+                    _this.find('#switch_text').text('Evidenzia frasi');
+                }
+
                 $(".positive").toggleClass("bg-success");
                 $(".negative").toggleClass("bg-danger");
                 $(".mixed").toggleClass("bg-info");
                 $(".neutral").toggleClass("bg-secondary");
-            })
+            });
+
+            $("#change_text").click(function() {
+                var container = $('#edit_text_container');
+
+                container.html('');
+
+                $('#standup_text').find('span').each(function () {
+                    var edit_button = '&nbsp; <button class="btn btn-light btn-sm edit-sentence-text" data-sentence_id="' + $(this).data('sentence_id') + '"><i class="fa fa-edit"></i></button>';
+                    $(this).append(edit_button);
+                });
+
+                $(this).addClass('d-none');
+            });
+
+            $('body').on('click','.edit-sentence-text',function(){
+                var sentence_id  = $(this).data('sentence_id');
+                var modal        = $('#sentenceTextModal');
+                var sentence     = $(this).closest('span').text();
+
+                modal.find('#sentence_text').val(sentence);
+                modal.find('#save_sentence_text').data('sentence_id', sentence_id);
+                modal.modal('show');
+            });
+
+            $("#save_sentence_text").click(function() {
+                var modal       = $(this).closest('.modal');
+                var sentence_id = $(this).data('sentence_id');
+                var sentence    = modal.find('#sentence_text').val();
+
+                $.ajax({
+                    url: "/api/standup/"+$.urlParam("standup_id")+"/sentences/" + sentence_id,
+                    type: "PUT",
+                    data: {
+                        sentence: sentence
+                    },
+                    success: function(data){
+                        sentence += '&nbsp; <button class="btn btn-light btn-sm edit-sentence-text" data-sentence_id="' + sentence_id + '"><i class="fa fa-edit"></i></button>';
+                        $('#standup_text').find("span[data-sentence_id='" + sentence_id + "']").html(sentence);
+                        modal.modal('hide');
+                    }
+                });
+            });
 
         });
     </script>
@@ -169,7 +218,6 @@
         <div class="app">
             <div class="app-body">
                 <!--#include virtual="/assets/tpl/sidebar.html"-->
-                
                 <div class="app-content">
                     <!--#include virtual="/assets/tpl/navbar.html"-->
                     <!-- breadcrumb -->
@@ -186,21 +234,20 @@
                         <div class="container">
                             <div class="row">
                                 <div class="col-12 col-lg-3 mb-5"><!-- -->
-
-                                            <div class="card">
-                                                <div class="card-header"><i class="fa fa-flag mr-2"></i>Entità</div>
-                                                <div class="card-body">
-                                                    <div class="row">
-                                                        <div class="col">
-                                                            <strong>Entità</strong>
-                                                        </div>
-                                                        <div class="col">
-                                                            <strong>Salience</strong>
-                                                        </div>
-                                                    </div>
-                                                     <div id="entity"></div>
+                                    <div class="card">
+                                        <div class="card-header"><i class="fa fa-flag mr-2"></i>Entità</div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <strong>Entità</strong>
+                                                </div>
+                                                <div class="col">
+                                                    <strong>Salience</strong>
                                                 </div>
                                             </div>
+                                             <div id="entity"></div>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="col-12 col-lg-9">
@@ -219,7 +266,6 @@
                                                     <span class="dropdown-item disabled"><i class="ion-record text-danger mr-2"></i>Frasi negative</span>
                                                     <span class="dropdown-item disabled"><i class="ion-record text-info mr-2"></i>Frasi miste</span>
                                                     <span class="dropdown-item disabled"><i class="ion-record text-secondary mr-2"></i>Frasi neutrali</span>
-                                                    
                                                 </div>
                                             </div>
                                         </div>
@@ -238,7 +284,7 @@
                                         </div>
                                         <div class="card-body">
                                             <div id="positive-sentences">
-                                                
+
                                             </div>
                                         </div>
                                     </div>
@@ -253,7 +299,7 @@
                                         </div>
                                         <div class="card-body">
                                             <div id="negative-sentences">
-                                                
+
                                             </div>
                                         </div>
                                     </div>
@@ -262,11 +308,21 @@
 
                             <div class="row mt-5" id="text_container">
                                 <div class="col-12">
-                                <div class="card">
-                                    <div class="card-header"><i class="fa fa-file-text mr-2"></i>Testo
-                                    <button class="btn btn-primary pull-right" id="switch">Evidenzia frasi</button></div>
-                                    <div id="standup_text" class="card-body text-justify">
-                                </div> 
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <div class="row">
+                                                <div class="col-12 col-sm-4">
+                                                    <i class="fa fa-file-text mr-2"></i>Testo
+                                                </div>
+                                                <div class="col-12 col-sm-8">
+                                                    <button class="btn btn-primary pull-right" id="switch" data-value="evidenzia"><i class="ion-ios-color-wand-outline"></i> <span id="switch_text">Evidenzia frasi</span></button>
+                                                    <button class="btn btn-link pull-right" id="change_text"><i class="fa fa-edit"></i> Modifica frasi</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="standup_text" class="card-body text-justify">
+
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -291,6 +347,26 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
                         <button type="button" id="confirm-delete" class="btn btn-danger" data-dismiss="modal"><span class="ion-ios-trash-outline mr-2"></span>Elimina</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- edit standup text sentence -->
+        <div class="modal fade" id="sentenceTextModal" tabindex="-1" role="dialog" aria-labelledby="sentenceTextModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="sentenceTextModalLabel">Modifica testo sentence</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <textarea id="sentence_text" class="w-100" rows="5"></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+                        <button type="button" id="save_sentence_text" data-sentence_id="" class="btn btn-primary">Salva</button>
                     </div>
                 </div>
             </div>
