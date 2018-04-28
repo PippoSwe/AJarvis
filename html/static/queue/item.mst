@@ -1,18 +1,18 @@
 {{#items}}
         <div id="list-item-{{id}}" class="list-group-item pb-5">
             <div class="d-lg-none">
-                <h3>
+                <h4>
                     <span class="badge badge-pill badge-{{stt_badge_color}} "
                         {{#stt_logs}}
                             data-toggle="tooltip" data-placement="top" title="{{nlp_logs}}"
                         {{/stt_logs}}
-                    ><i class="fa fa-volume-up  text-white" aria-hidden="true"></i>{{stt_status}}</span>
+                    ><i class="fa fa-volume-up  text-white" aria-hidden="true"></i> {{stt_status}}</span>
                     <span class="badge badge-pill badge-{{nlp_badge_color}} "
                         {{#nlp_logs}}
                             data-toggle="tooltip" data-placement="top" title="{{nlp_logs}}"
                         {{/nlp_logs}}
-                    ><i class="ion-ios-pulse-strong text-white" aria-hidden="true"></i>{{nlp_status}}</span>
-                </h3>
+                    ><i class="ion-ios-pulse-strong text-white" aria-hidden="true"></i> {{nlp_status}}</span>
+                </h4>
             </div>
             <h5 class="list-group-item-heading float-left">{{project}} : {{standup}}</h5>
             <div class="pull-right d-none d-lg-block">

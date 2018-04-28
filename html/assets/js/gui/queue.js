@@ -13,7 +13,9 @@ $(document).ready(function() {
                     $.get('item.mst', function(template) {
                         var rendered = Mustache.render(template, {items: data});
                         $('#list').html(rendered);
-                        $('[data-toggle="tooltip"]').tooltip();
+                        $('[data-toggle="tooltip"]').tooltip({
+                            trigger : 'hover'
+                        });
                     });
                 }
             }
