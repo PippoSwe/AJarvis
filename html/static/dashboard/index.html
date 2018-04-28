@@ -183,7 +183,7 @@
                     type: "GET",
                     success: function(data) {
                         if(data.length > 0)
-                            $.get(template, function(template) {
+                            $.get("stats.mst", function(template) {
                                 var rendered = Mustache.render(template, {items: data});
                                 $("#stats").html(rendered);
                             });
@@ -222,6 +222,7 @@
                 checKeySetted();
                 loadGraph();
                 cloudWords();
+                loadStats();
                 $.ajax({
                     url:"/api/project/"+$.urlParam("project_id"),
                     type: "GET",

@@ -1,8 +1,8 @@
 {{#items}}
-                                        <div class="row">
-                                            <div class="col">
-                                                <strong>{{name}}</strong>
+                                        <div class="row border-bottom">
+                                            <div class="col-9 border-right">
+                                                {{name}}
                                             </div>
-                                            <div class="col">{{value}}</div>
+                                            <div class="col-3 text-right"><strong>{{value}}</strong></div>
                                         </div>
 {{/items}}                                        
