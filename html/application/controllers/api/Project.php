@@ -210,6 +210,55 @@ class Project extends CI_Controller
 
     /**
      * @SWG\Get(
+     *     path="project/{project_id}/entities",
+     *     summary="Le entitá piú discusse del progetto",
+     *     description="Ritorna le entitá piú discusse del progetto, insieme alla somma della loro salience e di quante volte sono state dette",
+     *     produces={"application/json"},
+     *     tags={"project"},
+     *     @SWG\Parameter(
+     *         name="project_id",
+     *         in="path",
+     *         description="Project id",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *      @SWG\Parameter(
+     *         name="limit",
+     *         in="query",
+     *         description="Recupera {limit} elementi",
+     *         type="integer",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="offset",
+     *         in="query",
+     *         description="Inizio paginazione",
+     *         type="string",
+     *     ),
+     *     @SWG\Response(
+     *         response=200,
+     *         description="Success",
+     *     ),
+     *     @SWG\Response(
+     *         response="500",
+     *         description="Internal Server Error"
+     *     )
+     * )
+     */
+    public function entities($id)
+    {
+        $entry = $this->projects->entities(
+            $id,
+            $limit = $this->input->get('limit'),
+            $offset = $this->input->get('offset')
+        );
+
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($entry));
+    }
+
+    /**
+     * @SWG\Get(
      *     path="project/",
      *     summary="Elenco dei progetti",
      *     description="Elenca tutti i progetti dell'azienda",

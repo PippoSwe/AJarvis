@@ -69,6 +69,26 @@ class Project_model extends CI_Model {
         return $result;
     }
 
+    public function entities($project_id = null, $limit = null, $offset = 0)
+    {
+        $collection = $this->db->select('entities.name, entities.type, SUM(entities.salience) AS sum_salience,COUNT(entities.salience) AS count_salience ,  standups.id AS standup_id')
+            ->from('entities');
+        $collection = $collection->join('standups', 'standups.id = standup_id', 'left');
+        $collection = $collection->join('projects', 'projects.id = project_id', 'left');
+
+        if (!is_null($project_id))
+            $collection = $collection->where('project_id', $project_id);
+
+        $collection = $collection->group_by('entities.name');
+        $collection = $collection->order_by('sum_salience', 'DESC');
+        if (!is_null($limit))
+            $collection = $collection->limit($limit, $offset);
+        $result = $collection
+            ->get()
+            ->result();
+        return $result;
+    }
+
     public function get($id)
     {
         $records = $this->db->from('projects')
