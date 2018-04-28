@@ -27,11 +27,11 @@
 	}
 }
 
-  .fix-dim{
-    width: 101.63px;
-    height: 34px;
-    display: inline-block;
-  }
+.fix-dim{
+  width: 101.63px;
+  height: 34px;
+  display: inline-block;
+}
 
 
 .indexColor{
@@ -58,7 +58,6 @@
 }
 
 body-custom {
-  
   display: flex;
   align-items: center;
   justify-content: center;
