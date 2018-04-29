@@ -27,6 +27,7 @@ class Standup_model extends CI_Model {
         if (!is_null($limit))
             $collection = $collection->limit($limit, $offset);
         $result = $collection
+            ->order_by("standups.id", "desc")
             ->get()
             ->result();
         return $result;
