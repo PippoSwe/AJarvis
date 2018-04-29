@@ -252,55 +252,41 @@
                         <div id="message"></div>
                         <div class="container"> <!-- p-lg-1 -->
                         <div class="row">
-                            <div class="col-12 col-lg-3 mb-5">
-                                <div class="card">
-                                    <div class="card-header"><i class="fa fa-key mr-2"></i>Keyword</div>
-                                    <div class="card-body">
-                                        <form>
-                                            <div class="form-group mb-2">
-                                                <input type="text" name="project-keyword" id="project-keyword" class="form-control">
-                                                <input type="text" name="hidden-keyword-id" id="hidden-keyword-id" hidden>
-                                            </div>
-                                            <button type="submit" name="save-keyword" id="save-keyword" class="btn btn-success mb-2" disabled="disabled"><span class="ion-ios-checkmark-outline mr-2"></span>Salva</button>
-                                        </form>
-                                        <div id="list-keyword"> <!-- div lista keyword associate a progetto --></div>
-                                    </div>
-                                </div>
-                                
-                                <div class="card mt-5">
-                                    <div class="card-header"><i class="fa fa-users mr-2"></i>Membri</div>
-                                    <div class="card-body">
-                                        <form>
-                                            <div class="form-group mb-2">
-                                                <input type="text" name="project-member" id="project-member" class="form-control">
-                                                <input type="text" name="hidden-member-id" id="hidden-member-id" hidden>
-                                            </div>
-                                            <button type="submit" name="save-member" id="save-member" class="btn btn-success mb-2" disabled="disabled"><span class="ion-ios-checkmark-outline mr-2"></span>Salva</button>
-                                        </form>
-                                        <div id="list-member"> <!-- div lista keyword associate a progetto --></div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-12 col-lg-9 ">
-                                <div class="card mb-5">
+                            <div class="col ">
+                                <div class="card mb-3">
                                     <div class="card-header">
                                         <i class="fa fa-bar-chart mr-2"></i>Grafico
                                     </div>
                                     <div class="graph w-100" align="center"></div>
                                 </div>
-                                <div class="card mt-4">
-                                    <div class="card-header"><i class="fa fa-bullhorn mr-2"></i>Standup</div>
-                                    <div class="list-group list-group-flush" id="list-standup">
-                                        
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col col-lg-6 mb-3">
+                                <div class="card">
+                                    <div class="card-header"><i class="fa fa-flag mr-2"></i>Argomenti frequenti</div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div id="myChart"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-lg-6 mb-3">
+                                <div class="card">
+                                    <div class="card-header"><i class="fa fa-line-chart mr-2"></i>Statistiche</div>
+                                    <div class="card-body">
+                                        <div id="stats"></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="row mt-5 mb-3">
-                            <div class="col-12 col-lg-6">
-                                <div class="card border-success mb-5">
+
+                        <div class="row">
+                            <div class="col-12 col-lg-6 mb-3">
+                                <div class="card border-success">
                                     <div class="card-header bg-success" id="header-positive-sentences">
                                         <div class="row">
                                              <div class="col-9 col-md-10">Frase</div>
@@ -315,8 +301,8 @@
                                 </div>
                             </div>
 
-                            <div class="col-12 col-lg-6">
-                                <div class="card border-danger mb-5">
+                            <div class="col-12 col-lg-6 mb-3">
+                                <div class="card border-danger">
                                     <div class="card-header bg-danger" id="header-negative-sentences">
                                         <div class="row">
                                             <div class="col-9 col-md-10">Frase</div>
@@ -331,26 +317,47 @@
                                 </div>
                             </div>
 
-                            <div class="col-12 col-lg-6">
-                                <div class="card mt-5">
-                                    <div class="card-header"><i class="fa fa-flag mr-2"></i>Entità frequenti</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 col-lg-4">
+                                <div class="card  mb-3">
+                                    <div class="card-header"><i class="fa fa-key mr-2"></i>Keyword</div>
                                     <div class="card-body">
-                                        <div class="row">
-                                            <div id="myChart"></div>
-                                        </div>
+                                        <form>
+                                            <div class="form-group mb-2">
+                                                <input type="text" name="project-keyword" id="project-keyword" class="form-control">
+                                                <input type="text" name="hidden-keyword-id" id="hidden-keyword-id" hidden>
+                                            </div>
+                                            <button type="submit" name="save-keyword" id="save-keyword" class="btn btn-success mb-2" disabled="disabled"><span class="ion-ios-checkmark-outline mr-2"></span>Salva</button>
+                                        </form>
+                                        <div id="list-keyword"> <!-- div lista keyword associate a progetto --></div>
+                                    </div>
+                                </div>
+
+                                <div class="card  mb-3">
+                                    <div class="card-header"><i class="fa fa-users mr-2"></i>Membri</div>
+                                    <div class="card-body">
+                                        <form>
+                                            <div class="form-group mb-2">
+                                                <input type="text" name="project-member" id="project-member" class="form-control">
+                                                <input type="text" name="hidden-member-id" id="hidden-member-id" hidden>
+                                            </div>
+                                            <button type="submit" name="save-member" id="save-member" class="btn btn-success mb-2" disabled="disabled"><span class="ion-ios-checkmark-outline mr-2"></span>Salva</button>
+                                        </form>
+                                        <div id="list-member"> <!-- div lista keyword associate a progetto --></div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="col-12 col-lg-6">
-                                <div class="card mt-5">
-                                    <div class="card-header"><i class="fa fa-line-chart mr-2"></i>Statistiche</div>
-                                    <div class="card-body">
-                                        <div id="stats"></div>
+                            <div class="col">
+                                <div class="card">
+                                    <div class="card-header"><i class="fa fa-bullhorn mr-2"></i>Standup</div>
+                                    <div class="list-group list-group-flush" id="list-standup">
+
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
