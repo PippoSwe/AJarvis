@@ -3,6 +3,7 @@ PHP 5.6.33-0+deb8u1 (cli) (built: Jan  5 2018 15:46:26)
 
 Docker collegarsi alla shell dell'istanza:
 docker exec -i -t ajarvis-rest /bin/bash
+docker logs ajarvis-rest
 
 Docker collegarsi all'istanza per vedere i log:
 docker attach --no-stdin --sig-proxy=false ajarvis-rest
@@ -30,6 +31,7 @@ docker-compose pull web
 
 # Sistemi Linux
 chmod -R 777 application/audio_files
+chmod -R 777 application/cron_files
 chmod -R 777 uploads
 
 
@@ -103,3 +105,7 @@ SELEcT  entities.name, entities.type
 FROM entities
         JOIN standups ON sentences.standup_id = standups.id
 ORDER BY entities.salience
+
+# Cronjob per servizio di conversione locale
+apt-get install cron
+crontab -l | { cat; echo "* * * * * cd /var/www/html; /usr/local/bin/php index.php batch/google index"; } | crontab -

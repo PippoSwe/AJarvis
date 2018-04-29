@@ -11,7 +11,10 @@
         <script src="/assets/js/gui/project-member.js"></script>
         <script src="/assets/js/chartist/chartist.min.js"></script>
         <script src="/assets/js/chartist/chartist-plugin-threshold.min.js"></script>
-                <script type="text/javascript">
+        <script src= "https://cdn.zingchart.com/zingchart.min.js"></script>
+        <script> zingchart.MODULESDIR = "https://cdn.zingchart.com/modules/";
+        ZC.LICENSE = ["569d52cefae586f634c54f86dc99e6a9","ee6b7db5b51705a13dc2339db3edaf6d"];</script></head>
+        <script type="text/javascript">
             function loadList(url, placeholderId, template, context) {
                 $.ajax({
                     url: url,
@@ -33,6 +36,27 @@
                     },
                     error: function(xhr, status, text) {
                         var structure = {strong:"Errore!", class:"danger", t:"Caricamento liste non riuscito", dismiss:"alert-dismissible fade show"}; //passo i messaggi per riusare il file mst
+                        $.get('/assets/tpl/alert.mst', function(template) {
+                            var rendered = Mustache.render(template, {items: structure}); //richiede un'array associativo
+                            $('#message').html(rendered);
+                        });
+                    }
+                });
+
+                $.ajax({
+                    url: "/api/project/"+$.urlParam("project_id")+"/entities/?limit=25",
+                    type: "GET",
+                    success: function(data) {
+                        var words = [];
+                        if(data.length > 0)
+                            for(var i=0; i<data.length; ++i) {
+                                var word={"text":data[i].name, "count":data[i].sum_salience};
+                                words.push(word);
+                            }
+                            cloudWords(words);
+                    },
+                    error: function(xhr, status, text) {
+                        var structure = {x:xhr, s:status, t:"Problema caricamento delle entità", class:"danger", strong:"Errore!", dismiss:"alert-dismissible fade show"};
                         $.get('/assets/tpl/alert.mst', function(template) {
                             var rendered = Mustache.render(template, {items: structure}); //richiede un'array associativo
                             $('#message').html(rendered);
@@ -66,7 +90,8 @@
                     type: "GET",
                     success: function(data) {
                         $.get("sentences.mst", function(template) {
-                            var rendered = Mustache.render(template, {items: data});
+                            var rendered = Mustache.render(template, {items: data,
+                                project_id:$.urlParam("project_id")});
                             $("#positive-sentences").html(rendered);
                         });
                     },
@@ -84,7 +109,8 @@
                     type: "GET",
                     success: function(data) {
                         $.get("sentences.mst", function(template) {
-                            var rendered = Mustache.render(template, {items: data});
+                            var rendered = Mustache.render(template, {items: data,
+                                project_id:$.urlParam("project_id")});
                             $("#negative-sentences").html(rendered);
                         });
                     },
@@ -151,9 +177,52 @@
                 });
             };
 
+            function loadStats() {
+                $.ajax({
+                    url: "/api/project/"+$.urlParam("project_id")+"/statistics",
+                    type: "GET",
+                    success: function(data) {
+                        if(data.length > 0)
+                            $.get("stats.mst", function(template) {
+                                var rendered = Mustache.render(template, {items: data});
+                                $("#stats").html(rendered);
+                            });
+                    },
+                    error: function(xhr, status, text) {
+                        var structure = {strong:"Errore", class:"danger", t:"Impossibile caricare le entità", dismiss:"alert-dismissible fade show"}; //passo i messaggi per riusare il file mst
+                        $.get('/assets/tpl/alert.mst', function(template) {
+                            var rendered = Mustache.render(template, {items: structure}); //richiede un'array associativo
+                            $('#message').html(rendered);
+                        });
+                    }
+                });
+            }
+
+            function cloudWords(words) {
+                console.log(words);
+                var myConfig = {
+                    "graphset":[
+                        {
+                            "type":"wordcloud",
+                            "options":{
+                                "words": words
+                            }
+                        }
+                    ]
+                };
+                zingchart.render({ 
+                    id: 'myChart', 
+                    data: myConfig, 
+                    height: '100%', 
+                    width: '100%' 
+                });
+            }
+
             $(document).ready(function() {
                 checKeySetted();
                 loadGraph();
+                cloudWords();
+                loadStats();
                 $.ajax({
                     url:"/api/project/"+$.urlParam("project_id"),
                     type: "GET",
@@ -183,55 +252,41 @@
                         <div id="message"></div>
                         <div class="container"> <!-- p-lg-1 -->
                         <div class="row">
-                            <div class="col-12 col-lg-3 mb-5">
-                                <div class="card">
-                                    <div class="card-header"><i class="fa fa-key mr-2"></i>Keyword</div>
-                                    <div class="card-body">
-                                        <form>
-                                            <div class="form-group mb-2">
-                                                <input type="text" name="project-keyword" id="project-keyword" class="form-control">
-                                                <input type="text" name="hidden-keyword-id" id="hidden-keyword-id" hidden>
-                                            </div>
-                                            <button type="submit" name="save-keyword" id="save-keyword" class="btn btn-success mb-2" disabled="disabled"><span class="ion-ios-checkmark-outline mr-2"></span>Salva</button>
-                                        </form>
-                                        <div id="list-keyword"> <!-- div lista keyword associate a progetto --></div>
-                                    </div>
-                                </div>
-                                
-                                <div class="card mt-5">
-                                    <div class="card-header"><i class="fa fa-users mr-2"></i>Membri</div>
-                                    <div class="card-body">
-                                        <form>
-                                            <div class="form-group mb-2">
-                                                <input type="text" name="project-member" id="project-member" class="form-control">
-                                                <input type="text" name="hidden-member-id" id="hidden-member-id" hidden>
-                                            </div>
-                                            <button type="submit" name="save-member" id="save-member" class="btn btn-success mb-2" disabled="disabled"><span class="ion-ios-checkmark-outline mr-2"></span>Salva</button>
-                                        </form>
-                                        <div id="list-member"> <!-- div lista keyword associate a progetto --></div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-12 col-lg-9 ">
-                                <div class="card mb-5">
+                            <div class="col ">
+                                <div class="card mb-3">
                                     <div class="card-header">
                                         <i class="fa fa-bar-chart mr-2"></i>Grafico
                                     </div>
                                     <div class="graph w-100" align="center"></div>
                                 </div>
-                                <div class="card mt-4">
-                                    <div class="card-header"><i class="fa fa-bullhorn mr-2"></i>Standup</div>
-                                    <div class="list-group list-group-flush" id="list-standup">
-                                        
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col col-lg-6 mb-3">
+                                <div class="card">
+                                    <div class="card-header"><i class="fa fa-flag mr-2"></i>Argomenti frequenti</div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div id="myChart"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-lg-6 mb-3">
+                                <div class="card">
+                                    <div class="card-header"><i class="fa fa-line-chart mr-2"></i>Statistiche</div>
+                                    <div class="card-body">
+                                        <div id="stats"></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="row mt-5">
-                            <div class="col-12 col-lg-6">
-                                <div class="card border-success mb-5">
+
+                        <div class="row">
+                            <div class="col-12 col-lg-6 mb-3">
+                                <div class="card border-success">
                                     <div class="card-header bg-success" id="header-positive-sentences">
                                         <div class="row">
                                              <div class="col-9 col-md-10">Frase</div>
@@ -246,8 +301,8 @@
                                 </div>
                             </div>
 
-                            <div class="col-12 col-lg-6">
-                                <div class="card border-danger mb-5">
+                            <div class="col-12 col-lg-6 mb-3">
+                                <div class="card border-danger">
                                     <div class="card-header bg-danger" id="header-negative-sentences">
                                         <div class="row">
                                             <div class="col-9 col-md-10">Frase</div>
@@ -258,6 +313,48 @@
                                         <div id="negative-sentences">
                                             
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 col-lg-4">
+                                <div class="card  mb-3">
+                                    <div class="card-header"><i class="fa fa-key mr-2"></i>Keyword</div>
+                                    <div class="card-body">
+                                        <form>
+                                            <div class="form-group mb-2">
+                                                <input type="text" name="project-keyword" id="project-keyword" class="form-control">
+                                                <input type="text" name="hidden-keyword-id" id="hidden-keyword-id" hidden>
+                                            </div>
+                                            <button type="submit" name="save-keyword" id="save-keyword" class="btn btn-success mb-2" disabled="disabled"><span class="ion-ios-checkmark-outline mr-2"></span>Salva</button>
+                                        </form>
+                                        <div id="list-keyword"> <!-- div lista keyword associate a progetto --></div>
+                                    </div>
+                                </div>
+
+                                <div class="card  mb-3">
+                                    <div class="card-header"><i class="fa fa-users mr-2"></i>Membri</div>
+                                    <div class="card-body">
+                                        <form>
+                                            <div class="form-group mb-2">
+                                                <input type="text" name="project-member" id="project-member" class="form-control">
+                                                <input type="text" name="hidden-member-id" id="hidden-member-id" hidden>
+                                            </div>
+                                            <button type="submit" name="save-member" id="save-member" class="btn btn-success mb-2" disabled="disabled"><span class="ion-ios-checkmark-outline mr-2"></span>Salva</button>
+                                        </form>
+                                        <div id="list-member"> <!-- div lista keyword associate a progetto --></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col">
+                                <div class="card">
+                                    <div class="card-header"><i class="fa fa-bullhorn mr-2"></i>Standup</div>
+                                    <div class="list-group list-group-flush" id="list-standup">
+
                                     </div>
                                 </div>
                             </div>

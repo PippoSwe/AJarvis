@@ -1,18 +1,73 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Standup extends CI_Controller
+require_once  FCPATH . '/application/core/MY_Standup.php';
+class Standup extends MY_Standup
 {
 
     function __construct()
     {
         //http://www.restapitutorial.com/lessons/httpmethods.html
         parent::__construct();
-        $this->load->model('Standup_model', 'standups', TRUE);
-        $this->load->model('Sentence_model', 'sentences', TRUE);
-        $this->load->model('Entity_model', 'entities', TRUE);
-        $this->load->model('Queue_model', 'queues', TRUE);
-        $this->load->helper(array('google_nlp_helper'));
+    }
+
+    /**
+     * @SWG\Put(
+     *     path="standup/{standup_id}/sentences/{sentence_id}/",
+     *     summary="Aggiorna sentence",
+     *     description="Aggiorna la sentence",
+     *     produces={"application/json"},
+     *     tags={"standup"},
+     *     @SWG\Parameter(
+     *         name="sentence_id",
+     *         in="path",
+     *         description="Sentence id",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="standup_id",
+     *         in="path",
+     *         description="Standup id",
+     *         required=true,
+     *         type="integer",
+     *     ),
+     *     @SWG\Parameter(
+     *         name="sentence",
+     *         in="query",
+     *         description="Sentence",
+     *         required=true,
+     *         type="string",
+     *     ),
+     *     @SWG\Response(
+     *         response=200,
+     *         description="Success",
+     *     ),
+     *     @SWG\Response(
+     *         response="500",
+     *         description="Internal Server Error"
+     *     )
+     * )
+     */
+    public function sentence_update($standup_id, $id) {
+        // Dichiariamo i valori di default
+        $data = array(
+            "standup_id" => $standup_id,
+            "sentence" => null
+        );
+
+        // Normalizzazione
+        if(!empty($this->input->input_stream('sentence')))
+            $data["sentence"] = $this->input->input_stream('sentence');
+
+        // Scrittura e gestion del risultato REST-Style
+        $entry = $this->sentences->update($id, $data);
+        if($entry == null)
+            show_error("Cannot update due to service malfunctioning", 500);
+
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($entry));
     }
 
     /**
@@ -381,6 +436,11 @@ class Standup extends CI_Controller
      */
     private function nlp($id)
     {
+        $standup_entity = $this->set_nlp($id, $this->security->xss_clean($this->input->raw_input_stream));
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($standup_entity));
+        /*
         $nlp = json_decode($this->security->xss_clean($this->input->raw_input_stream));
 
         // PRE: dict needs score, magnitude, etc ...
@@ -437,7 +497,7 @@ class Standup extends CI_Controller
         $this->output
             ->set_content_type('application/json')
             ->set_output(json_encode($standup_entity));
-
+        */
     }
 
 }

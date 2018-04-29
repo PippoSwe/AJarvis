@@ -71,6 +71,14 @@ class Project_test extends TestCase
         $this->assertArrayHasKey('id', $data);
     }
 
+    public function test_statistics()
+    {
+        $output = $this->request('GET', self::$page.self::$key."/statistics");
+        $data = (array) json_decode($output);
+        $this->assertResponseCode(200);
+        $this->assertCount(7, $data);
+    }
+
     public function test_delete()
     {
         $output = $this->request('DELETE', self::$page.self::$key);

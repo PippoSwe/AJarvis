@@ -13,6 +13,7 @@
         <link rel="stylesheet" href="../../assets/css/pippo.css">
 	 	<link rel="stylesheet" href="../../assets/css/ionicons.min.css">
 	 	<link rel="stylesheet" href="../../assets/css/font-awesome.min.css">
+	 	<link rel="stylesheet" href="../../assets/css/loader.css">
 
 
         <!--  JS Popper jQuery -->
@@ -20,6 +21,8 @@
         <!--Mustache-->
         <script src="../../assets/js/gui/popper.min.js" ></script>
         <script src="../../assets/js/gui/bootstrap.min.js"></script>
+        <!-- pace -->
+        <script src="../../assets/js/gui/pace.min.js"></script>
 
         <noscript>
             <div class="alert alert-danger" role="alert">
@@ -83,31 +86,33 @@
 
 </head>
 <body class="bodyIndex">
-<div class="container">
-	<div class="text-center">
-		<img class="img-logo" src="../../assets/images/logo.png" alt="AJarvis">
-	</div>
-	<div id="alert-no-project"></div>
-	<div class="timeline time-off">
-		<div class="entry entry active-nonactive-key">
-			<div class="title">
-				<h3>Configura AJarvis</h3>
+
+		<div class="container">
+				<div id="overlay"></div>
+			<div class="text-center">
+				<img class="img-logo" src="../../assets/images/logo.png" alt="AJarvis">
 			</div>
-			<div class="body-custom">
-				<p>Se è la prima volta che accedi configura l'applicazione</p>
-				<a id="btn-insert" class="btn btn-success" href="/static/config/index.html" role="button"><i class="fa fa-wrench mr-2" aria-hidden="true"></i>Configura AJarvis</a>
+			<div id="alert-no-project"></div>
+			<div class="timeline time-off">
+				<div class="entry entry active-nonactive-key">
+					<div class="title">
+						<h3>Configura AJarvis</h3>
+					</div>
+					<div class="body-custom">
+						<p>Se è la prima volta che accedi configura l'applicazione</p>
+						<a id="btn-insert" class="btn btn-success" href="/static/config/index.html?first_time=true" role="button"><i class="fa fa-wrench mr-2" aria-hidden="true"></i>Configura AJarvis</a>
+					</div>
+				</div>
+				<div class="entry active-nonactive-pro">
+					<div class="title">
+						<h3>Crea progetto</h3>
+					</div>
+					<div class="body-custom">
+						<p>Se è la prima volta che accedi crea il tuo primo progetto</p>
+						<a id="btn-insert" class="btn btn-success" href="/static/project/index.html" role="button"><i class="ion-ios-plus-outline mr-2"></i>Nuovo progetto</a>
+					</div>
+				</div>
 			</div>
 		</div>
-		<div class="entry active-nonactive-pro">
-			<div class="title">
-				<h3>Crea progetto</h3>
-			</div>
-			<div class="body-custom">
-				<p>Se è la prima volta che accedi crea il tuo primo progetto</p>
-				<a id="btn-insert" class="btn btn-success" href="/static/project/index.html" role="button"><i class="ion-ios-plus-outline mr-2"></i>Nuovo progetto</a>
-			</div>
-		</div>
-	</div>
-</div>
 </body>
 </html>

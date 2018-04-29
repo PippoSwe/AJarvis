@@ -69,6 +69,26 @@ class Project_model extends CI_Model {
         return $result;
     }
 
+    public function entities($project_id = null, $limit = null, $offset = 0)
+    {
+        $collection = $this->db->select('entities.name, entities.type, SUM(entities.salience) AS sum_salience,COUNT(entities.salience) AS count_salience ,  standups.id AS standup_id')
+            ->from('entities');
+        $collection = $collection->join('standups', 'standups.id = standup_id', 'left');
+        $collection = $collection->join('projects', 'projects.id = project_id', 'left');
+
+        if (!is_null($project_id))
+            $collection = $collection->where('project_id', $project_id);
+
+        $collection = $collection->group_by('entities.name');
+        $collection = $collection->order_by('sum_salience', 'DESC');
+        if (!is_null($limit))
+            $collection = $collection->limit($limit, $offset);
+        $result = $collection
+            ->get()
+            ->result();
+        return $result;
+    }
+
     public function get($id)
     {
         $records = $this->db->from('projects')
@@ -77,6 +97,79 @@ class Project_model extends CI_Model {
         if(sizeof($records) > 0)
             return $records[0];
         return null;
+    }
+
+    public function statistics($id) {
+        $records = $this->db->query('SELECT 1 AS id, 
+    "Numero frasi rilevate" AS name, 
+    CAST(count(*) as CHAR(25)) AS value 
+FROM sentences 
+WHERE standup_id IN (
+    SELECT id 
+    FROM standups 
+    WHERE project_id = '.$id.'
+)
+UNION 
+SELECT 2 AS id, 
+    "Numero frasi positive" AS name, 
+    CAST(count(*) as CHAR(25)) AS value 
+FROM sentences 
+WHERE standup_id IN (
+    SELECT id 
+    FROM standups 
+    WHERE project_id = '.$id.'
+)
+AND score > 0.25
+UNION 
+SELECT 3 AS id, 
+    "Numero frasi negative" AS name, 
+    CAST(count(*) as CHAR(25)) AS value 
+FROM sentences 
+WHERE standup_id IN (
+    SELECT id 
+    FROM standups 
+    WHERE project_id = '.$id.'
+)
+AND score < -0.25
+UNION 
+SELECT 4 AS id, 
+    "Numero frasi neutre" AS name, 
+    CAST(count(*) as CHAR(25)) AS value 
+FROM sentences 
+WHERE standup_id IN (
+    SELECT id 
+    FROM standups 
+    WHERE project_id = '.$id.'
+)
+AND score >= -0.25
+AND score <= 0.25
+UNION 
+SELECT 5 AS id, 
+    "Numero argomenti" AS name, 
+    CAST(count(*) as CHAR(25)) AS value 
+FROM entities 
+WHERE standup_id IN (
+    SELECT id 
+    FROM standups 
+    WHERE project_id = '.$id.'
+)
+UNION 
+SELECT 6 AS id, 
+    "Andamento generale del progetto" AS name, 
+    CASE WHEN AVG(score) IS NULL THEN 0.00 ELSE CAST(ROUND(AVG(score), 2) as CHAR(25)) END AS value 
+FROM (SELECT '.$id.' AS project_id) AS R
+LEFT JOIN standups ON R.project_id = standups.project_id
+WHERE R.project_id = '.$id.'
+GROUP BY R.project_id
+UNION 
+SELECT 7 AS id, 
+    "Affidabilità delle traduzioni" AS name, 
+    CASE WHEN AVG(magnitude) IS NULL THEN 0.00 ELSE CAST(ROUND(AVG(magnitude), 2) as CHAR(25)) END AS value 
+FROM (SELECT '.$id.' AS project_id) AS R
+LEFT JOIN standups ON R.project_id = standups.project_id
+WHERE R.project_id = '.$id.'
+GROUP BY R.project_id');
+        return $records->result();
     }
 
     public function insert($data)

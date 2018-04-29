@@ -16,7 +16,7 @@
   height: 10em;
 }
 
-@media only screen and (max-width: 992px) {
+@media only screen and (max-width: 999px) {
     .hidden-text {
 		display: none;
 	}
@@ -27,6 +27,13 @@
 	}
 }
 
+.fix-dim{
+  width: 101.63px;
+  height: 34px;
+  display: inline-block;
+}
+
+
 .indexColor{
 	background-color: #34495e;
 }
@@ -34,7 +41,6 @@
 .bodyIndex{
 	background-color: #34495e;
 }
-
 
 /*.bigLogo{
 	position: fixed;
@@ -52,7 +58,6 @@
 }
 
 body-custom {
-  
   display: flex;
   align-items: center;
   justify-content: center;
@@ -147,3 +152,34 @@ body-custom * {
   content: "–";
   margin-right: .5em;
 }
+
+/* OVERLAY */
+#overlay {
+    position: fixed; /* Sit on top of the page content */
+    /*display: none;  Hidden by default */
+    width: 100%; /* Full width (cover the whole page) */
+    height: 100%; /* Full height (cover the whole page) */
+    top: 0; 
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #34495e; /* Black background with opacity */
+    z-index: 999; /* Specify a stack order in case you're using a different order for other elements */
+    cursor: pointer; /* Add a pointer on hover */
+}
+
+#bellList .badge {
+  font-size: 1.03em;
+}
+
+#myChart {
+  height:100%;
+  width:100%;
+  min-height:150px;
+}
+
+#myChart-license-text{
+  display: none !important;
+}
+
+

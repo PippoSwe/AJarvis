@@ -16,7 +16,7 @@ class Migration_Add_configs extends CI_Migration {
         ));
         $this->dbforge->add_key('key', TRUE);
         $this->dbforge->create_table('configs');
-
+        $this->db->query("INSERT INTO `configs` (`key`, `value`) VALUES('service_type', 'remote')");
     }
 
     public function down()

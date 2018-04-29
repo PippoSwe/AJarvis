@@ -202,6 +202,21 @@ class Nlp_test extends TestCase
         }
     }
 
+    public function test_project_entities()
+    {
+        $output = $this->request('GET', self::$fk1_page.self::$fk1_key.'/entities/');
+        $data = (array) json_decode($output);
+        $this->assertResponseCode(200);
+
+        foreach($data as $value){
+            $this->assertTrue( property_exists($value, 'name') );
+            $this->assertTrue( property_exists($value, 'type') );
+            $this->assertTrue( property_exists($value, 'sum_salience') );
+            $this->assertTrue( property_exists($value, 'count_salience') );
+            $this->assertTrue( property_exists($value, 'standup_id') );
+        }
+    }
+
     public function test_delete()
     {
         $output = $this->request('DELETE', self::$fk1_page.self::$fk1_key.'/standup/'.self::$key);

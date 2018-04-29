@@ -35,10 +35,14 @@ class Config extends CI_Controller
      */
    function readData(){
        $entry = $this->configs->readAll();
+       $c = array();
+       foreach($entry as $record) {
+           $c[$record->key] = $record->value;
+       }
 
        $this->output
            ->set_content_type('application/json')
-           ->set_output(json_encode($entry));
+           ->set_output(json_encode($c));
    }
 
   /**
@@ -66,7 +70,18 @@ class Config extends CI_Controller
    * )
    */
    function updateData(){
-       $this->configs->update(array('key' => 'key_file', 'value' => $this->input->post('key_file')));
+       if(!empty($this->input->post('key_file')))
+           $this->configs->update(
+               array('key' => 'key_file', 'value' => $this->input->post('key_file'))
+           );
+       if(!empty($this->input->post('service_type')))
+           $this->configs->update(
+               array('key' => 'service_type', 'value' => $this->input->post('service_type'))
+           );
+       if(!empty($this->input->post('silence_tolerance')))
+           $this->configs->update(
+               array('key' => 'silence_tolerance', 'value' => $this->input->post('silence_tolerance'))
+           );
    }
 
   /**

@@ -20,6 +20,11 @@ function upload_file($file_path, $file_name)
     $CI->load->model('Config_model', 'configs', TRUE);
 
     $bucket_name = "ajarvis-storage";
+    $entry = $CI->configs->get("service_type");
+    if(!is_null($entry))
+        if($entry->value == 'local')
+            $bucket_name = "ajarvis-cron";
+
     $entry = $CI->configs->get("key_file");
     if(is_null($entry))
         return;

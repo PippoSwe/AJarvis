@@ -17,6 +17,7 @@ function Membri() {
         $("#save").attr("action",controller.page);
         $("#firstname").val("");
         $("#lastname").val("");
+        $("#work").prop("checked", true);
     };
     this.inizializeUpdateForm = function(controller, data) {
         $("#save-title").html("Modifica membro: "+data.firstname+" "+data.lastname);
@@ -25,6 +26,10 @@ function Membri() {
         $("#save").attr("action",controller.page+data.id);
         $("#firstname").val(data.firstname);
         $("#lastname").val(data.lastname);
+        if( data.work == 0 )
+            $("#work").prop("checked", false);
+        else
+            $("#work").prop("checked", true);
     };
     this.checkSaveButton = function() {
         var ref = this;
