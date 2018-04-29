@@ -3,4 +3,4 @@
 vendor
 application/tests/build
 codacy
-.FLAC
+*.FLAC
