@@ -40,7 +40,7 @@ services:
     container_name: ajarvis-mysql
     volumes:
       - ./dbms/etc:/etc/mysql/conf.d
-      - ./dbms/data:/var/lib/mysql
+      - ajarvis-dbms-volume:/var/lib/mysql
     environment:
       - MYSQL_ROOT_PASSWORD=123pipposwe
       - MYSQL_DATABASE=ajarvis
@@ -48,3 +48,6 @@ services:
       - MYSQL_PASSWORD=ajarvis
     ports:
       - 3307:3306
+
+volumes:
+  ajarvis-dbms-volume:

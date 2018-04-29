@@ -47,6 +47,15 @@ $ cd ajarvis-dev
 $ docker-compose up
 ```
 
+Solo per piattaforme basate su UNIX
+
+```bash
+$ chmod -R 777 application/audio_files
+$ chmod -R 777 application/cron_files
+$ chmod -R 777 uploads
+```
+
+
 Una volta eseguiti questi comandi verranno:
 
 - scaricate le immagini delle macchine necessarie al funzionamento di ajarvis (Apache, MySQL)
