@@ -64,7 +64,7 @@
 
 				                	if(key_set && pro_set){
 										$(".time-off").addClass("d-none");
-										window.location.replace("/static/queue/index.html");
+										window.location.replace("/static/home/index.html");
 									}
 				                }
 
