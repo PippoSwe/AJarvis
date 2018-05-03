@@ -44,10 +44,21 @@ class Google extends MY_Standup
             $voice_pause = floatval($entry->value);
 
         $entry = $this->configs->get("key_file");
-        if(is_null($entry))
+        if(is_null($entry)) {
             show_error("Google Cloud key is missing");
+            exit;
+        }
+
         // Google cloud
         $json_key = json_decode($entry->value, true);
+
+        // Google storage Bucket
+        $entry = $this->configs->get("bucket_name");
+        if(is_null($entry)) {
+            show_error("Google Storage Bucket is missing");
+            exit;
+        }
+        $bucket_name = $entry->value;
 
         //php index.php batch/speech index
         $path = realpath("./application/cron_files");
@@ -61,7 +72,7 @@ class Google extends MY_Standup
         $input = realpath($path."/".$flac_files[0]);
 
         // id to perform the indexing
-        $gs_url = "gs://ajarvis-daemon/".$flac_files[0];
+        $gs_url = "gs://".$bucket_name."/".$flac_files[0];
         $id = str_replace("standup-", "", $flac_files[0]);
         $id = explode(".", $id)[0];
 

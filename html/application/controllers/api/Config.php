@@ -82,6 +82,10 @@ class Config extends CI_Controller
            $this->configs->update(
                array('key' => 'silence_tolerance', 'value' => $this->input->post('silence_tolerance'))
            );
+       if(!empty($this->input->post('bucket_name')))
+           $this->configs->update(
+               array('key' => 'bucket_name', 'value' => $this->input->post('bucket_name'))
+           );
    }
 
   /**

@@ -35,6 +35,10 @@
                                                 <textarea class="form-control" name="key_file" id="key_file"></textarea>
                                             </div>
                                             <div class="form-group">
+                                                <label for="bucket_name">Bucket Name</label>
+                                                <input class="form-control" name="bucket_name" id="bucket_name" value="ajarvis-flaac" placeholder="ajarvis-flaac" />
+                                            </div>
+                                            <div class="form-group">
                                                 <label for="service_type">Servizio conversione</label>
                                                 <select class="form-control" id="service_type" name="service_type">
                                                     <option value="remote">Google Cloud Functions</option>
@@ -70,6 +74,8 @@
                     success: function (data) {
                         if(data.key_file != undefined)
                             $('#key_file').val(data.key_file);
+                        if(data.bucket_name != undefined)
+                            $('#bucket_name').val(data.bucket_name);
                         if(data.silence_tolerance != undefined)
                             $('#silence_tolerance').val(data.silence_tolerance);
                         if(data.service_type != undefined)
@@ -127,6 +133,9 @@
                 $("#service_type").change(function() {
                     $("#saveButton").attr("disabled",false);
                 });
+                $("#bucket_name").keyup(function() {
+                    checkBucketEmpty();
+                });
             }
 
             function checkEmpty() {
@@ -137,6 +146,12 @@
             }
             function checkSilenceEmpty() {
                 if( $("#silence_tolerance").val().length > 0 )
+                    $("#saveButton").attr("disabled",false);
+                else
+                    $("#saveButton").attr("disabled",true);
+            }
+            function checkBucketEmpty() {
+                if( $("#bucket_name").val().length > 0 )
                     $("#saveButton").attr("disabled",false);
                 else
                     $("#saveButton").attr("disabled",true);
