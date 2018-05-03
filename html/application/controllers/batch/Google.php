@@ -61,7 +61,7 @@ class Google extends MY_Standup
         $input = realpath($path."/".$flac_files[0]);
 
         // id to perform the indexing
-        $gs_url = "gs://ajarvis-cron/".$flac_files[0];
+        $gs_url = "gs://ajarvis-daemon/".$flac_files[0];
         $id = str_replace("standup-", "", $flac_files[0]);
         $id = explode(".", $id)[0];
 

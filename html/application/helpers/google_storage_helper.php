@@ -23,7 +23,7 @@ function upload_file($file_path, $file_name)
     $entry = $CI->configs->get("service_type");
     if(!is_null($entry))
         if($entry->value == 'local')
-            $bucket_name = "ajarvis-cron";
+            $bucket_name = "ajarvis-daemon";
 
     $entry = $CI->configs->get("key_file");
     if(is_null($entry))
