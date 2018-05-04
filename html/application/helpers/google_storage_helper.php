@@ -19,19 +19,6 @@ function upload_file($file_path, $file_name)
     $CI = & get_instance();
     $CI->load->model('Config_model', 'configs', TRUE);
 
-    /*
-    $bucket_name = "ajarvis-storage";
-    $entry = $CI->configs->get("service_type");
-    if(!is_null($entry))
-        if($entry->value == 'local')
-            $bucket_name = "ajarvis-daemon";
-    */
-
-    $entry = $CI->configs->get("bucket_name");
-    if(is_null($entry))
-        return;
-
-    $bucket_name = $entry->value;
     $entry = $CI->configs->get("key_file");
     if(is_null($entry))
         return;
@@ -42,8 +29,9 @@ function upload_file($file_path, $file_name)
     ]);
 
     // open file and instantiate bucket
+    $entry = $CI->configs->get("bucket_name");
     $file     = fopen($file_path, 'r');
-    $bucket   = $storage->bucket($bucket_name);
+    $bucket   = $storage->bucket($entry->value);
     return $bucket->upload($file, [
             'name' => $file_name,
             'metadata' => ['contentType' => 'audio/flac', 'uploadType' => 'resumable']
